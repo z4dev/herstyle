@@ -1,16 +1,16 @@
 import type { Metadata } from "next";
-import localFont from "next/font/local";
+import { Cairo } from "next/font/google";
 import "./globals.css";
+import Header from "./(components)/Header";
+import Footer from "./(components)/Footer";
+import TanStack from "@/utils/TanStack";
 
-const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-  weight: "100 900",
-});
-const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
-  weight: "100 900",
+
+const cairo = Cairo({
+  subsets: ["latin", "arabic"],
+  weight: ["400", "700"],
+  variable: "--font-cairo",
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -26,9 +26,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${cairo.variable} bg-[#FBFBFC] font-sans flex flex-col min-h-screen justify-between`}
       >
-        {children}
+        <TanStack>
+        <Header />
+         {children}
+        </TanStack>
+        <Footer />
       </body>
     </html>
   );
