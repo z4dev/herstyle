@@ -17,7 +17,7 @@ const Product: React.FC<ProductProps> = ({ image, title, rating, reviewCount, pr
 
     <div className="bg-white  rounded-lg shadow-md">
       <div className="relative mb-4">
-        <Image src={image} alt={title} width={200} height={200} className="object-cover h-[300px] w-full" />
+        <Image src={image} alt={title} width={200} height={200} className="object-cover h-[300px] w-full rounded-t-lg" />
       </div>
       <div className='p-4'>
       <Link href={`/shop/${title}`} className='hover:text-purple hover:underline'>

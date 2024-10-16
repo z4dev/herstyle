@@ -1,16 +1,22 @@
 "use client";
 import { Share2, ShoppingBag, Star } from 'lucide-react';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation, Pagination } from 'swiper/modules';
+import { Pagination } from 'swiper/modules';
 import Image from 'next/image';
-
+import Product from '@/app/(components)/Product';
+import { useState } from 'react';
 // Import Swiper styles
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import { Button } from '@/components/ui/button';
+import RelatedProducts from './components/RelatedProducts';
+import Reviews from './components/Reviews';
 
 export default function ProductPage({ params }: { params: { product: string } }) {
+
+  const [isReviews, setIsReviews] = useState(false);
+
   const product = {
     id: 'dummy-product',
     name: 'منتج تجريبي',
@@ -27,8 +33,49 @@ export default function ProductPage({ params }: { params: { product: string } })
     ]
   };
 
+  const suggestedProducts = [
+    {
+      image: "/products/1.jpg",
+      title: "منتج رائع 1",
+      rating: 4.5,
+      reviewCount: 30,
+      price: 149.99,
+      originalPrice: 199.99,
+      discount: 25
+    },
+    {
+      image: "/products/2.jpg",
+      title: "منتج رائع 2",
+      rating: 4.0,
+      reviewCount: 25,
+      price: 129.99,
+      originalPrice: 169.99,
+      discount: 23
+    },
+    {
+      image: "/products/3.jpg",
+      title: "منتج رائع 3",
+      rating: 4.8,
+      reviewCount: 40,
+      price: 179.99,
+      originalPrice: 229.99,
+      discount: 22
+    },
+    {
+      image: "/products/4.jpg",
+      title: "منتج رائع 4",
+      rating: 4.2,
+      reviewCount: 35,
+      price: 159.99,
+      originalPrice: 209.99,
+      discount: 24
+    }
+  ];
+
+
+
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto px-24 py-8">
       <div className="flex items-center justify-between mb-4">
         <Button className="text-purple bg-white flex items-center gap-2 border border-purple hover:bg-purple-100">
         مشاركة
@@ -112,6 +159,50 @@ export default function ProductPage({ params }: { params: { product: string } })
           </Swiper>
         </div>
 
+      </div>
+
+     
+      {/* New section for related products and reviews */}
+      <div className="mt-16">
+        <div className="flex justify-center mb-6">
+          <button 
+            onClick={() => setIsReviews(true)} 
+            className={`py-2 rounded-l-full border-2 border-purple w-40 ${isReviews ? 'bg-purple text-white' : 'bg-white text-purple'}`}
+          >
+            التقييمات
+          </button>
+          <button 
+            onClick={() => setIsReviews(false)} 
+            className={`py-2 rounded-r-full border-2 border-purple w-40 ${!isReviews ? 'bg-purple text-white' : 'bg-white text-purple'}`}
+          >
+            محتويات المجموعة
+          </button>
+        </div>
+        
+        {isReviews ? <Reviews /> : <RelatedProducts />}
+
+        {/* Suggested products section */}
+        <div className='flex flex-col mt-8'>
+          <div className='text-center mb-6'>
+            <h1 className="text-2xl font-bold text-purple">منتجات قد تعجبك</h1>
+            <h2 className="text-lg text-gray-600">اختاري منتجك الراقي من متجرنا</h2>
+          </div>
+          
+          <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 p-4'>
+            {suggestedProducts.map((product, index) => (
+              <Product
+                key={index}
+                image={product.image}
+                title={product.title}
+                rating={product.rating}
+                reviewCount={product.reviewCount}
+                price={product.price}
+                originalPrice={product.originalPrice}
+                discount={product.discount}
+              />
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );

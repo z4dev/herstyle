@@ -9,6 +9,7 @@ import Carousel from "./(components)/Carousel";
 import { useQuery } from "@tanstack/react-query";
 import Product from "./(components)/Product";
 import axiosInstance from "@/utils/axiosInstance";
+import ProductSkelton from "./(components)/ProductSkelton";
 
 
 export default function Home() {
@@ -75,6 +76,9 @@ export default function Home() {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
             {/* Repeat this product card 4 times */}
+             {[...Array(4)].map((_, index) => (
+               <ProductSkelton key={index} isLoading={isLoading} />
+             ))}
             {data && data.products.slice(0,4).map((product:any,i:number)=>(
               <Product key={product._id} image={SectionOneImages[i]} title={product.name} rating={product.rating} reviewCount={product.numReviews} price={product.price.finalPrice} originalPrice={product.price.originalPrice} discount={product.price.discount} />
             ))}
@@ -92,6 +96,9 @@ export default function Home() {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
             {/* Repeat this product card 4 times */}
+            {[...Array(4)].map((_, index) => (
+               <ProductSkelton key={index} isLoading={isLoading} />
+             ))}
             {data && data.products.slice(0,4).map((product:any,i:number)=>(
               <Product key={product._id} image={SectionTwoImages[i]} title={product.name} rating={product.rating} reviewCount={product.numReviews} price={product.price.finalPrice} originalPrice={product.price.originalPrice} discount={product.price.discount} />
             ))}

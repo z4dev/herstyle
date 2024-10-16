@@ -21,6 +21,9 @@ const config: Config = {
 			red:{
 				DEFAULT: '#FF0000',
 			},
+			black:{
+				DEFAULT: '#231F20',
+			},
   			card: {
   				DEFAULT: 'hsl(var(--card))',
   				foreground: 'hsl(var(--card-foreground))'

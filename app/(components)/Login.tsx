@@ -19,6 +19,7 @@ import Signup from "./Signup";
 import axiosInstance from "@/utils/axiosInstance";
 import { setCookie } from "cookies-next";
 import { User } from "lucide-react";
+import Link from "next/link";
 
 type LoginFormData = {
   email: string;
@@ -72,18 +73,18 @@ export function Login() {
   return (
     <>
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
-        <DialogTrigger asChild>
         {user ? (
-            <div className="flex items-center">
+          <Link href="/profile" className="flex items-center">
               <User className="text-white mr-2" size={20} />
               <span className="text-white font-semibold">{user}</span>
-            </div>
+            </Link>
           ) : (
+            <DialogTrigger asChild>
             <button className="bg-purple text-white px-4 py-2 rounded">
               تسجيل الدخول
             </button>
-          )}
         </DialogTrigger>
+          )}
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader className="flex justify-between items-end">
             <DialogTitle>دخول</DialogTitle>
