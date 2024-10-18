@@ -74,7 +74,7 @@ function Signup({ isSignupOpen, setIsSignupOpen }: SignupProps) {
                 id="signup-name"
                 placeholder="الاسم"
                 className="col-span-4 focus-visible:ring-purple-500"
-                {...register("name", { requipurple: "الاسم مطلوب" })}
+                {...register("name", { required: "الاسم مطلوب" })}
               />
               {errors.name && <span className="text-purple text-sm">{errors.name.message}</span>}
             </div>
@@ -83,7 +83,7 @@ function Signup({ isSignupOpen, setIsSignupOpen }: SignupProps) {
                 id="signup-email"
                 placeholder="البريد الإلكتروني"
                 className="col-span-4 focus-visible:ring-purple-500"
-                {...register("email", { requipurple: "البريد الإلكتروني مطلوب", pattern: { value: /^\S+@\S+$/i, message: "البريد الإلكتروني غير صالح" } })}
+                {...register("email", { required: "البريد الإلكتروني مطلوب", pattern: { value: /^\S+@\S+$/i, message: "البريد الإلكتروني غير صالح" } })}
               />
               {errors.email && <span className="text-purple text-sm ">{errors.email.message}</span>}
             </div>
@@ -93,7 +93,7 @@ function Signup({ isSignupOpen, setIsSignupOpen }: SignupProps) {
                 placeholder="كلمة المرور"
                 className="col-span-4 focus-visible:ring-purple-500"
                 type="password"
-                {...register("password", { requipurple: "كلمة المرور مطلوبة", minLength: { value: 6, message: "كلمة المرور يجب أن تكون على الأقل 6 أحرف" } })}
+                {...register("password", { required: "كلمة المرور مطلوبة", minLength: { value: 6, message: "كلمة المرور يجب أن تكون على الأقل 6 أحرف" } })}
               />
               {errors.password && <span className="text-purple text-sm">{errors.password.message}</span>}
             </div>
@@ -104,7 +104,7 @@ function Signup({ isSignupOpen, setIsSignupOpen }: SignupProps) {
                 className="col-span-4 focus-visible:ring-purple-500"
                 type="password"
                 {...register("confirmPassword", {
-                  requipurple: "تأكيد كلمة المرور مطلوب",
+                  required: "تأكيد كلمة المرور مطلوب",
                   validate: (val: string) => {
                     if (watch('password') != val) {
                       return "كلمات المرور غير متطابقة";

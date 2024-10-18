@@ -108,8 +108,8 @@ export function Login() {
                   id="password"
                   placeholder="كلمة المرور"
                   type="password"
-                  className="col-span-4 focus-visible:ring-purple-500 text-right"
-                  {...register("password", { required: "Password is requipurple" })}
+                  className="col-span-4 focus-visible:ring-purple-500 text-right text-nowrap"
+                  {...register("password", { required: "Password is required" })}
                 />
                 {errors.password && <span className="text-purple">{errors.password.message}</span>}
               </div>
