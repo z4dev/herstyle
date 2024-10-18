@@ -1,6 +1,9 @@
+"use client"
 import Image from 'next/image';
 import { ShoppingBag, Star } from 'lucide-react';
 import Link from 'next/link';
+import { useDispatch } from 'react-redux';
+import { addToCart } from '@/utils/cart';
 
 interface ProductProps {
   image: string;
@@ -10,9 +13,12 @@ interface ProductProps {
   price: number;
   originalPrice: number;
   discount: number;
+  id: string;
 }
 
-const Product: React.FC<ProductProps> = ({ image, title, rating, reviewCount, price, originalPrice, discount }) => {
+const Product: React.FC<ProductProps> = ({ id, image, title, rating, reviewCount, price, originalPrice }) => {
+  const dispatch = useDispatch();
+
   return (
 
     <div className="bg-white  rounded-lg shadow-md">
@@ -20,7 +26,7 @@ const Product: React.FC<ProductProps> = ({ image, title, rating, reviewCount, pr
         <Image src={image} alt={title} width={200} height={200} className="object-cover h-[300px] w-full rounded-t-lg" />
       </div>
       <div className='p-4'>
-      <Link href={`/shop/${title}`} className='hover:text-purple hover:underline'>
+      <Link href={`/shop/${id}`} className='hover:text-purple hover:underline'>
       <h3 className="font-bold text-lg mb-2 text-right">{title}</h3>
       </Link>
       <div className="flex items-center justify-end mb-2">
@@ -32,7 +38,7 @@ const Product: React.FC<ProductProps> = ({ image, title, rating, reviewCount, pr
         </div>
       </div>
       <div className="flex flex-col-reverse  items-end">
-        <button className="mt-3 border-2 flex items-center border-purple text-purple px-4 py-2 rounded-lg hover:bg-purple hover:text-white  transition duration-300">
+        <button onClick={()=>{dispatch(addToCart({id,name:title,price:+price,quantity:1}))}} className="mt-3 border-2 flex items-center border-purple text-purple px-4 py-2 rounded-lg hover:bg-purple hover:text-white  transition duration-300">
           <p>إضافة للسلة</p>   <ShoppingBag className='ml-2' />
         </button>
         <div className="text-right">

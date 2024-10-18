@@ -20,7 +20,7 @@ export default function Home() {
   }
 
   const {data,isLoading,error} = useQuery({
-    queryKey:["products"],
+    queryKey:["home-products"],
     queryFn:getProducts
   })
 
@@ -80,7 +80,7 @@ export default function Home() {
                <ProductSkelton key={index} isLoading={isLoading} />
              ))}
             {data && data.products.slice(0,4).map((product:any,i:number)=>(
-              <Product key={product._id} image={SectionOneImages[i]} title={product.name} rating={product.rating} reviewCount={product.numReviews} price={product.price.finalPrice} originalPrice={product.price.originalPrice} discount={product.price.discount} />
+              <Product id={`/product/${product._id}`} key={product._id} image={SectionOneImages[i]} title={product.name} rating={product.rating} reviewCount={product.numReviews} price={product.price.finalPrice} originalPrice={product.price.originalPrice} discount={product.price.discount} />
             ))}
             {/* ... Repeat for other products */}
           </div>
@@ -100,7 +100,7 @@ export default function Home() {
                <ProductSkelton key={index} isLoading={isLoading} />
              ))}
             {data && data.products.slice(0,4).map((product:any,i:number)=>(
-              <Product key={product._id} image={SectionTwoImages[i]} title={product.name} rating={product.rating} reviewCount={product.numReviews} price={product.price.finalPrice} originalPrice={product.price.originalPrice} discount={product.price.discount} />
+              <Product id={`/product/${product._id}`} key={product._id} image={SectionTwoImages[i]} title={product.name} rating={product.rating} reviewCount={product.numReviews} price={product.price.finalPrice} originalPrice={product.price.originalPrice} discount={product.price.discount} />
             ))}
             {/* ... Repeat for other products */}
           </div>

@@ -7,6 +7,7 @@ import { Login } from "./Login";
 import { ShoppingBag } from "lucide-react";
 import axiosInstance from "@/utils/axiosInstance";
 import { useQuery } from "@tanstack/react-query";
+import Cart from "./Cart";
 
 
 function Header() {
@@ -63,9 +64,7 @@ function Header() {
 
       <header className="bg-white text-purple p-4 px-24 flex justify-between items-center">
         <div className="flex items-center  space-x-4">
-          <button>
-            <ShoppingBag className="w-8 h-8" />
-          </button>
+          <Cart/>
         </div>
         <div className="relative w-[35%]">
           <input

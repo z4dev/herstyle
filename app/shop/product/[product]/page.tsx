@@ -10,12 +10,25 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import { Button } from '@/components/ui/button';
-import RelatedProducts from './components/RelatedProducts';
 import Reviews from './components/Reviews';
+import axiosInstance from '@/utils/axiosInstance';
+import { useQuery } from '@tanstack/react-query';
+import SingleProductSkeleton from '../../component/SingleProductSkeleton';
 
 export default function ProductPage({ params }: { params: { product: string } }) {
 
-  const [isReviews, setIsReviews] = useState(false);
+  const {data:productData, isLoading} = useQuery({
+    queryKey: ['view-product'],
+    queryFn: async () => {
+      const res = await axiosInstance.get(`/products/${params.product}`)
+      console.log("productData =", res.data)
+      return res.data
+    }
+  })
+  if(isLoading) return <SingleProductSkeleton />
+
+
+  const { data } = productData
 
   const product = {
     id: 'dummy-product',
@@ -74,6 +87,7 @@ export default function ProductPage({ params }: { params: { product: string } })
 
 
 
+
   return (
     <div className="container mx-auto px-24 py-8">
       <div className="flex items-center justify-between mb-4">
@@ -82,23 +96,23 @@ export default function ProductPage({ params }: { params: { product: string } })
         <Share2 />
         </Button>
         <p className="text-gray-600">
-          الرئيسية / المتجر / {product.name}
+          الرئيسية / المتجر / {data.name}
         </p>
       </div>
       <div className="flex flex-col md:flex-row gap-8">
        <div className="md:w-1/2 flex flex-col items-end">
           <div className="bg-gray-100 p-4 rounded-lg  mb-6 w-full">
             <div className="flex justify-between items-center">
-              <span className="text-3xl font-bold text-purple-600">{product.price} ر.س</span>
-              <h1 className="text-2xl font-bold mb-2 text-right">{product.name}</h1>
+              <span className="text-3xl font-bold text-purple-600 text-nowrap">{data.price.finalPrice} ر.س</span>
+              <h1 className="text-2xl font-bold mb-2 text-right">{data.name}</h1>
             </div>
             <div className="flex justify-between items-center py-2">
 
             <div className="text-right">
               {product.originalPrice && (
                 <div className="flex items-center justify-end mt-1">
-                  <span className="mr-2 text-sm text-red-500">%{Math.floor(((product.originalPrice - product.price) / product.originalPrice) * 100)} خصم</span>
-                  <span className="text-sm line-through text-gray-500">{product.originalPrice} ر.س</span>
+                  <span className="mr-2 text-sm text-red-500">%{Math.floor(((data.price.originalPrice - data.price.finalPrice) / data.price.originalPrice) * 100)} خصم</span>
+                  <span className="text-sm line-through text-gray-500">{data.price.originalPrice} ر.س</span>
                 </div>
               )}
             </div>
@@ -118,22 +132,11 @@ export default function ProductPage({ params }: { params: { product: string } })
           </div>
           <div className=" bg-gray-100 p-4 rounded-lg mb-6 w-full">
             <h3 className="font-semibold mb-2 text-right">تفاصيل المجموعة:</h3>
-            <p className="text-right text-gray-700">{product.description}</p>
-          </div>
-          <div className="bg-gray-100 p-4 rounded-lg mb-6 w-full">
-            <h3 className="font-semibold mb-2 text-right">محتويات المجموعة:</h3>
-            <ul className="text-right text-gray-700 rtl">
-              {product.contents.map((item, index) => (
-                <li key={index} className="flex justify-end items-center">
-                  <span>{item}</span>
-                  <span className="ml-2">•</span>
-                </li>
-              ))}
-            </ul>
+            <p className="text-right text-gray-700">{data.description}</p>
           </div>
           <button className="flex items-center justify-center w-full bg-purple text-white px-6 py-3 rounded-lg hover:bg-purple-700 transition duration-300">
             <span className="ml-2">إضافة للسلة</span>
-            <ShoppingBag className="w-5 h-5" />
+            <ShoppingBag className=" ml-2 w-5 h-5" />
           </button>
         </div>
         <div className="md:w-1/2">
@@ -166,20 +169,14 @@ export default function ProductPage({ params }: { params: { product: string } })
       <div className="mt-16">
         <div className="flex justify-center mb-6">
           <button 
-            onClick={() => setIsReviews(true)} 
-            className={`py-2 rounded-l-full border-2 border-purple w-40 ${isReviews ? 'bg-purple text-white' : 'bg-white text-purple'}`}
+            className={`py-2 rounded-full border-2 border-purple w-40 bg-purple text-white`}
           >
             التقييمات
           </button>
-          <button 
-            onClick={() => setIsReviews(false)} 
-            className={`py-2 rounded-r-full border-2 border-purple w-40 ${!isReviews ? 'bg-purple text-white' : 'bg-white text-purple'}`}
-          >
-            محتويات المجموعة
-          </button>
+          
         </div>
-        
-        {isReviews ? <Reviews /> : <RelatedProducts />}
+
+         <Reviews /> 
 
         {/* Suggested products section */}
         <div className='flex flex-col mt-8'>
@@ -191,6 +188,7 @@ export default function ProductPage({ params }: { params: { product: string } })
           <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 p-4'>
             {suggestedProducts.map((product, index) => (
               <Product
+                id={index.toString()}
                 key={index}
                 image={product.image}
                 title={product.title}

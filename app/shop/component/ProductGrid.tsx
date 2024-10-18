@@ -24,10 +24,16 @@ function ProductGrid({
       </div>
 
       <div className="product-grid w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 p-6">
-        {products
-          ? products.map((product: any) => (
+      {isLoading ? (
+          Array(6).fill(null).map((_, index) => (
+            <ProductSkelton key={index} isLoading={isLoading} />
+          ))
+        ) : (
+          <>
+            {products?.map((product: any) => (
               <Product
-                key={product.id}
+                key={product._id}
+                id={`/product/${product._id}`}
                 image={product.image}
                 title={product.name}
                 rating={product.rating}
@@ -36,16 +42,15 @@ function ProductGrid({
                 originalPrice={product.price.originalPrice}
                 discount={product.price.discount}
               />
-            ))
-          : isLoading &&
-            [...Array(4)].map((_, index) => (
-              <ProductSkelton key={index} isLoading={isLoading} />
             ))}
+          </>
+        )}
 
         {packages &&
           packages.map((el: any) => (
             <Product
-              key={el.id}
+              key={el._id}
+              id={`/package/${el._id}`}
               image={el.image}
               title={el.name}
               rating={el.rating}

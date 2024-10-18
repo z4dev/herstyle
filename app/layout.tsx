@@ -4,7 +4,7 @@ import "./globals.css";
 import Header from "./(components)/Header";
 import Footer from "./(components)/Footer";
 import TanStack from "@/utils/TanStack";
-
+import Redux from "./(components)/Redux";
 
 const cairo = Cairo({
   subsets: ["latin", "arabic"],
@@ -29,8 +29,10 @@ export default function RootLayout({
         className={`${cairo.variable} bg-[#FBFBFC] font-sans flex flex-col min-h-screen justify-between`}
       >
         <TanStack>
-        <Header />
-         {children}
+          <Redux>
+            <Header />
+            {children}
+            </Redux>
         </TanStack>
         <Footer />
       </body>
