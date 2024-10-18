@@ -96,7 +96,7 @@ export default function ProductPage({ params }: { params: { package: string } })
 
 
   return (
-    <div className="container mx-auto px-24 py-8">
+    <div className="container mx-auto px-4 lg:px-24 py-8">
       <div className="flex items-center justify-between mb-4">
         <Button className="text-purple bg-white flex items-center gap-2 border border-purple hover:bg-purple-100">
         مشاركة
@@ -106,7 +106,7 @@ export default function ProductPage({ params }: { params: { package: string } })
           الرئيسية / المتجر / {Package.name}
         </p>
       </div>
-      <div className="flex flex-col md:flex-row gap-8">
+      <div className="flex flex-col-reverse md:flex-row gap-8">
        <div className="md:w-1/2 flex flex-col items-end">
           <div className="bg-gray-100 p-4 rounded-lg  mb-6 w-full">
             <div className="flex justify-between items-center">
@@ -157,7 +157,7 @@ export default function ProductPage({ params }: { params: { package: string } })
             <ShoppingBag className="w-5 h-5" />
           </button>
         </div>
-        <div className="md:w-1/2">
+        <div className="h-64 lg:h-auto w-full lg:w-1/2">
           <Swiper
             modules={[Pagination]}
             spaceBetween={30}
