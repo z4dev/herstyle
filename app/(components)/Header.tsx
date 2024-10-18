@@ -62,15 +62,15 @@ function Header() {
         </div>
       )}
 
-      <header className="bg-white text-purple p-4 px-24 flex justify-between items-center">
+      <header className="bg-white text-purple p-4 lg:px-24 flex justify-between items-center">
         <div className="flex items-center  space-x-4">
           <Cart/>
         </div>
-        <div className="relative w-[35%]">
+        <div className="relative w-[42%] lg:w-[35%]">
           <input
             type="text"
             placeholder="...البحث"
-            className="p-2 pr-10 pl-4 rounded-md text-black w-full focus:outline-none border-purple border-2 focus:ring-2 focus:ring-purple text-right"
+            className="py-1 lg:py-2 p-2 pr-10 pl-4 rounded-md text-black w-full focus:outline-none border-purple border-2 focus:ring-2 focus:ring-purple text-right"
             value={searchTerm}
             onChange={handleSearchChange}
           />
@@ -107,8 +107,8 @@ function Header() {
           </div>
           { searchTerm.trim() !== "" && recommendations.length > 0 && !isLoading && (
             <div className="absolute z-10 w-full mt-1 bg-white border border-purple rounded-md shadow-lg">
-              {recommendations.map((item:{id:number,name:string}) => (
-                <Link href={`/shop/${item.id}`} key={item.id} onClick={() => handleRecommendationClick()}>
+              {recommendations.map((item:{_id:string,name:string}) => (
+                <Link href={`/shop/product/${item._id}`} key={item._id} onClick={() => handleRecommendationClick()}>
                   <div className="p-2 hover:bg-gray-100 cursor-pointer text-right">
                     <div className="font-semibold">{item.name}</div>
                   </div>
@@ -121,9 +121,9 @@ function Header() {
       </header>
 
       {/* Navigation */}
-      <nav className=" w-full flex items-center bg-purple text-white px-24  p-4">
+      <nav className=" w-full flex items-center bg-purple text-white text-xs lg:text-base text-center lg:px-24  p-4">
         <Login />
-        <div className="flex ml-auto mr-[33%] 2xl:mr-[40%] justify-center space-x-6">
+        <div className="flex ml-auto lg:mr-[33%] 2xl:mr-[40%] justify-center space-x-6">
           <Link href="/about">من نحن</Link>
           <Link href="/service">سياسة الاستخدام</Link>
           <Link href="/shop">جميع المنتجات</Link>

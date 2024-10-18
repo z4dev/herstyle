@@ -22,7 +22,12 @@ export const cartSlice = createSlice({
     initialState,
     reducers: {
         addToCart: (state, action: { payload: CartItem }) => {
-            state.items.push(action.payload);
+            const existingItem = state.items.find(item => item.id === action.payload.id);
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                state.items.push({ ...action.payload, quantity: 1 });
+            }
             state.totalPrice += action.payload.price;
             state.totalQuantity += 1;
             saveToLocalStorage(state);

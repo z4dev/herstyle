@@ -28,7 +28,7 @@ function Carousel() {
           alt="Image Slider"
           width={1200}
           height={400}
-          className="w-full rounded-lg"
+          className="w-full rounded-lg lg:h-full h-60"
         />
       </SwiperSlide>
       <SwiperSlide>
@@ -37,7 +37,7 @@ function Carousel() {
           alt="Image Slider 2"
           width={1200}
           height={400}
-          className="w-full rounded-lg"
+          className="w-full rounded-lg lg:h-full h-60"
         />
       </SwiperSlide>
       <SwiperSlide>
@@ -46,7 +46,7 @@ function Carousel() {
           alt="Image Slider 3"
           width={1200}
           height={400}
-          className="w-full rounded-lg"
+          className="w-full rounded-lg lg:h-full h-60"
         />
       </SwiperSlide>
       <SwiperSlide>
@@ -55,7 +55,7 @@ function Carousel() {
           alt="Image Slider 3"
           width={1200}
           height={400}
-          className="w-full rounded-lg"
+          className="w-full rounded-lg lg:h-full h-60"
         />
       </SwiperSlide>
       <SwiperSlide>
@@ -64,7 +64,7 @@ function Carousel() {
           alt="Image Slider 3"
           width={1200}
           height={400}
-          className="w-full rounded-lg"
+          className="w-full rounded-lg lg:h-full h-60"
         />
       </SwiperSlide>
       <SwiperSlide>
@@ -73,7 +73,7 @@ function Carousel() {
           alt="Image Slider 3"
           width={1200}
           height={400}
-          className="w-full rounded-lg"
+          className="w-full rounded-lg lg:h-full h-60"
         />
       </SwiperSlide>
     </Swiper>

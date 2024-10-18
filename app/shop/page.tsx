@@ -117,7 +117,7 @@ function Page() {
   return (
     <div className="shop-container">
       <div className="shop-header"></div>
-      <div className="shop-content flex">
+      <div className="shop-content flex w-full">
         <ProductGrid
           packages={filteredData.packages}
           products={filteredData.products}

@@ -32,11 +32,11 @@ export default function Home() {
   const SectionTwoImages = ["/products/5.jpg","/products/6.jpg","/products/7.jpg","/products/8.jpg"]
 
   return (
-      <main className="container mx-auto p-8">
+      <main className="container mx-auto p-8  px-4 lg:px-24">
         {/* Hero Banner */}
         <Carousel />
         {/* Promotion Banner */}
-        <div className="bg-purple p-4 rounded-lg mb-8 flex justify-between items-center relative">
+        <div className="bg-purple py-4 lg:px-4 px-0  rounded-lg mb-8 flex justify-between items-center relative">
           <Image
             src="/plant.png"
             alt="Plant"
@@ -44,7 +44,7 @@ export default function Home() {
             height={60}
             className="object-cover absolute left-0 bottom-0"
           />
-          <button className="bg-red ml-24  text-white px-4 py-2  rounded-xl  transition duration-300">
+          <button className="bg-red lg:ml-24 ml-12  text-white px-4 py-2   rounded-xl  transition duration-300">
             اذا لم يناسبك <br /> استرد قيمة طلبك
           </button>
 
@@ -114,11 +114,11 @@ export default function Home() {
               alt="Newsletter Background"
               width={1200}
               height={300}
-              className="w-full object-cover"
+              className="w-full object-cover h-64"
             />
             <div className="absolute inset-0 flex flex-col justify-center space-y-4 items-center p-8 text-white">
               <h2 className="text-3xl font-bold mb-2">صيفك أكثر إشراقة</h2>
-                <button className="bg-purple text-white px-6 py-2 rounded w-1/4 hover:bg-purple-900 transition duration-300">
+                <button className="bg-purple text-white px-6 py-2 rounded lg:w-1/4 hover:bg-purple-900 transition duration-300">
                 حماية + نعومة
                 </button>
                 <Link href="/products" className=" text-white px-6 py-2 underline transition duration-300">

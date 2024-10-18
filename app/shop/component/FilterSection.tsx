@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label"
 
 function FilterSection({filter, onlyPackages, onlyProducts, priceRange, handleRatingFilter}:{filter:any, onlyPackages:()=>void, onlyProducts:()=>void, priceRange:(min: number, max: number) => void, handleRatingFilter:(rating:number)=>void}) {
   return (
-    <div className="filter-section w-64 bg-white p-4 rounded-lg shadow">
+    <div className="filter-section lg:w-64 bg-white p-4 rounded-lg shadow">
         <div className='flex items-center justify-end text-purple mb-4'>
       <h2 className="text-xl font-bold  text-right">الفلترة</h2>
       <Filter />

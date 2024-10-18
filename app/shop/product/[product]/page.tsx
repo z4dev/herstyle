@@ -14,6 +14,8 @@ import Reviews from './components/Reviews';
 import axiosInstance from '@/utils/axiosInstance';
 import { useQuery } from '@tanstack/react-query';
 import SingleProductSkeleton from '../../component/SingleProductSkeleton';
+import { useDispatch } from 'react-redux';
+import { addToCart } from '@/utils/cart';
 
 export default function ProductPage({ params }: { params: { product: string } }) {
 
@@ -25,10 +27,15 @@ export default function ProductPage({ params }: { params: { product: string } })
       return res.data
     }
   })
+
+console.log("productData =", productData)
+
   if(isLoading) return <SingleProductSkeleton />
 
+  const  dispatch = useDispatch()
 
-  const { data } = productData
+
+  const  data  = productData.data.product
 
   const product = {
     id: 'dummy-product',
@@ -89,8 +96,8 @@ export default function ProductPage({ params }: { params: { product: string } })
 
 
   return (
-    <div className="container mx-auto px-24 py-8">
-      <div className="flex items-center justify-between mb-4">
+    <div className="container mx-auto lg:px-24 px-4 py-8">
+      <div className="flex  items-center justify-between mb-4">
         <Button className="text-purple bg-white flex items-center gap-2 border border-purple hover:bg-purple-100">
         مشاركة
         <Share2 />
@@ -99,7 +106,7 @@ export default function ProductPage({ params }: { params: { product: string } })
           الرئيسية / المتجر / {data.name}
         </p>
       </div>
-      <div className="flex flex-col md:flex-row gap-8">
+      <div className="flex flex-col-reverse lg:flex-row gap-8">
        <div className="md:w-1/2 flex flex-col items-end">
           <div className="bg-gray-100 p-4 rounded-lg  mb-6 w-full">
             <div className="flex justify-between items-center">
@@ -134,12 +141,12 @@ export default function ProductPage({ params }: { params: { product: string } })
             <h3 className="font-semibold mb-2 text-right">تفاصيل المجموعة:</h3>
             <p className="text-right text-gray-700">{data.description}</p>
           </div>
-          <button className="flex items-center justify-center w-full bg-purple text-white px-6 py-3 rounded-lg hover:bg-purple-700 transition duration-300">
+          <button onClick={()=>{dispatch(addToCart({id:data.id,name:data.name,price:data.price.finalPrice,quantity:1}))}} className="flex items-center justify-center w-full bg-purple text-white px-6 py-3 rounded-lg hover:bg-purple-700 transition duration-300">
             <span className="ml-2">إضافة للسلة</span>
             <ShoppingBag className=" ml-2 w-5 h-5" />
           </button>
         </div>
-        <div className="md:w-1/2">
+        <div className=" h-64 lg:h-auto w-full lg:w-1/2">
           <Swiper
             modules={[Pagination]}
             spaceBetween={30}
