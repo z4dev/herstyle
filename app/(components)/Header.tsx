@@ -4,7 +4,6 @@ import { debounce } from "lodash";
 import Image from "next/image";
 import Link from "next/link";
 import { Login } from "./Login";
-import { ShoppingBag } from "lucide-react";
 import axiosInstance from "@/utils/axiosInstance";
 import { useQuery } from "@tanstack/react-query";
 import Cart from "./Cart";

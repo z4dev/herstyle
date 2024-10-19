@@ -14,15 +14,6 @@ function ProductGrid({
 }) {
   return (
     <div className="w-full">
-      <div className="shop-actions p-4 w-full flex justify-end gap-4">
-        <Button className="bg-white text-purple hover:bg-purple hover:text-white border-2 border-purple">
-          الأكثر طلبا
-        </Button>
-        <Button className="bg-purple hover:bg-white hover:text-purple hover:border-purple border-2 border-purple text-white">
-          الأحدث
-        </Button>
-      </div>
-
       <div className="product-grid w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 p-6">
       {isLoading ? (
           Array(6).fill(null).map((_, index) => (

@@ -28,12 +28,12 @@ export default function ProductPage({ params }: { params: { product: string } })
     }
   })
 
-console.log("productData =", productData)
-
+  
   if(isLoading) return <SingleProductSkeleton />
-
+  
   const  dispatch = useDispatch()
-
+  
+  console.log("productData =", productData.data.productComments.comments)
 
   const  data  = productData.data.product
 
@@ -183,7 +183,7 @@ console.log("productData =", productData)
           
         </div>
 
-         <Reviews /> 
+         <Reviews comments={productData.data.productComments.comments} /> 
 
         {/* Suggested products section */}
         <div className='flex flex-col mt-8'>

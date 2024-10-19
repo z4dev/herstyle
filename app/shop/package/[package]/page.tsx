@@ -31,7 +31,9 @@ export default function ProductPage({ params }: { params: { package: string } })
   if(packageLoading) return <SingleProductSkeleton />
 
 
-  const {data:{Package , productsForThatPackage }} = packageData
+  const {data:{Package , productsForThatPackage, packageComments:{comments} }} = packageData
+
+  console.log("Package  comments =", comments)
 
 
 
@@ -200,7 +202,7 @@ export default function ProductPage({ params }: { params: { package: string } })
           </button>
         </div>
         
-        {isReviews ? <Reviews /> : <RelatedProducts data={productsForThatPackage} />}
+        {isReviews ? <Reviews comments={comments} /> : <RelatedProducts data={productsForThatPackage} />}
 
         {/* Suggested products section */}
         <div className='flex flex-col mt-8'>

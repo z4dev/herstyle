@@ -1,16 +1,17 @@
-import React from 'react'
-import { Star, ChevronDown, Filter } from 'lucide-react'
+import React, { useState } from 'react'
+import { Star, Filter } from 'lucide-react'
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { Checkbox } from "@/components/ui/checkbox"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Label } from "@/components/ui/label"
+import { Button } from "@/components/ui/button"
+import { Drawer, DrawerContent, DrawerTrigger } from "@/components/ui/drawer"
 
-function FilterSection({filter, onlyPackages, onlyProducts, priceRange, handleRatingFilter}:{filter:any, onlyPackages:()=>void, onlyProducts:()=>void, priceRange:(min: number, max: number) => void, handleRatingFilter:(rating:number)=>void}) {
-  return (
-    <div className="filter-section lg:block hidden lg:w-64 bg-white p-4 rounded-lg shadow">
-        <div className='flex items-center justify-end text-purple mb-4'>
-      <h2 className="text-xl font-bold  text-right">الفلترة</h2>
-      <Filter />
+const FilterContent = ({ onlyPackages, onlyProducts, priceRange, handleRatingFilter}:{onlyPackages:()=>void, onlyProducts:()=>void, priceRange:(min: number, max: number) => void, handleRatingFilter:(rating:number)=>void}) => (
+    <div className="filter-section bg-white p-4 rounded-lg shadow">
+      <div className='flex items-center justify-end text-purple mb-4'>
+        <h2 className="text-xl font-bold text-right">الفلترة</h2>
+        <Filter />
       </div>
       <Accordion type="single" collapsible className="w-full">
         <AccordionItem value="rating">
@@ -71,6 +72,26 @@ function FilterSection({filter, onlyPackages, onlyProducts, priceRange, handleRa
       </Accordion>
     </div>
   )
+
+
+function MobileFilterSection({filter, onlyPackages, onlyProducts, priceRange, handleRatingFilter}:{filter:any, onlyPackages:()=>void, onlyProducts:()=>void, priceRange:(min: number, max: number) => void, handleRatingFilter:(rating:number)=>void}) {
+  const [open, setOpen] = useState(false)
+
+  return (
+      <div className=" block lg:hidden">
+        <Drawer open={open} onOpenChange={setOpen}>
+          <DrawerTrigger asChild>
+            <Button variant="outline" className="flex items-center gap-2">
+              <Filter className="w-4 h-4" />
+              الفلترة
+            </Button>
+          </DrawerTrigger>
+          <DrawerContent>
+            <FilterContent  onlyPackages={onlyPackages} onlyProducts={onlyProducts} priceRange={priceRange} handleRatingFilter={handleRatingFilter} />
+          </DrawerContent>
+        </Drawer>
+      </div>
+  )
 }
 
-export default FilterSection
+export default MobileFilterSection

@@ -4,6 +4,8 @@ import FilterSection from "./component/FilterSection";
 import ProductGrid from "./component/ProductGrid";
 import axiosInstance from "@/utils/axiosInstance";
 import { useQuery } from "@tanstack/react-query";
+import MobileFilterSection from "./component/MobileFilter";
+import { Button } from "@/components/ui/button"
 
 function Page() {
   const { data: products, isLoading: isLoadingProducts } = useQuery({
@@ -117,6 +119,15 @@ function Page() {
   return (
     <div className="shop-container">
       <div className="shop-header"></div>
+      <div className="shop-actions p-4 w-full flex justify-end gap-4">
+      <MobileFilterSection filter={filter} onlyPackages={handleOnlyPackages} onlyProducts={handleOnlyProducts} priceRange={handlePriceRangeChange} handleRatingFilter={hanedleRatingChange} />
+        <Button className="bg-white text-purple hover:bg-purple hover:text-white border-2 border-purple ">
+          الأكثر طلبا
+        </Button>
+        <Button className="bg-purple hover:bg-white hover:text-purple hover:border-purple border-2 border-purple text-white lg:mr-64">
+          الأحدث
+        </Button>
+      </div>
       <div className="shop-content flex w-full">
         <ProductGrid
           packages={filteredData.packages}
