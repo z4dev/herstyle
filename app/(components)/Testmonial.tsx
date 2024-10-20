@@ -15,12 +15,12 @@ async function getTestmonials() {
 
 function Testmonial() {
 
-    const {data} =  useQuery({
+    const {data , isLoading} =  useQuery({
         queryKey: ['testmonials'],
         queryFn: getTestmonials,
     })
 
-    console.log("testmonial =",data);
+    if(isLoading) return <div>Loading...</div>
 
 
   return (
