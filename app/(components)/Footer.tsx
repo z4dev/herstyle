@@ -6,7 +6,7 @@ function Footer() {
     <footer className="bg-purple text-white p-8 text-right ">
       <div className="container mx-auto grid grid-cols-2 md:grid-cols-3 gap-8">
         <div className="text-right ">
-          <h3 className="font-bold mb-4">طرق الدفع لدينا:</h3>
+          <h3 className="font-bold mb-4">طرق الدفع لدينا</h3>
           <div className="flex justify-end space-x-2 space-x-reverse">
             <svg width="40" height="25" viewBox="0 0 40 25" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M0 4C0 1.79086 1.79086 0 4 0H36C38.2091 0 40 1.79086 40 4V21C40 23.2091 38.2091 25 36 25H4C1.79086 25 0 23.2091 0 21V4Z" fill="#1434CB"/>
@@ -24,7 +24,7 @@ function Footer() {
               <path d="M14 12.5C14 11.1193 15.1193 10 16.5 10H23.5C24.8807 10 26 11.1193 26 12.5C26 13.8807 24.8807 15 23.5 15H16.5C15.1193 15 14 13.8807 14 12.5Z" fill="#84B213"/>
             </svg>
           </div>
-          <h3 className="font-bold mt-4 mb-2">التواصل الاجتماعي:</h3>
+          <h3 className="font-bold mt-4 mb-2">التواصل الاجتماعي</h3>
           <div className="flex justify-end space-x-2 space-x-reverse">
             <svg className="mr-1" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z" />
@@ -44,6 +44,8 @@ function Footer() {
               <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
             </svg>
           </div>
+          <h3 className="font-bold mt-4 mb-2">التواصل للعميل</h3>
+          <p className="text-sm">المملكة العربية السعودية - الرياض - حي العليا</p>
         </div>
         <div className="text-right mt-4">
           <ul className="space-y-3">

@@ -28,8 +28,8 @@ type LoginFormData = {
 };
 
 const loginUser = async (data: LoginFormData) => {
-  console.log("login data",data);
-  const response = await axiosInstance.post('/users/login', data);
+  const response = await axiosInstance.post('/users/login', data );
+  console.log("Response headers:", response.headers);
   console.log("response =",response.data)
   return response.data;
 };
