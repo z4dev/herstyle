@@ -1,31 +1,73 @@
-import React from 'react'
-
+import React from "react";
+import Image from "next/image";
+import Link from "next/link";
 function Footer() {
   return (
-    <footer className="bg-purple text-white p-8">
-    <div className="container mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
-      <div>
-        <h3 className="font-bold mb-4">Herstyle</h3>
-        <p>وصف موجز عن الشركة وخدماتها</p>
-      </div>
-      <div>
-        <h3 className="font-bold mb-4">روابط سريعة</h3>
-        <ul>
-          <li>جميع المنتجات</li>
-          <li>سياسة الاستخدام</li>
-          <li>من نحن</li>
-          <li>اتصل بنا</li>
-        </ul>
-      </div>
-      <div>
-        <h3 className="font-bold mb-4">تواصل معنا</h3>
-        <div className="flex space-x-4">
-          {/* Add social media icons here */}
+    <footer className="bg-purple text-white p-8 text-right ">
+      <div className="container mx-auto grid grid-cols-2 md:grid-cols-3 gap-8">
+        <div className="text-right ">
+          <h3 className="font-bold mb-4">طرق الدفع لدينا:</h3>
+          <div className="flex justify-end space-x-2 space-x-reverse">
+            <svg width="40" height="25" viewBox="0 0 40 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M0 4C0 1.79086 1.79086 0 4 0H36C38.2091 0 40 1.79086 40 4V21C40 23.2091 38.2091 25 36 25H4C1.79086 25 0 23.2091 0 21V4Z" fill="#1434CB"/>
+              <path d="M18.5 19H21.5V6H18.5V19ZM13.5 6L9 19H12.5L13.25 17H17.75L18.5 19H22L17.5 6H13.5ZM14.25 14.5L15.5 10.5L16.75 14.5H14.25ZM24.5 15.5C24.5 17.5 26 19 28 19H32V16.5H28C27.25 16.5 26.5 16 26.5 15C26.5 14 27.25 13.5 28 13.5H32V11H28C26 11 24.5 12.5 24.5 14.5Z" fill="white"/>
+            </svg>
+            <svg width="40" height="25" viewBox="0 0 40 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M0 4C0 1.79086 1.79086 0 4 0H36C38.2091 0 40 1.79086 40 4V21C40 23.2091 38.2091 25 36 25H4C1.79086 25 0 23.2091 0 21V4Z" fill="#FF5F00"/>
+              <circle cx="15" cy="12.5" r="8" fill="#EB001B"/>
+              <circle cx="25" cy="12.5" r="8" fill="#F79E1B"/>
+              <path d="M20 18.5C22.7614 18.5 25 16.2614 25 13.5C25 10.7386 22.7614 8.5 20 8.5C17.2386 8.5 15 10.7386 15 13.5C15 16.2614 17.2386 18.5 20 18.5Z" fill="#FF5F00"/>
+            </svg>
+            <svg width="40" height="25" viewBox="0 0 40 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M0 4C0 1.79086 1.79086 0 4 0H36C38.2091 0 40 1.79086 40 4V21C40 23.2091 38.2091 25 36 25H4C1.79086 25 0 23.2091 0 21V4Z" fill="#84B213"/>
+              <path d="M8 12.5C8 8.91015 10.9101 6 14.5 6H25.5C29.0899 6 32 8.91015 32 12.5C32 16.0899 29.0899 19 25.5 19H14.5C10.9101 19 8 16.0899 8 12.5Z" fill="white"/>
+              <path d="M14 12.5C14 11.1193 15.1193 10 16.5 10H23.5C24.8807 10 26 11.1193 26 12.5C26 13.8807 24.8807 15 23.5 15H16.5C15.1193 15 14 13.8807 14 12.5Z" fill="#84B213"/>
+            </svg>
+          </div>
+          <h3 className="font-bold mt-4 mb-2">التواصل الاجتماعي:</h3>
+          <div className="flex justify-end space-x-2 space-x-reverse">
+            <svg className="mr-1" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z" />
+              <polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02" />
+            </svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z" />
+            </svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+            </svg>
+
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+            </svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
+            </svg>
+          </div>
+        </div>
+        <div className="text-right mt-4">
+          <ul className="space-y-3">
+            <li>الرئيسية</li>
+            <li>جميع المنتجات</li>
+            <li>سياسة الاستخدام</li>
+            <li>من نحن</li>
+            <li>تسجيل الدخول</li>
+          </ul>
+        </div>
+        <div className="flex flex-col order-first lg:order-last items-end col-span-2 lg:col-span-1">
+          <Image src="/footerImg.png" alt="Herstyle" width={100} height={50} />
+          <p className="text-right mt-4 text-balance lg:text-pretty w-3/4">
+            هو منصة المتجر الذي يناسب الجمال والأناقة وتستطيع تسوق في أي وقت من
+            الخدمات الشاملة والمتنوعة لتناسب الجميع، لتتمتع الحرية المطلقة
+            الخاصة بك وتصبح شريك في النجاح لدينا.
+          </p>
         </div>
       </div>
-    </div>
-  </footer>
-  )
+      <div className="mt-8 text-center">
+        <Link href="https://rab-t.com/" className="text-center">جميع الحقوق محفوظة لدى ( مؤسسة ربط الخيال )</Link>
+      </div>
+    </footer>
+  );
 }
 
-export default Footer
+export default Footer;

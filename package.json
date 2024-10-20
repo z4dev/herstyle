@@ -30,6 +30,7 @@
     "react-dom": "^18",
     "react-hook-form": "^7.53.0",
     "react-redux": "^9.1.2",
+    "recharts": "^2.13.0",
     "redux": "^5.0.1",
     "swiper": "^11.1.14",
     "tailwind-merge": "^2.5.3",

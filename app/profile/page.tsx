@@ -1,18 +1,18 @@
 'use client'
 import React from 'react'
-import Image from 'next/image'
 import { SquarePenIcon, User } from 'lucide-react'
 import { deleteCookie } from "cookies-next";
-import { useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation'
 
 
 function ProfilePage() {
+  const router = useRouter();
 
-    const router = useRouter();
-  const handleSignOut = () => {
-   localStorage.removeItem('user');
-   deleteCookie('auth_token');
-   router.push('/');
+    const handleSignOut = () => {
+      localStorage.removeItem('user');
+      localStorage.removeItem("role")
+      deleteCookie('auth_token');
+      router.push('/');
   };
   return (
     <div className='max-w-2xl mx-auto p-6 bg-white rounded-lg shadow-md my-8'>
@@ -55,7 +55,7 @@ function ProfilePage() {
           <label className='font-medium'>كلمة المرور</label>
         </div>
         <button className='w-full bg-purple text-white py-2 rounded'>حفظ التعديلات</button>
-        <button className='w-full bg-black text-red py-2 rounded' onClick={handleSignOut}>تسجيل الخروج</button>
+        <button type='button' className='w-full bg-black text-red py-2 rounded' onClick={handleSignOut}>تسجيل الخروج</button>
       </form>
     </div>
   )

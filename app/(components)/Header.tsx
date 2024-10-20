@@ -69,7 +69,7 @@ function Header() {
           <input
             type="text"
             placeholder="...البحث"
-            className="py-1 lg:py-2 p-2 pr-10 pl-4 rounded-md text-black w-full focus:outline-none border-purple border-2 focus:ring-2 focus:ring-purple text-right"
+            className="py-1 lg:py-2 p-2 pr-10 pl-4 rounded-md text-black w-full focus:outline-none border-purple border-2  focus:ring-purple text-right"
             value={searchTerm}
             onChange={handleSearchChange}
           />

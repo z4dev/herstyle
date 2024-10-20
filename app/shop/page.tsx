@@ -1,126 +1,133 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useState, useCallback } from "react";
 import FilterSection from "./component/FilterSection";
 import ProductGrid from "./component/ProductGrid";
 import axiosInstance from "@/utils/axiosInstance";
-import { useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery } from "@tanstack/react-query";
 import MobileFilterSection from "./component/MobileFilter";
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
 
 function Page() {
-  const { data: products, isLoading: isLoadingProducts } = useQuery({
-    queryKey: ["shop-products"],
-    queryFn: async () => {
-      const res = await axiosInstance.get("products");
-      return res.data;
+  const [priceRange, setPriceRange] = useState({ min: 0, max: 5000 });
+
+  const fetchProducts = useCallback(
+    async ({ pageParam = 1, limit = 5 }) => {
+      const res = await axiosInstance.get("products", {
+        params: {
+          page: pageParam,
+          limit,
+          minPrice: priceRange.min,
+          maxPrice: priceRange.max,
+        },
+      });
+      return res;
     },
+    [priceRange]
+  );
+
+  const fetchPackages = useCallback(
+    async ({ pageParam = 1, limit = 4 }) => {
+      const res = await axiosInstance.get("packages", {
+        params: {
+          page: pageParam,
+          limit,
+          minPrice: priceRange.min,
+          maxPrice: priceRange.max,
+        },
+      });
+      return res;
+    },
+    [priceRange]
+  );
+
+  const [isOnlyPackages, setIsOnlyPackages] = useState(false);
+  const [isOnlyProducts, setIsOnlyProducts] = useState(false);
+
+  const {
+    data: productsData,
+    fetchNextPage: fetchNextProducts,
+    hasNextPage: hasNextProducts,
+    isFetchingNextPage: isFetchingNextProducts,
+    isLoading: isLoadingProducts,
+    refetch: refetchProducts,
+  } = useInfiniteQuery({
+    queryKey: ["shop-products", priceRange],
+    queryFn: fetchProducts,
+    getNextPageParam: (lastPage, pages) => {
+      const currentPage = lastPage.data.data.options.page;
+      const totalPages = Math.ceil(
+        lastPage.data.data.options.count / lastPage.data.data.options.limit
+      );
+      return currentPage < totalPages ? currentPage + 1 : undefined;
+    },
+    initialPageParam: 1,
   });
 
-  const { data: packages, isLoading: isLoadingPackages } = useQuery({
-    queryKey: ["packages"],
-    queryFn: async () => { 
-      const res = await axiosInstance.get("packages");
-       return res.data},
+  const {
+    data: packagesData,
+    fetchNextPage: fetchNextPackages,
+    hasNextPage: hasNextPackages,
+    isFetchingNextPage: isFetchingNextPackages,
+    isLoading: isLoadingPackages,
+    refetch: refetchPackages,
+  } = useInfiniteQuery({
+    queryKey: ["packages", priceRange],
+    queryFn: fetchPackages,
+    getNextPageParam: (lastPage, pages) => {
+      const currentPage = lastPage.data.data.options.page;
+      const totalPages = Math.ceil(
+        lastPage.data.data.options.count / lastPage.data.data.options.limit
+      );
+      return currentPage < totalPages ? currentPage + 1 : undefined;
+    },
+    initialPageParam: 1,
   });
 
-  const[filter, setFilter] = useState({
+  const [filter, setFilter] = useState({
     rating: 0,
     productsChecked: false,
     packagesChecked: false,
     priceRange: { min: 0, max: 5000 },
-  })
-
-  const handleOnlyPackages = () => {
-    setFilter(prevFilter => ({...prevFilter, packagesChecked: !prevFilter.packagesChecked}))
-  }
-
-  const handleOnlyProducts = () => {
-    setFilter(prevFilter => ({...prevFilter, productsChecked: !prevFilter.productsChecked}))
-  }
-
-  const handlePriceRangeChange = ( min: number, max: number) => {
-    setFilter((prevFilter) => ({
-      ...prevFilter,
-      priceRange: { min, max },
-    }));
-  };
-
-  const elementsInPriceRange = (min:number, max:number , data:any) => {
-    return data.filter((item:any) => item.price.finalPrice >= min && item.price.finalPrice <= max)
-  }
-
-  const hanedleRatingChange = (rating:number) => {
-    setFilter(prevFilter => ({...prevFilter, rating: rating}))
-  }
-
-
-  const [filteredData, setFilteredData] = useState({
-    products: [],
-    packages: []
   });
 
+  const handleOnlyPackages = () => {
+    setIsOnlyPackages((prev) => !prev);
+  };
 
-  useEffect(() => {
-    if (products && packages) {
-      setFilteredData({
-        products: products.data.products,
-        packages: packages.data.packages
-      })
-    }
-    if(filter.productsChecked){
-      setFilteredData(prevData => ({
-        ...prevData,
-        packages: []
-      }))
-    }
-    if(filter.packagesChecked){
-      setFilteredData(prevData => ({
-        ...prevData,
-        products: []
-      }))
-    }
-    if(filter.priceRange.min === 50 && filter.priceRange.max === 60){
-      setFilteredData(prevData => ({
-        ...prevData,
-        products: elementsInPriceRange(filter.priceRange.min, filter.priceRange.max, prevData.products),
-        packages: elementsInPriceRange(filter.priceRange.min, filter.priceRange.max, prevData.packages)
-      }))
-    }
-    if(filter.priceRange.min === 70 && filter.priceRange.max === 80){
-      setFilteredData(prevData => ({
-        ...prevData,
-        products: elementsInPriceRange(filter.priceRange.min, filter.priceRange.max, prevData.products),
-        packages: elementsInPriceRange(filter.priceRange.min, filter.priceRange.max, prevData.packages)
-      }))
-    }
-    if(filter.priceRange.min === 80 && filter.priceRange.max === 90){
-      setFilteredData(prevData => ({
-        ...prevData,
-        products: elementsInPriceRange(filter.priceRange.min, filter.priceRange.max, prevData.products),
-        packages: elementsInPriceRange(filter.priceRange.min, filter.priceRange.max, prevData.packages)
-      }))
-    }
+  const handleOnlyProducts = () => {
+    setIsOnlyProducts((prev) => !prev);
+  };
 
-    if(filter.rating >= 1 && filter.rating <= 5){
-      setFilteredData(prevData => ({
-        ...prevData,
-        products: prevData.products.filter((product:any) => product.rating >= filter.rating),
-        packages: prevData.packages.filter((el:any) => el.rating >= filter.rating)
-      }))
-    }
+  const handlePriceRangeChange = (min: number, max: number) => {
+    setPriceRange({ min, max });
+    refetchProducts();
+    refetchPackages();
+  };
 
-  }, [products, packages , filter]);
-
-
-
+  const hanedleRatingChange = (rating: number) => {
+    setFilter((prevFilter) => ({ ...prevFilter, rating: rating }));
+  };
 
   const isLoading = isLoadingProducts || isLoadingPackages;
+
+  console.log("hasNextProducts = ", hasNextProducts);
+
+  const loadMore = () => {
+    if (hasNextProducts) fetchNextProducts();
+    if (hasNextPackages) fetchNextPackages();
+  };
 
   return (
     <div className="shop-container">
       <div className="shop-header"></div>
       <div className="shop-actions p-4 w-full flex justify-end gap-4">
-      <MobileFilterSection filter={filter} onlyPackages={handleOnlyPackages} onlyProducts={handleOnlyProducts} priceRange={handlePriceRangeChange} handleRatingFilter={hanedleRatingChange} />
+        <MobileFilterSection
+          filter={filter}
+          onlyPackages={handleOnlyPackages}
+          onlyProducts={handleOnlyProducts}
+          priceRange={handlePriceRangeChange}
+          handleRatingFilter={hanedleRatingChange}
+        />
         <Button className="bg-white text-purple hover:bg-purple hover:text-white border-2 border-purple ">
           الأكثر طلبا
         </Button>
@@ -130,11 +137,32 @@ function Page() {
       </div>
       <div className="shop-content flex w-full">
         <ProductGrid
-          packages={filteredData.packages}
-          products={filteredData.products}
+          packages={
+            !isOnlyPackages
+              ? packagesData?.pages.flatMap(
+                  (page) => page.data.data.packages
+                ) || []
+              : []
+          }
+          products={
+            !isOnlyProducts
+              ? productsData?.pages.flatMap(
+                  (page) => page.data.data.products
+                ) || []
+              : []
+          }
           isLoading={isLoading}
+          loadMore={loadMore}
+          hasMore={hasNextProducts || hasNextPackages}
+          isFetchingNext={isFetchingNextProducts || isFetchingNextPackages}
         />
-        <FilterSection filter={filter} onlyPackages={handleOnlyPackages} onlyProducts={handleOnlyProducts} priceRange={handlePriceRangeChange} handleRatingFilter={hanedleRatingChange} />
+        <FilterSection
+          filter={filter}
+          onlyPackages={handleOnlyPackages}
+          onlyProducts={handleOnlyProducts}
+          priceRange={handlePriceRangeChange}
+          handleRatingFilter={hanedleRatingChange}
+        />
       </div>
     </div>
   );

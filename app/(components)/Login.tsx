@@ -30,6 +30,7 @@ type LoginFormData = {
 const loginUser = async (data: LoginFormData) => {
   console.log("login data",data);
   const response = await axiosInstance.post('/users/login', data);
+  console.log("response =",response.data)
   return response.data;
 };
 
@@ -53,6 +54,7 @@ export function Login() {
       setIsOpen(false);
       localStorage.setItem('user', data.user.name);
       // You might want to purpleirect the user or update the UI here
+      localStorage.setItem('role', data.user.role);
 
     },
     onError: (error) => {
@@ -74,7 +76,7 @@ export function Login() {
     <>
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
         {user ? (
-          <Link href="/profile" className="flex items-center">
+          <Link href={`/${localStorage.getItem('role')=== "OWNER" ? "admin" : "profile"}`} className="flex items-center">
               <User className="text-white mr-2" size={20} />
               <span className="text-white font-semibold">{user}</span>
             </Link>

@@ -7,10 +7,16 @@ function ProductGrid({
   products,
   packages,
   isLoading,
+  loadMore,
+  hasMore,
+  isFetchingNext,
 }: {
   products: any;
   packages: any;
   isLoading: boolean;
+  loadMore: () => void;
+  hasMore: boolean;
+  isFetchingNext: boolean;
 }) {
   return (
     <div className="w-full">
@@ -52,6 +58,13 @@ function ProductGrid({
             />
           ))}
       </div>
+      {hasMore && (
+        <div className=" my-2 flex justify-center items-center w-full">
+          <Button className="bg-purple hover:bg-white hover:text-purple hover:border-purple border-2 border-purple text-white" onClick={loadMore} disabled={isFetchingNext}>
+            تحميل المزيد
+          </Button>
+        </div>
+      )}
     </div>
   );
 }

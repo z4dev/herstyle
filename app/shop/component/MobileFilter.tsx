@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
 import { Drawer, DrawerContent, DrawerTrigger } from "@/components/ui/drawer"
 
-const FilterContent = ({ onlyPackages, onlyProducts, priceRange, handleRatingFilter}:{onlyPackages:()=>void, onlyProducts:()=>void, priceRange:(min: number, max: number) => void, handleRatingFilter:(rating:number)=>void}) => (
+const FilterContent = ({ onlyPackages, onlyProducts, priceRange, handleRatingFilter}:{ onlyPackages:()=>void, onlyProducts:()=>void, priceRange:(min: number, max: number) => void, handleRatingFilter:(rating:number)=>void}) => (
     <div className="filter-section bg-white p-4 rounded-lg shadow">
       <div className='flex items-center justify-end text-purple mb-4'>
         <h2 className="text-xl font-bold text-right">الفلترة</h2>
