@@ -169,7 +169,7 @@ export default function Home() {
 
       {/* Testimonials */}
       <section className="flex flex-col items-center">
-        <div className="text-center">
+        <div className="text-center mb-3">
           <h2 className="text-2xl font-bold mb-4 text-purple">
             ماذا قالوا عنا ؟
           </h2>

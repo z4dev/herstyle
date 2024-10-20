@@ -43,7 +43,7 @@ function Testmonial() {
   >
     {data.data.comments.map((comment:any , index:number) => (
       <SwiperSlide key={index}>
-        <div className="bg-white p-4 rounded-lg shadow text-center h-52">
+        <div className="bg-white p-4 rounded-lg shadow text-center h-full flex flex-col justify-center items-center">
           <User
             className="mx-auto mb-4 text-purple border-2 border-purple rounded-full p-2"
             size={64}
