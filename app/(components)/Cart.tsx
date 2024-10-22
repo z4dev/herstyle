@@ -23,9 +23,14 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 //   totalPrice: number;
 // }
 
-async function getCart(){
-  const response = await axiosInstance.get('/cart')
-  return response.data
+async function getCart() {
+  try {
+    const response = await axiosInstance.get('/cart')
+    return response.data
+  } catch (error) {
+    console.log('Error fetching cart:', error)
+    throw error
+  }
 }
 
 async function deleteProductFromCart(productId:string ,type:string){
@@ -53,8 +58,6 @@ export default function Cart() {
     queryKey: ['cart'],
     queryFn: getCart,
   })
-
-  if (error) return <p>Error: {error.message}</p>
 
   console.log("cart",data)
 
@@ -103,7 +106,7 @@ export default function Cart() {
       </Button>
 
       {isOpen && (
-        <Card className="absolute left-0 top-full mt-2 w-fit z-50">
+        <Card className="absolute left-0 top-full mt-2 w-80 z-50">
           <CardHeader className="flex justify-between items-center">
             <Button
               variant="ghost"
@@ -114,11 +117,13 @@ export default function Cart() {
               <X className="h-4 w-4" />
             </Button>
           </CardHeader>
-          <CardContent className="flex flex-col items-end">
+          <CardContent className="flex flex-col items-center justify-center min-h-[200px]">
             {isLoading ? (
-              <p className="p-4">Loading...</p>
+              <p className="p-4 w-full text-center">Loading...</p>
+            ) : error ? (
+              <p className="text-purple w-full text-center">عليك تسجيل الدخول أولاً!</p>
             ) : cartItems.length > 0 ? (
-              <>
+              <div className="w-full">
                 {cartItems.map((item: any) => (
                   <CartItems
                     key={item._id}
@@ -169,12 +174,12 @@ export default function Cart() {
                     <span className="text-gray-500 ml-2">الإجمالي :</span>
                   </div>
                 </div>
-              </>
+              </div>
             ) : (
-              <p className="text-gray-500">لا يوجد منتجات في السلة</p>
+              <p className="text-gray-500 w-full text-center">لا يوجد منتجات في السلة</p>
             )}
           </CardContent>
-          {!isLoading && cartItems.length > 0 && (
+          {!isLoading && !error && cartItems.length > 0 && (
             <CardFooter>
               <Button className="w-full bg-purple">إتمام الطلب</Button>
             </CardFooter>
