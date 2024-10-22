@@ -5,6 +5,7 @@ import Header from "./(components)/Header";
 import Footer from "./(components)/Footer";
 import TanStack from "@/utils/TanStack";
 import Redux from "./(components)/Redux";
+import Whatapp from "./(components)/Whatapp";
 
 const cairo = Cairo({
   subsets: ["latin", "arabic"],
@@ -26,7 +27,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${cairo.variable} bg-[#FBFBFC] font-sans flex flex-col min-h-screen justify-between`}
+        className={`${cairo.variable} bg-[#FBFBFC] font-sans flex flex-col min-h-screen justify-between relative`}
       >
         <TanStack>
           <Redux>
@@ -34,6 +35,7 @@ export default function RootLayout({
             {children}
             </Redux>
         </TanStack>
+        <Whatapp />
         <Footer />
       </body>
     </html>

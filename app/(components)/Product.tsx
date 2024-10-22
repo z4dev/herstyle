@@ -4,6 +4,8 @@ import { ShoppingBag, Star } from 'lucide-react';
 import Link from 'next/link';
 import { useDispatch } from 'react-redux';
 import { addToCart } from '@/utils/cart';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import axiosInstance from '@/utils/axiosInstance';
 
 interface ProductProps {
   image: string;
@@ -16,12 +18,42 @@ interface ProductProps {
   id: string;
 }
 
+const addToCartMutation = async (productId: string) => {
+  console.log("product id",productId)
+    const array = productId.split("/")
+    const type = array[1]
+    const id = array[array.length - 1]
+  const response = await axiosInstance.post(
+    `cart/add-${type}/${id}`,
+    { quantity: 1 }
+  );
+  return response.data;
+};
+
 const Product: React.FC<ProductProps> = ({ id, image, title, rating, reviewCount, price, originalPrice }) => {
   const dispatch = useDispatch();
+  const queryClient = useQueryClient();
+
+  const mutation = useMutation({
+    mutationFn: (productId: string) => addToCartMutation(productId),
+    onSuccess: () => {
+      
+      // Invalidate and refetch cart data
+      queryClient.invalidateQueries({ queryKey: ['cart'] });
+      console.log(" item added to cart successfully")
+    },
+    onError: (error) => {
+      console.error('Error adding product to cart:', error);
+      // Handle error (e.g., show an error message to the user)
+    },
+  });
+
+  const handleAddToCart = (id: string) => {
+    mutation.mutate(id);
+  };
 
   return (
-
-    <div className="bg-white  rounded-lg shadow-md">
+    <div className="bg-white rounded-lg shadow-md">
       <div className="relative mb-4">
         <Image src={image} alt={title} width={200} height={200} className="object-cover h-[300px] w-full rounded-t-lg" />
       </div>
@@ -38,13 +70,18 @@ const Product: React.FC<ProductProps> = ({ id, image, title, rating, reviewCount
         </div>
       </div>
       <div className="flex flex-col-reverse  items-end">
-        <button onClick={()=>{dispatch(addToCart({id,name:title,price:+price,quantity:1}))}} className="mt-3 border-2 flex items-center border-purple text-purple px-4 py-2 rounded-lg hover:bg-purple hover:text-white  transition duration-300">
-          <p>إضافة للسلة</p>   <ShoppingBag className='ml-2' />
+        <button 
+          onClick={()=>handleAddToCart(id)}
+          disabled={mutation.isPending} 
+          className="mt-3 border-2 flex items-center border-purple text-purple px-4 py-2 rounded-lg hover:bg-purple hover:text-white transition duration-300 disabled:opacity-50"
+        >
+          <p>{mutation.isPending ? 'جاري الإضافة...' : 'إضافة للسلة'}</p>
+          <ShoppingBag className='ml-2' />
         </button>
         <div className="text-right">
           <p className="text-purple font-bold">{price.toFixed(2)} ر.س</p>
            <div className='flex items-center'>
-          <p className="text-red text-sm mr-2">{Math.floor((price/originalPrice)*100)}%</p>
+          <p className="text-red text-sm mr-2">{100 -Math.floor((price/originalPrice)*100)}%</p>
           <p className="text-gray-500 line-through text-sm">{originalPrice.toFixed(2)} ر.س</p>
           </div>
         </div>

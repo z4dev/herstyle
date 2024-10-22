@@ -13,21 +13,78 @@ import Image from "next/image";
 import { useDispatch, useSelector } from "react-redux";
 import CartItems from "./CartItems";
 import { RootState } from "@/utils/store";
+import axiosInstance from "@/utils/axiosInstance";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
-interface CartItem {
-  id: number;
-  name: string;
-  price: number;
-  quantity: number;
+// interface CartItem {
+//   _id: string;
+//   productId: string;
+//   quantity: number;
+//   totalPrice: number;
+// }
+
+async function getCart(){
+  const response = await axiosInstance.get('/cart')
+  return response.data
+}
+
+async function deleteProductFromCart(productId:string ,type:string){
+  try{
+    const response = await axiosInstance.delete(`/cart/remove-${type}/${productId}`)
+    return response.data
+  }catch(error){
+    console.log(error)
+  }
+}
+
+async function applyCoupon(code: string) {
+  const response = await axiosInstance.post('cart/apply-coupon', { code });
+  return response.data;
 }
 
 export default function Cart() {
-  const dispatch = useDispatch();
   const cart = useSelector((state: RootState) => state.cart.items);
   const totalQuantity = useSelector((state: RootState) => state.cart.totalQuantity);
   const totalPrice = useSelector((state: RootState) => state.cart.totalPrice);
   const [isOpen, setIsOpen] = useState(false);
+  const [couponCode, setCouponCode] = useState("");
 
+  const { data, isLoading, error } = useQuery({
+    queryKey: ['cart'],
+    queryFn: getCart,
+  })
+
+  if (error) return <p>Error: {error.message}</p>
+
+  console.log("cart",data)
+
+  const cartItems = data?.data?.carts[0]?.packages.concat(data?.data?.carts[0]?.products) || []
+
+  const queryClient = useQueryClient();
+
+  const deleteMutation = useMutation({
+    mutationFn: ({ productId, type }: { productId: string; type: string }) => deleteProductFromCart(productId, type),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['cart'] });
+    },
+  });
+
+  const handleDeleteProduct = (productId: string ,type:string) => {
+    deleteMutation.mutate({productId , type});
+  };
+
+  const applyCouponMutation = useMutation({
+    mutationFn: applyCoupon,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['cart'] });
+    },
+  });
+
+  const handleApplyCoupon = () => {
+    if (couponCode) {
+      applyCouponMutation.mutate(couponCode);
+    }
+  };
 
   return (
     <div className="inline-block relative">
@@ -45,7 +102,7 @@ export default function Cart() {
         )}
       </Button>
 
-      {isOpen && cart.length > 0 && (
+      {isOpen && (
         <Card className="absolute left-0 top-full mt-2 w-fit z-50">
           <CardHeader className="flex justify-between items-center">
             <Button
@@ -58,64 +115,72 @@ export default function Cart() {
             </Button>
           </CardHeader>
           <CardContent className="flex flex-col items-end">
-            {cart.map((item) => (
-              <CartItems
-                key={item.id}
-                id={item.id}
-                price={item.price}
-                name={item.name}
-                quantity={item.quantity}
-              />
-            ))}
-            <div className="border-t pt-4 w-full">
-              <h3 className="font-medium mb-4 w-full text-center ">
-                ملخص الطلب
-              </h3>
-              <div className="flex items-center justify-end mb-2">
-                <span> {totalPrice.toFixed(2)} ريس : </span>
-                <span className="ml-1 text-gray-500">مجموع المنتجات</span>
-              </div>
-              <div className="flex flex-col items-end border-t pt-4">
-                <p className="mb-2 ">هل لديك كود خصم ؟</p>
-                <div className="flex items-center mb-2">
-                  <Button className="rounded-r-none bg-purple text-white">
-                    إضافة
-                  </Button>
-                  <input
-                    type="text"
-                    placeholder="ادخل الكود"
-                    className="flex-grow p-2 border rounded-r-md text-right"
+            {isLoading ? (
+              <p className="p-4">Loading...</p>
+            ) : cartItems.length > 0 ? (
+              <>
+                {cartItems.map((item: any) => (
+                  <CartItems
+                    key={item._id}
+                    id={item.productId}
+                    price={item.totalPrice / item.quantity}
+                    name={`${item.productId ? item.productId.name : item.packageId.name}`}
+                    quantity={item.quantity}
+                    onDelete={() => handleDeleteProduct(`${item.productId ? item.productId._id : item.packageId._id}`,item.productId ? 'product' : 'package')}
+                    stateOfDeleting={deleteMutation.isPending}
+                    type={item.productId ? 'product' : 'package'}
                   />
+                ))}
+                <div className="border-t pt-4 w-full">
+                  <h3 className="font-medium mb-4 w-full text-center ">
+                    ملخص الطلب
+                  </h3>
+                  <div className="flex items-center justify-end mb-2">
+                    <span> {data.data.carts[0].totalPrice} ريس : </span>
+                    <span className="ml-1 text-gray-500">مجموع المنتجات</span>
+                  </div>
+                  <div className="flex flex-col items-end border-t pt-4">
+                    <p className="mb-2 ">هل لديك كود خصم ؟</p>
+                    <div className="flex items-center mb-2">
+                      <Button 
+                        className="rounded-r-none bg-purple text-white"
+                        onClick={handleApplyCoupon}
+                        disabled={applyCouponMutation.isPending}
+                      >
+                        {applyCouponMutation.isPending ? 'جاري التطبيق...' : 'إضافة'}
+                      </Button>
+                      <input
+                        type="text"
+                        placeholder="ادخل الكود"
+                        className="flex-grow p-2 border rounded-r-md text-right"
+                        value={couponCode}
+                        onChange={(e) => setCouponCode(e.target.value)}
+                      />
+                    </div>
+                    {applyCouponMutation.isError && (
+                      <p className="text-red-500 text-sm">فشل تطبيق الكوبون. يرجى المحاولة مرة أخرى.</p>
+                    )}
+                    {applyCouponMutation.isSuccess && (
+                      <p className="text-green-500 text-sm">تم تطبيق الكوبون بنجاح!</p>
+                    )}
+                  </div>
+                  <div className="flex justify-end  font-medium mt-2">
+                    <span>{data.data.carts[0].totalPrice} ريس</span>
+                    <span className="text-gray-500 ml-2">الإجمالي :</span>
+                  </div>
                 </div>
-              </div>
-              <div className="flex justify-end  font-medium mt-2">
-                <span>{totalPrice.toFixed(2)} ريس</span>
-                <span className="text-gray-500 ml-2">الإجمالي :</span>
-              </div>
-            </div>
+              </>
+            ) : (
+              <p className="text-gray-500">لا يوجد منتجات في السلة</p>
+            )}
           </CardContent>
-          <CardFooter>
-            <Button className="w-full bg-purple">إتمام الطلب</Button>
-          </CardFooter>
+          {!isLoading && cartItems.length > 0 && (
+            <CardFooter>
+              <Button className="w-full bg-purple">إتمام الطلب</Button>
+            </CardFooter>
+          )}
         </Card>
       )}
-      {cart.length === 0 && isOpen &&
-      <Card className="absolute left-0 top-full mt-2 w-80 z-50">
-         <CardHeader>
-           <Button
-             variant="ghost"
-             size="icon"
-             className="absolute right-0 top-0"
-             onClick={() => setIsOpen(false)}
-           >
-             <X className="h-4 w-4" />
-           </Button>
-         </CardHeader>
-         <CardContent className="flex flex-col items-center justify-center h-40">
-           <p className="text-gray-500">لا يوجد منتجات في السلة</p>
-         </CardContent>
-       </Card>
-       }
     </div>
   );
 }

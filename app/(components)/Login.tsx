@@ -24,14 +24,17 @@ import Link from "next/link";
 type LoginFormData = {
   email: string;
   password: string;
-  remember: boolean;
+  IsPersistent: boolean;
 };
 
 const loginUser = async (data: LoginFormData) => {
-  const response = await axiosInstance.post('/users/login', data );
-  console.log("Response headers:", response.headers);
-  console.log("response =",response.data)
-  return response.data;
+  try {
+    const response = await axiosInstance.post('/users/login', data);
+    return response.data;
+  } catch (error) {
+    console.log("Login error:", error);
+    throw error;
+  }
 };
 
 export function Login() {
@@ -116,10 +119,10 @@ export function Login() {
                 {errors.password && <span className="text-purple">{errors.password.message}</span>}
               </div>
               <div className="flex items-center justify-end space-x-2 w-full rtl:space-x-reverse">
-                <Label htmlFor="remember" className="text-sm leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                <Label htmlFor="IsPersistent" className="text-sm leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
                   تذكرني
                 </Label>
-                <Checkbox id="remember" {...register("remember")} />
+                <Checkbox id="IsPersistent" {...register("IsPersistent")} />
               </div>
             </div>
             <DialogFooter>

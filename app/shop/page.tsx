@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 
 function Page() {
   const [priceRange, setPriceRange] = useState({ min: 0, max: 5000 });
+  const [stars, setStars] = useState<number | null>(null);
 
   const fetchProducts = useCallback(
     async ({ pageParam = 1, limit = 5 }) => {
@@ -18,11 +19,12 @@ function Page() {
           limit,
           minPrice: priceRange.min,
           maxPrice: priceRange.max,
+          stars,
         },
       });
       return res;
     },
-    [priceRange]
+    [priceRange, stars]
   );
 
   const fetchPackages = useCallback(
@@ -33,11 +35,12 @@ function Page() {
           limit,
           minPrice: priceRange.min,
           maxPrice: priceRange.max,
+          stars,
         },
       });
       return res;
     },
-    [priceRange]
+    [priceRange, stars]
   );
 
   const [isOnlyPackages, setIsOnlyPackages] = useState(false);
@@ -51,7 +54,7 @@ function Page() {
     isLoading: isLoadingProducts,
     refetch: refetchProducts,
   } = useInfiniteQuery({
-    queryKey: ["shop-products", priceRange],
+    queryKey: ["shop-products", priceRange, stars],
     queryFn: fetchProducts,
     getNextPageParam: (lastPage, pages) => {
       const currentPage = lastPage.data.data.options.page;
@@ -71,7 +74,7 @@ function Page() {
     isLoading: isLoadingPackages,
     refetch: refetchPackages,
   } = useInfiniteQuery({
-    queryKey: ["packages", priceRange],
+    queryKey: ["packages", priceRange, stars],
     queryFn: fetchPackages,
     getNextPageParam: (lastPage, pages) => {
       const currentPage = lastPage.data.data.options.page;
@@ -104,8 +107,10 @@ function Page() {
     refetchPackages();
   };
 
-  const hanedleRatingChange = (rating: number) => {
-    setFilter((prevFilter) => ({ ...prevFilter, rating: rating }));
+  const handleStarsChange = (rating: number) => {
+    setStars(rating);
+    refetchProducts();
+    refetchPackages();
   };
 
   const isLoading = isLoadingProducts || isLoadingPackages;
@@ -126,7 +131,7 @@ function Page() {
           onlyPackages={handleOnlyPackages}
           onlyProducts={handleOnlyProducts}
           priceRange={handlePriceRangeChange}
-          handleRatingFilter={hanedleRatingChange}
+          handleRatingFilter={handleStarsChange}
         />
         <Button className="bg-white text-purple hover:bg-purple hover:text-white border-2 border-purple ">
           الأكثر طلبا
@@ -161,7 +166,7 @@ function Page() {
           onlyPackages={handleOnlyPackages}
           onlyProducts={handleOnlyProducts}
           priceRange={handlePriceRangeChange}
-          handleRatingFilter={hanedleRatingChange}
+          handleRatingFilter={handleStarsChange}
         />
       </div>
     </div>

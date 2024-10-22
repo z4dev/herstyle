@@ -15,12 +15,14 @@ async function getTestmonials() {
 
 function Testmonial() {
 
-    const {data , isLoading} =  useQuery({
+    const {data , isLoading , error} =  useQuery({
         queryKey: ['testmonials'],
         queryFn: getTestmonials,
     })
 
     if(isLoading) return <div>Loading...</div>
+
+    if(error) return <div>Error: {error.message}</div>
 
 
   return (
@@ -41,7 +43,7 @@ function Testmonial() {
     modules={[Pagination]}
     className="mySwiper w-full h-[40vh]"
   >
-    {data.data.comments.map((comment:any , index:number) => (
+    {data && data.data.comments.map((comment:any , index:number) => (
       <SwiperSlide key={index}>
         <div className="bg-white p-4 rounded-lg shadow text-center h-full flex flex-col justify-center items-center">
           <User

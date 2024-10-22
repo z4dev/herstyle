@@ -3,13 +3,39 @@ import React from 'react'
 import { X } from 'lucide-react'
 import Image from 'next/image'
 import { useDispatch } from 'react-redux';
-import { decreaseQuantity, increaseQuantity, removeFromCart } from '@/utils/cart';
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import axiosInstance from '@/utils/axiosInstance';
 
-function CartItems({id,price,name,quantity}:{id:string,price:number,name:string,quantity:number}) {
+
+
+
+
+
+function CartItems({id,price,name,quantity,onDelete,stateOfDeleting,type}:{id:string,price:number,name:string,quantity:number,onDelete:()=>void,stateOfDeleting:boolean,type:string}) {
     const dispatch = useDispatch();
+    const queryClient = useQueryClient();
+
+    async function updatePackageQuantity(id: any, type: string, newQuantity: number) {
+      try {
+        const response = await axiosInstance.put(`cart/update-${type}/${id._id}`, {
+          quantity: newQuantity
+        });
+        return response.data;
+      } catch (error) {
+        console.log("error in updating package quantity", error);
+      }
+    }
+
+    const updateMutation = useMutation({
+        mutationFn: ({ id, type, newQuantity }: { id: string, type: string, newQuantity: number }) => 
+            updatePackageQuantity(id, type, newQuantity),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['cart'] });
+        },
+    });
 
   return (
-    <div className="flex items-center space-x-4 mb-4 w-full ">
+    <div className={`flex items-center space-x-4 mb-4 w-full ${stateOfDeleting ? 'opacity-50' : ''}`}>
         <p className="text-sm text-muted-foreground  mr-auto mb-auto">total:
             <span className="text-nowrap">{(quantity*price).toFixed(2)} ريس</span></p>
     <div className="flex flex-col items-end text-right justify-between w-fit">
@@ -21,7 +47,8 @@ function CartItems({id,price,name,quantity}:{id:string,price:number,name:string,
             variant="outline"
             size="sm"
             className=" h-6 w-6 rounded-r-none border-r-0"
-            onClick={()=>{quantity>1 && dispatch(decreaseQuantity({id,price}))}}
+            onClick={() => updateMutation.mutate({ id, type, newQuantity: quantity - 1 })}
+            disabled={updateMutation.isPending || quantity <= 1}
           >
             -
           </Button>
@@ -32,7 +59,8 @@ function CartItems({id,price,name,quantity}:{id:string,price:number,name:string,
             variant="outline"
             size="sm"
             className=" h-6 w-6 rounded-l-none border-l-0"
-            onClick={()=>{dispatch(increaseQuantity({id,price}))}}  
+            onClick={() => updateMutation.mutate({ id, type, newQuantity: quantity + 1 })}
+            disabled={updateMutation.isPending}
           >
             +
           </Button>
@@ -52,7 +80,7 @@ function CartItems({id,price,name,quantity}:{id:string,price:number,name:string,
         size="icon"
         className="absolute -top-2 -right-2 h-6 w-6 p-0 bg-purple text-white hover:bg-white hover:text-purple"
       >
-        <X onClick={()=>{dispatch(removeFromCart({id,price,quantity}))}} className="h-4 w-4" />
+        <X onClick={onDelete} className="h-4 w-4" />
       </Button>
     </div>
   </div>
