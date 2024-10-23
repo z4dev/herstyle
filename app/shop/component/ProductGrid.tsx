@@ -19,7 +19,7 @@ function ProductGrid({
   isFetchingNext: boolean;
 }) {
   return (
-    <div className="w-full">
+    <div className="min-h-screen w-full">
       <div className="product-grid w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 p-6">
       {isLoading ? (
           Array(6).fill(null).map((_, index) => (
