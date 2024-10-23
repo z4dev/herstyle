@@ -12,6 +12,8 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { useMutation } from "@tanstack/react-query";
+import { setCookie } from "cookies-next";
+import { useRouter } from "next/navigation";
 
 interface SignupProps {
   isSignupOpen: boolean;
@@ -23,6 +25,7 @@ interface SignupFormData {
   email: string;
   password: string;
   confirmPassword: string;
+  phoneNumber:string
 }
 
 function Signup({ isSignupOpen, setIsSignupOpen }: SignupProps) {
@@ -30,6 +33,8 @@ function Signup({ isSignupOpen, setIsSignupOpen }: SignupProps) {
   const [error, setError] = useState<string | null>(null);
 
   const { register, handleSubmit, formState: { errors }, watch, reset } = useForm<SignupFormData>();
+
+  const router  = useRouter()
 
   const signup = async (data: SignupFormData) => { 
     const response = await axiosInstance.post("/users/signup", {...data, role:"CLIENT"})
@@ -43,6 +48,8 @@ function Signup({ isSignupOpen, setIsSignupOpen }: SignupProps) {
       setIsSignupOpen(false); // Close the dialog
       reset(); // Reset the form
       // You might want to show a success message or purpleirect the user
+      setCookie("auth_token",data.data.token)
+      router.push('/verify')
     },
     onError: (error: any) => {
       setError(error.response?.data?.message || "An error occurpurple during signup");
@@ -73,7 +80,7 @@ function Signup({ isSignupOpen, setIsSignupOpen }: SignupProps) {
               <Input
                 id="signup-name"
                 placeholder="الاسم"
-                className="col-span-4 focus-visible:ring-purple-500"
+                className="col-span-4 focus-visible:ring-purple-500 text-right"
                 {...register("name", { required: "الاسم مطلوب" })}
               />
               {errors.name && <span className="text-purple text-sm">{errors.name.message}</span>}
@@ -82,26 +89,48 @@ function Signup({ isSignupOpen, setIsSignupOpen }: SignupProps) {
               <Input
                 id="signup-email"
                 placeholder="البريد الإلكتروني"
-                className="col-span-4 focus-visible:ring-purple-500"
+                className="col-span-4 focus-visible:ring-purple-500 text-right"
                 {...register("email", { required: "البريد الإلكتروني مطلوب", pattern: { value: /^\S+@\S+$/i, message: "البريد الإلكتروني غير صالح" } })}
               />
               {errors.email && <span className="text-purple text-sm ">{errors.email.message}</span>}
             </div>
+
+            <div className="grid grid-cols-4 items-center gap-4">
+        <Input
+          id="signup-phone"
+          placeholder="رقم الهاتف"
+          className="col-span-4 focus-visible:ring-purple-500 text-right"
+          type="text" // Use "text" for phone numbers
+          {...register("phoneNumber", {
+            required: "رقم الهاتف مطلوب",
+            pattern: {
+              value: /^\d{10}$/, // Example pattern for a 10-digit phone number
+              message: "رقم الهاتف يجب أن يكون 10 أرقام"
+            }
+          })}
+        />
+        {errors.phoneNumber && <span className="text-purple text-sm">{errors.phoneNumber.message}</span>}
+      </div>
+
             <div className="grid grid-cols-4 items-center gap-4">
               <Input
                 id="signup-password"
                 placeholder="كلمة المرور"
-                className="col-span-4 focus-visible:ring-purple-500"
+                className="col-span-4 focus-visible:ring-purple-500 text-right"
                 type="password"
                 {...register("password", { required: "كلمة المرور مطلوبة", minLength: { value: 6, message: "كلمة المرور يجب أن تكون على الأقل 6 أحرف" } })}
               />
               {errors.password && <span className="text-purple text-sm">{errors.password.message}</span>}
             </div>
+
+
+
+
             <div className="grid grid-cols-4 items-center gap-4">
               <Input
                 id="signup-confirm-password"
                 placeholder="تأكيد كلمة المرور"
-                className="col-span-4 focus-visible:ring-purple-500"
+                className="col-span-4 focus-visible:ring-purple-500 text-right"
                 type="password"
                 {...register("confirmPassword", {
                   required: "تأكيد كلمة المرور مطلوب",

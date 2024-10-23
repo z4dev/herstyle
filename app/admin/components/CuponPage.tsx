@@ -171,7 +171,7 @@ function CuponPage() {
                 onChange={(e) => setDiscountValue(e.target.value)}
               />
             </div>
-            <div className="space-y-2">
+            <div className="space-y-2 order-first md:order-last">
               <Label htmlFor="couponCode">رمز الكوبون</Label>
               <Input
                 id="couponCode"

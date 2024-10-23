@@ -1,4 +1,5 @@
 "use client";
+
 import React, { useState, useCallback } from "react";
 import { debounce } from "lodash";
 import Image from "next/image";
@@ -7,12 +8,15 @@ import { Login } from "./Login";
 import axiosInstance from "@/utils/axiosInstance";
 import { useQuery } from "@tanstack/react-query";
 import Cart from "./Cart";
-
+import { Menu } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 
 function Header() {
   const [showTopBanner, setShowTopBanner] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
+  const [isSheetOpen, setIsSheetOpen] = useState(false);
 
   const debouncedSetSearch = useCallback(
     debounce((term: string) => {
@@ -28,7 +32,7 @@ function Header() {
   };
 
   const { data: recommendationsData, isLoading } = useQuery({
-    queryKey: ["search" ],
+    queryKey: ["search"],
     queryFn: () => fetchRecommendations(debouncedSearchTerm),
     enabled: !!debouncedSearchTerm.trim(),
   });
@@ -43,7 +47,11 @@ function Header() {
 
   const handleRecommendationClick = () => {
     setSearchTerm("");
-  }
+  };
+
+  const handleLinkClick = () => {
+    setIsSheetOpen(false);
+  };
 
   return (
     <div>
@@ -62,14 +70,14 @@ function Header() {
       )}
 
       <header className="bg-white text-purple p-4 lg:px-24 flex justify-between items-center">
-        <div className="flex items-center  space-x-4">
-          <Cart/>
+        <div className="flex items-center space-x-4">
+          <Cart />
         </div>
         <div className="relative w-[42%] lg:w-[35%]">
           <input
             type="text"
             placeholder="...البحث"
-            className="py-1 lg:py-2 p-2 pr-10 pl-4 rounded-md text-black w-full focus:outline-none border-purple border-2  focus:ring-purple text-right"
+            className="py-1 lg:py-2 p-2 pr-10 pl-4 rounded-md text-black w-full focus:outline-none border-purple border-2 focus:ring-purple text-right"
             value={searchTerm}
             onChange={handleSearchChange}
           />
@@ -104,10 +112,14 @@ function Header() {
               </defs>
             </svg>
           </div>
-          { searchTerm.trim() !== "" && recommendations.length > 0 && !isLoading && (
+          {searchTerm.trim() !== "" && recommendations.length > 0 && !isLoading && (
             <div className="absolute z-10 w-full mt-1 bg-white border border-purple rounded-md shadow-lg">
-              {recommendations.map((item:{_id:string,name:string}) => (
-                <Link href={`/shop/product/${item._id}`} key={item._id} onClick={() => handleRecommendationClick()}>
+              {recommendations.map((item: { _id: string; name: string }) => (
+                <Link
+                  href={`/shop/product/${item._id}`}
+                  key={item._id}
+                  onClick={() => handleRecommendationClick()}
+                >
                   <div className="p-2 hover:bg-gray-100 cursor-pointer text-right">
                     <div className="font-semibold">{item.name}</div>
                   </div>
@@ -116,18 +128,47 @@ function Header() {
             </div>
           )}
         </div>
-        <Image src="/logo.png" alt="Herstyle Logo" className="h-full w-[4rem]" width={50} height={50} />
+        <Image
+          src="/logo.png"
+          alt="Herstyle Logo"
+          className="h-full w-[4rem]"
+          width={50}
+          height={50}
+        />
       </header>
 
       {/* Navigation */}
-      <nav className=" w-full flex items-center bg-purple text-white text-xs lg:text-base text-center lg:px-24  p-4">
+      <nav className="w-full flex items-center bg-purple text-white text-xs lg:text-base text-center lg:px-24 p-4">
         <Login />
-        <div className="flex ml-auto lg:mr-[33%] 2xl:mr-[40%] justify-center space-x-6">
+        <div className="hidden lg:flex ml-auto lg:mr-[33%] 2xl:mr-[40%] justify-center space-x-6">
           <Link href="/about">من نحن</Link>
           <Link href="/service">سياسة الاستخدام</Link>
           <Link href="/shop">جميع المنتجات</Link>
           <Link href="/">الصفحة الرئيسية</Link>
         </div>
+        <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
+          <SheetTrigger asChild>
+            <Button variant="ghost" size="icon" className="lg:hidden ml-auto">
+              <Menu className="h-6 w-6" />
+            </Button>
+          </SheetTrigger>
+          <SheetContent side="right">
+            <div className="flex flex-col space-y-4 mt-8 text-right">
+              <Link href="/" className="text-lg font-medium" onClick={handleLinkClick}>
+                الصفحة الرئيسية
+              </Link>
+              <Link href="/shop" className="text-lg font-medium" onClick={handleLinkClick}>
+                جميع المنتجات
+              </Link>
+              <Link href="/service" className="text-lg font-medium" onClick={handleLinkClick}>
+                سياسة الاستخدام
+              </Link>
+              <Link href="/about" className="text-lg font-medium" onClick={handleLinkClick}>
+                من نحن
+              </Link>
+            </div>
+          </SheetContent>
+        </Sheet>
       </nav>
     </div>
   );

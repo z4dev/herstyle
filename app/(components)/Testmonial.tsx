@@ -27,22 +27,22 @@ function Testmonial() {
 
   return (
     <Swiper
-    slidesPerView={3}
-    spaceBetween={30}
-    pagination={{
-      clickable: true,
-    }}
-    breakpoints={{
-      640: {
-        slidesPerView: 2,
-      },
-      768: {
-        slidesPerView: 3,
-      },
-    }}
-    modules={[Pagination]}
-    className="mySwiper w-full h-[40vh]"
-  >
+      slidesPerView={1} // Default for mobile
+      spaceBetween={30}
+      pagination={{
+        clickable: true,
+      }}
+      breakpoints={{
+        640: {
+          slidesPerView: 2,
+        },
+        768: {
+          slidesPerView: 3,
+        },
+      }}
+      modules={[Pagination]}
+      className="mySwiper w-full h-auto"
+    >
     {data && data.data.comments.map((comment:any , index:number) => (
       <SwiperSlide key={index}>
         <div className="bg-white p-4 rounded-lg shadow text-center h-full flex flex-col justify-center items-center">
@@ -50,7 +50,7 @@ function Testmonial() {
             className="mx-auto mb-4 text-purple border-2 border-purple rounded-full p-2"
             size={64}
           />
-          <h3 className="font-bold">{comment.userId.name}</h3>
+          <h3 className="font-bold">{comment.userId?.name}</h3>
           <p className="mb-2">{comment.content}</p>
         </div>
       </SwiperSlide>
