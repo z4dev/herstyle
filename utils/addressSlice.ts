@@ -1,6 +1,6 @@
 // store/addressSlice.js
 
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 const initialState = {
   address: {
@@ -24,7 +24,7 @@ const addressSlice = createSlice({
   name: 'address',
   initialState,
   reducers: {
-    setAddress: (state:{address : withAddress}, action:any) => {
+    setAddress: (state:{address : withAddress}, action:PayloadAction<withAddress>) => {
       state.address = action.payload;
     },
     clearAddress: (state:{address : withAddress}) => {

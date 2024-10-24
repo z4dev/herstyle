@@ -1,5 +1,4 @@
 "use client";
-
 import { useForm } from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
@@ -7,9 +6,10 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useRouter } from "next/navigation";
 import axiosInstance from "@/utils/axiosInstance";
-import { useState } from "react";
+import { useLayoutEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setAddress, clearAddress } from "@/utils/addressSlice";
+import { getCookie } from "cookies-next";
 
 type AddressFormData = {
   firstLine: string;
@@ -60,7 +60,14 @@ const AddressAndPaymentForm = () => {
       postalCode: address.postalCode || "",
     },
   });
+  useLayoutEffect(() => {
+    const token = getCookie("auth_token");
+    const role = localStorage.getItem("role");
 
+    if (!token || role !== "CLIENT" ) {
+      router.push("/");
+    }
+  }, [getCookie("auth_token")]);
   const addressMutation = useMutation({
     mutationFn: submitAddress,
     onSuccess: (data) => {
@@ -78,7 +85,16 @@ const AddressAndPaymentForm = () => {
   });
 
   const onSubmit = (data: AddressFormData) => {
-    dispatch(setAddress(data)); // Update Redux state with form data
+    dispatch(
+      setAddress({
+        firstLine: data.firstLine,
+        googleLocation: data.googleLocation,
+        street: data.street,
+        city: data.city,
+        postalCode: data.postalCode,
+        country: "المملكة العربية السعودية",
+      })
+    ); // Update Redux state with form data
     if (data.paymentMethod === "COD") {
       addressMutation.mutate(data);
     } else {
@@ -191,7 +207,6 @@ const AddressAndPaymentForm = () => {
             <label className="flex items-center">
               <input
                 type="radio"
-                name="paymentMethod"
                 value="COD"
                 defaultChecked={true}
                 {...register("paymentMethod", {
@@ -203,7 +218,6 @@ const AddressAndPaymentForm = () => {
             <label className="flex items-center">
               <input
                 type="radio"
-                name="paymentMethod"
                 value="Instant"
                 {...register("paymentMethod")}
               />

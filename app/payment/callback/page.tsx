@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { CheckCircleIcon, XCircleIcon, RefreshCcwIcon } from "lucide-react"; // Lucide icons
 import axiosInstance from "@/utils/axiosInstance";
@@ -10,6 +10,9 @@ import { clearAddress } from "@/utils/addressSlice";
 const PaymentCallback: React.FC = () => {
   const router = useRouter();
   const queryParams = useSearchParams(); // Get status from query parameters
+  const status = queryParams.get("status"); // Extract the status only once
+  const paymentId = queryParams.get("id"); // Extract payment ID
+
   const [message, setMessage] = useState<string>("");
   const [icon, setIcon] = useState<JSX.Element | null>(null);
   const [iconColor, setIconColor] = useState<string>("");
@@ -18,12 +21,8 @@ const PaymentCallback: React.FC = () => {
 
   useEffect(() => {
     const checkPaymentStatus = async () => {
-      // Check the payment status from query parameters
-      if (
-        queryParams.get("status") === "completed" ||
-        queryParams.get("status") === "paid"
-      ) {
-        if (queryParams.get("id")) {
+      if (status === "completed" || status === "paid") {
+        if (paymentId) {
           try {
             const response = await axiosInstance.post("/cart/checkout", {
               paymentMethod: "INSTANT",
@@ -35,7 +34,7 @@ const PaymentCallback: React.FC = () => {
                 street: address.street,
                 country: "السعودية", // Default country
               },
-              paymentId: queryParams.get("id"),
+              paymentId: paymentId,
             });
             dispatch(clearAddress());
             return response.data;
@@ -48,7 +47,7 @@ const PaymentCallback: React.FC = () => {
         );
         setIcon(<CheckCircleIcon className="w-16 h-16 text-green-500" />);
         setIconColor("bg-green-100");
-      } else if (queryParams.get("status") === "failed") {
+      } else if (status === "failed") {
         setMessage("فشل الدفع! سيتم تحويلك إلى الصفحة الرئيسية خلال 5 ثوانٍ.");
         setIcon(<XCircleIcon className="w-16 h-16 text-red-500" />);
         setIconColor("bg-red-100");
@@ -60,14 +59,16 @@ const PaymentCallback: React.FC = () => {
         setIconColor("bg-yellow-100");
       }
     };
+
     checkPaymentStatus();
+
     // Redirect to homepage after 5 seconds
     const timeout = setTimeout(() => {
       router.push("/");
     }, 5000);
 
     return () => clearTimeout(timeout); // Cleanup on unmount
-  }, [queryParams.get("status"), router]);
+  }, [status, paymentId, router, address, dispatch]);
 
   return (
     <div
@@ -79,4 +80,13 @@ const PaymentCallback: React.FC = () => {
   );
 };
 
-export default PaymentCallback;
+// Wrap the component with Suspense
+const PaymentCallbackWrapper = () => {
+  return (
+    <Suspense fallback={<div>Loading payment details...</div>}>
+      <PaymentCallback />
+    </Suspense>
+  );
+};
+
+export default PaymentCallbackWrapper;
