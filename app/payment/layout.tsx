@@ -7,14 +7,10 @@ const PaymentLayout = ({ children }: PropsWithChildren) => {
   const router = useRouter();
   useLayoutEffect(() => {
     const token = getCookie("auth_token");
-    console.log(token);
-    if (!token) {
-      router.push("/login");
-    } else {
-      const role = localStorage.getItem("role");
-      if (role !== "CLIENT") {
-        router.push("/");
-      }
+    const role = localStorage.getItem("role");
+
+    if (!token || role !== "CLIENT") {
+      router.push("/");
     }
   }, [getCookie("auth_token")]);
   return <div className="">{children}</div>;
