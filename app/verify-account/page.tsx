@@ -5,11 +5,7 @@ import axios from 'axios';
 import { Button } from '@/components/ui/button';
 import { useSearchParams , useRouter } from 'next/navigation'
 
-function Wrapper({children}:{children:ReactNode}){
-  return(<Suspense fallback={<div>Loading...</div>}>
-    {children}
-  </Suspense>)
-}
+
 
 
 const verifyAccount = async (token:string|null) => {
@@ -24,7 +20,7 @@ const verifyAccount = async (token:string|null) => {
     }
 };
 
-function Page() {
+function VerifyPage() {
 
   const searchParams = useSearchParams()
   const router = useRouter()
@@ -41,7 +37,6 @@ function Page() {
     })
 
     return (
-      <Wrapper>
         <div className='flex items-center justify-center h-screen'>
           <div className='text-center'>
             <h2 className='text-2xl font-bold'>تحقق من بريدك الإلكتروني</h2>
@@ -50,11 +45,14 @@ function Page() {
                 { verificationMutation.isPending ? "قيد الانتظار" : verificationMutation.isSuccess ? "تم التفعيل بنجاح!" : 'متابعة'}
             </Button>
             </div>
-        </div>
-        </Wrapper>
+        </div>  
     );
 }
 
-
+function Page(){
+  return(<Suspense fallback={<div>Loading...</div>}>
+    <VerifyPage />
+  </Suspense>)
+}
 
 export default Page;
