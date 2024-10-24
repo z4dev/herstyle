@@ -15,6 +15,7 @@ import CartItems from "./CartItems";
 import { RootState } from "@/utils/store";
 import axiosInstance from "@/utils/axiosInstance";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
 
 // interface CartItem {
 //   _id: string;
@@ -25,61 +26,68 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
 async function getCart() {
   try {
-    const response = await axiosInstance.get('/cart')
-    return response.data
+    const response = await axiosInstance.get("/cart");
+    return response.data;
   } catch (error) {
-    console.log('Error fetching cart:', error)
-    throw error
+    console.log("Error fetching cart:", error);
+    throw error;
   }
 }
 
-async function deleteProductFromCart(productId:string ,type:string){
-  try{
-    const response = await axiosInstance.delete(`/cart/remove-${type}/${productId}`)
-    return response.data
-  }catch(error){
-    console.log(error)
+async function deleteProductFromCart(productId: string, type: string) {
+  try {
+    const response = await axiosInstance.delete(
+      `/cart/remove-${type}/${productId}`
+    );
+    return response.data;
+  } catch (error) {
+    console.log(error);
   }
 }
 
 async function applyCoupon(code: string) {
-  const response = await axiosInstance.post('cart/apply-coupon', { code });
+  const response = await axiosInstance.post("cart/apply-coupon", { code });
   return response.data;
 }
 
 export default function Cart() {
   const cart = useSelector((state: RootState) => state.cart.items);
-  const totalQuantity = useSelector((state: RootState) => state.cart.totalQuantity);
+  const router = useRouter();
+  const totalQuantity = useSelector(
+    (state: RootState) => state.cart.totalQuantity
+  );
   const totalPrice = useSelector((state: RootState) => state.cart.totalPrice);
   const [isOpen, setIsOpen] = useState(false);
   const [couponCode, setCouponCode] = useState("");
 
   const { data, isLoading, error } = useQuery({
-    queryKey: ['cart'],
+    queryKey: ["cart"],
     queryFn: getCart,
-  })
+  });
 
-  console.log("cart",data)
+  console.log("cart", data);
 
-  const cartItems = data?.data?.carts[0]?.packages.concat(data?.data?.carts[0]?.products) || []
+  const cartItems =
+    data?.data?.carts[0]?.packages.concat(data?.data?.carts[0]?.products) || [];
 
   const queryClient = useQueryClient();
 
   const deleteMutation = useMutation({
-    mutationFn: ({ productId, type }: { productId: string; type: string }) => deleteProductFromCart(productId, type),
+    mutationFn: ({ productId, type }: { productId: string; type: string }) =>
+      deleteProductFromCart(productId, type),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['cart'] });
+      queryClient.invalidateQueries({ queryKey: ["cart"] });
     },
   });
 
-  const handleDeleteProduct = (productId: string ,type:string) => {
-    deleteMutation.mutate({productId , type});
+  const handleDeleteProduct = (productId: string, type: string) => {
+    deleteMutation.mutate({ productId, type });
   };
 
   const applyCouponMutation = useMutation({
     mutationFn: applyCoupon,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['cart'] });
+      queryClient.invalidateQueries({ queryKey: ["cart"] });
     },
   });
 
@@ -121,7 +129,9 @@ export default function Cart() {
             {isLoading ? (
               <p className="p-4 w-full text-center">Loading...</p>
             ) : error ? (
-              <p className="text-purple w-full text-center">عليك تسجيل الدخول أولاً!</p>
+              <p className="text-purple w-full text-center">
+                عليك تسجيل الدخول أولاً!
+              </p>
             ) : cartItems.length > 0 ? (
               <div className="w-full">
                 {cartItems.map((item: any) => (
@@ -129,11 +139,22 @@ export default function Cart() {
                     key={item._id}
                     id={item.productId}
                     price={item.totalPrice / item.quantity}
-                    name={`${item.productId ? item.productId.name : item.packageId.name}`}
+                    name={`${
+                      item.productId ? item.productId.name : item.packageId.name
+                    }`}
                     quantity={item.quantity}
-                    onDelete={() => handleDeleteProduct(`${item.productId ? item.productId._id : item.packageId._id}`,item.productId ? 'product' : 'package')}
+                    onDelete={() =>
+                      handleDeleteProduct(
+                        `${
+                          item.productId
+                            ? item.productId._id
+                            : item.packageId._id
+                        }`,
+                        item.productId ? "product" : "package"
+                      )
+                    }
                     stateOfDeleting={deleteMutation.isPending}
-                    type={item.productId ? 'product' : 'package'}
+                    type={item.productId ? "product" : "package"}
                   />
                 ))}
                 <div className="border-t pt-4 w-full">
@@ -147,12 +168,14 @@ export default function Cart() {
                   <div className="flex flex-col items-end border-t pt-4">
                     <p className="mb-2 ">هل لديك كود خصم ؟</p>
                     <div className="flex items-center mb-2">
-                      <Button 
+                      <Button
                         className="rounded-r-none bg-purple text-white"
                         onClick={handleApplyCoupon}
                         disabled={applyCouponMutation.isPending}
                       >
-                        {applyCouponMutation.isPending ? 'جاري التطبيق...' : 'إضافة'}
+                        {applyCouponMutation.isPending
+                          ? "جاري التطبيق..."
+                          : "إضافة"}
                       </Button>
                       <input
                         type="text"
@@ -163,10 +186,14 @@ export default function Cart() {
                       />
                     </div>
                     {applyCouponMutation.isError && (
-                      <p className="text-red-500 text-sm">فشل تطبيق الكوبون. يرجى المحاولة مرة أخرى.</p>
+                      <p className="text-red-500 text-sm">
+                        فشل تطبيق الكوبون. يرجى المحاولة مرة أخرى.
+                      </p>
                     )}
                     {applyCouponMutation.isSuccess && (
-                      <p className="text-green-500 text-sm">تم تطبيق الكوبون بنجاح!</p>
+                      <p className="text-green-500 text-sm">
+                        تم تطبيق الكوبون بنجاح!
+                      </p>
                     )}
                   </div>
                   <div className="flex justify-end  font-medium mt-2">
@@ -176,12 +203,22 @@ export default function Cart() {
                 </div>
               </div>
             ) : (
-              <p className="text-gray-500 w-full text-center">لا يوجد منتجات في السلة</p>
+              <p className="text-gray-500 w-full text-center">
+                لا يوجد منتجات في السلة
+              </p>
             )}
           </CardContent>
           {!isLoading && !error && cartItems.length > 0 && (
             <CardFooter>
-              <Button className="w-full bg-purple">إتمام الطلب</Button>
+              <Button
+                className="w-full bg-purple"
+                onClick={() => {
+                  setIsOpen(false);
+                  router.push("/checkout");
+                }}
+              >
+                إتمام الطلب
+              </Button>
             </CardFooter>
           )}
         </Card>
