@@ -47,9 +47,6 @@ function Signup({ isSignupOpen, setIsSignupOpen }: SignupProps) {
       console.log("success", data);
       setIsSignupOpen(false); // Close the dialog
       reset(); // Reset the form
-      // You might want to show a success message or purpleirect the user
-      setCookie("auth_token",data.data.token)
-      router.push('/verify')
     },
     onError: (error: any) => {
       setError(error.response?.data?.message || "An error occurpurple during signup");

@@ -32,8 +32,7 @@ export default function ProductPage({ params }: { params: { product: string } })
   if(isLoading) return <SingleProductSkeleton />
   
   const  dispatch = useDispatch()
-  
-  console.log("productData =", productData.data.productComments.comments)
+
 
   const  data  = productData.data.product
 
@@ -154,11 +153,11 @@ export default function ProductPage({ params }: { params: { product: string } })
             pagination={{ clickable: true }}
             className="w-full h-full rounded-lg"
           >
-            {[1, 2, 3, 4].map((index) => (
+            { productData.data.product.images.map((image:any,index:number) => (
               <SwiperSlide key={index}>
                 <div className="relative w-full h-full">
                   <Image
-                    src={`/products/${index}.jpg`}
+                    src={image}
                     alt={`Product image ${index}`}
                     layout="fill"
                     objectFit="cover"

@@ -31,7 +31,7 @@ function ProductGrid({
               <Product
                 key={product._id}
                 id={`/product/${product._id}`}
-                image={product.image}
+                image={product.images[0]}
                 title={product.name}
                 rating={product.rating}
                 reviewCount={product.numReviews}
@@ -48,7 +48,7 @@ function ProductGrid({
             <Product
               key={el._id}
               id={`/package/${el._id}`}
-              image={el.image}
+              image={el.images[0]}
               title={el.name}
               rating={el.rating}
               reviewCount={el.numReviews}

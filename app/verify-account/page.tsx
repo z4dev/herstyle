@@ -1,14 +1,13 @@
 'use client'
 import React from 'react';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import axios from 'axios';
-import axiosInstance from '@/utils/axiosInstance';
-import { getCookie } from 'cookies-next';
 import { Button } from '@/components/ui/button';
+import { useSearchParams , useRouter } from 'next/navigation'
 
-const verifyAccount = async (token:string|undefined) => {
+const verifyAccount = async (token:string|null) => {
     try {
-        const response = await axiosInstance.post(`users/verify-account`, {
+        const response = await axios.post(`https://herstyleapi.onrender.com/api/v1/verify-account`, {
           params: { token },
         });
         console.log("verification success = ", response.data);
@@ -19,12 +18,18 @@ const verifyAccount = async (token:string|undefined) => {
 };
 
 function Page() {
-    const token = getCookie('auth_token');
+
+  const searchParams = useSearchParams()
+  const router = useRouter()
+
+  const token = searchParams.get('token')
+
+  console.log('token',token)
 
     const verificationMutation = useMutation({
-     mutationFn: (token:string|undefined)=>verifyAccount(token),
+     mutationFn: (token:string|null)=>verifyAccount(token),
      onSuccess: ()=>{
-
+      router.push('/')
      }
     })
 

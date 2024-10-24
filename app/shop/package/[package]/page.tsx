@@ -33,7 +33,7 @@ export default function ProductPage({ params }: { params: { package: string } })
 
   const {data:{Package , productsForThatPackage, packageComments:{comments} }} = packageData
 
-  console.log("Package  comments =", comments)
+  console.log("Package  comments =", packageData)
 
 
 
@@ -167,11 +167,11 @@ export default function ProductPage({ params }: { params: { package: string } })
             pagination={{ clickable: true }}
             className="w-full h-full rounded-lg"
           >
-            {[1, 2, 3, 4].map((index) => (
+            {packageData.data.Package.images.map((image:any ,index:number) => (
               <SwiperSlide key={index}>
                 <div className="relative w-full h-full">
                   <Image
-                    src={`/products/${index}.jpg`}
+                    src={image}
                     alt={`Product image ${index}`}
                     layout="fill"
                     objectFit="cover"

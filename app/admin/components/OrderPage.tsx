@@ -1,4 +1,6 @@
-import React from 'react'
+'use client'
+
+import React, { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import axiosInstance from '@/utils/axiosInstance'
 import {
@@ -15,8 +17,17 @@ import {
   TableRow,
   TableCell,
 } from "@/components/ui/table"
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog"
 
 function OrderPage() {
+  const [selectedOrder, setSelectedOrder] = useState(null)
+  const [isDialogOpen, setIsDialogOpen] = useState(false)
+
   const { data, isLoading, error } = useQuery({
     queryKey: ['orders'],
     queryFn: () => axiosInstance.get('orders'),
@@ -26,6 +37,11 @@ function OrderPage() {
   if (error) return <div>حدث خطأ أثناء تحميل البيانات</div>
 
   const orders = data?.data?.data?.orders || []
+
+  const openDialog = (order:any) => {
+    setSelectedOrder(order)
+    setIsDialogOpen(true)
+  }
 
   return (
     <Card>
@@ -44,9 +60,16 @@ function OrderPage() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {orders.map((order: any) => (
+            {orders.map((order:any) => (
               <TableRow key={order._id}>
-                <TableCell>{order._id}</TableCell>
+                <TableCell>
+                  <button
+                    onClick={() => openDialog(order)}
+                    className="text-blue-600 hover:underline"
+                  >
+                    {order._id}
+                  </button>
+                </TableCell>
                 <TableCell>{order.cart.totalPrice} ريال</TableCell>
                 <TableCell>
                   <span
@@ -59,14 +82,60 @@ function OrderPage() {
                     {order.status === "PENDING" ? "قيد الانتظار" : "مكتمل"}
                   </span>
                 </TableCell>
-                <TableCell>{order.user.name}</TableCell>
+                <TableCell>{order.user?.name}</TableCell>
                 <TableCell>{new Date(order.createdAt).toLocaleDateString('ar-SA')}</TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
       </CardContent>
+
+      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle className='text-right'>تفاصيل الطلب</DialogTitle>
+          </DialogHeader>
+          {selectedOrder && <CartInfo order={selectedOrder} />}
+        </DialogContent>
+      </Dialog>
     </Card>
+  )
+}
+
+function CartInfo({ order}:{order:any}) {
+  return (
+    <div className="space-y-4 text-right">
+      <div>
+        <h3 className="font-semibold">معلومات المشتري</h3>
+        <p>{order.user.name} :الاسم</p>
+        <p> {order.user.phoneNumber} :رقم الهاتف</p>
+      </div>
+      <div>
+        <h3 className="font-semibold">عنوان التوصيل:</h3>
+        <p> {order.address.street} :الشارع</p>
+        <p>المدينة: {order.address.city}</p>
+        <p> {order.address.postalCode} :الرمز البريدي</p>
+        <p> {order.address.country}:الدولة</p>
+      </div>
+      <div>
+        <h3 className="font-semibold">المنتجات</h3>
+        <ul className="list-disc list-inside">
+          {order.cart.products.map((product:any) => (
+            <li key={product._id}>
+              {product.productId.name} - الكمية: {product.quantity} - السعر: {product.totalPrice} ريال
+            </li>
+          ))}
+        </ul>
+      </div>
+      <div>
+        <h3 className="font-semibold">إجمالي الطلب: {order.cart.totalPrice} ريال</h3>
+      </div>
+      <div>
+        <h3 className="font-semibold">معلومات الدفع:</h3>
+        <p>طريقة الدفع : {order.paymentMethod === 'COD' ? 'الدفع عند الاستلام' : 'دفع إلكتروني'}</p>
+        <p>حالة الدفع: {order.paymentStatus === 'PENDING' ? 'قيد الانتظار' : 'مكتمل'}</p>
+      </div>
+    </div>
   )
 }
 

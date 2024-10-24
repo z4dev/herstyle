@@ -30,18 +30,6 @@ export default function Home() {
   console.log("Products data:", data);
   console.log("Products error:", error);
 
-  const SectionOneImages = [
-    "/products/1.jpg",
-    "/products/2.jpg",
-    "/products/3.jpg",
-    "/products/4.jpg",
-  ];
-  const SectionTwoImages = [
-    "/products/5.jpg",
-    "/products/6.jpg",
-    "/products/7.jpg",
-    "/products/8.jpg",
-  ];
 
   return (
     <main className="container mx-auto p-8  px-4 lg:px-24">
@@ -98,7 +86,7 @@ export default function Home() {
                 <Product
                   id={`/product/${product._id}`}
                   key={product._id}
-                  image={SectionOneImages[i]}
+                  image={product.images[0]}
                   title={product.name}
                   rating={product.rating}
                   reviewCount={product.numReviews}
@@ -129,7 +117,7 @@ export default function Home() {
                 <Product
                   id={`/product/${product._id}`}
                   key={product._id}
-                  image={SectionTwoImages[i]}
+                  image={product.images[0]}
                   title={product.name}
                   rating={product.rating}
                   reviewCount={product.numReviews}
