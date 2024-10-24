@@ -1,9 +1,16 @@
 'use client'
-import React from 'react';
+import React, { ReactNode, Suspense } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import axios from 'axios';
 import { Button } from '@/components/ui/button';
 import { useSearchParams , useRouter } from 'next/navigation'
+
+function Wrapper({children}:{children:ReactNode}){
+  return(<Suspense fallback={<div>Loading...</div>}>
+    {children}
+  </Suspense>)
+}
+
 
 const verifyAccount = async (token:string|null) => {
     try {
@@ -34,6 +41,7 @@ function Page() {
     })
 
     return (
+      <Wrapper>
         <div className='flex items-center justify-center h-screen'>
           <div className='text-center'>
             <h2 className='text-2xl font-bold'>تحقق من بريدك الإلكتروني</h2>
@@ -43,7 +51,10 @@ function Page() {
             </Button>
             </div>
         </div>
+        </Wrapper>
     );
 }
+
+
 
 export default Page;
