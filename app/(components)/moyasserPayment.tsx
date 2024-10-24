@@ -3,7 +3,11 @@ import { useRouter } from "next/navigation";
 // components/MoyasarPayment.js
 
 import { useEffect, useState } from "react";
-
+declare global {
+  interface Window {
+    Moyasar: any;
+  }
+}
 const MoyasarPayment: React.FC<{ cartInfo: any }> = ({ cartInfo }) => {
   const [loading, setLoading] = useState(true);
   const router = useRouter();
