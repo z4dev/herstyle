@@ -1,5 +1,4 @@
 "use client";
-
 import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { CheckCircleIcon, XCircleIcon, RefreshCcwIcon } from "lucide-react"; // Lucide icons
@@ -67,7 +66,7 @@ const PaymentCallback: React.FC = () => {
     }, 5000);
 
     return () => clearTimeout(timeout); // Cleanup on unmount
-  }, [queryParams.get("status"), router]);
+  }, [router]);
 
   return (
     <div
