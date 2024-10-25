@@ -40,8 +40,13 @@ async function deleteProductFromCart(productId: string, type: string) {
 }
 
 async function applyCoupon(code: string) {
-  const response = await axiosInstance.post("cart/apply-coupon", { code });
-  return response.data;
+  try {
+    const response = await axiosInstance.post("cart/apply-coupon", { code });
+    return response.data;
+  } catch (error) {
+    console.log("Error applying coupon:", error);
+    throw error;
+  }
 }
 
 export default function Cart() {

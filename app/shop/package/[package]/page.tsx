@@ -13,10 +13,51 @@ import { Button } from '@/components/ui/button';
 import RelatedProducts from '../../product/[product]/components/RelatedProducts';
 import Reviews from '../../product/[product]/components/Reviews';
 import axiosInstance from '@/utils/axiosInstance';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import SingleProductSkeleton from '../../component/SingleProductSkeleton';
+import { toast } from '@/hooks/use-toast';
+
+
+const addToCartMutation = async (productId: string) => {
+
+  const response = await axiosInstance.post(
+    `cart/add-package/${productId}`,
+    { quantity: 1 }
+  );
+  return response.data;
+};
 
 export default function ProductPage({ params }: { params: { package: string } }) {
+
+
+  const queryClient = useQueryClient()
+
+
+  const mutation:any = useMutation({
+    mutationFn: (productId: string) => addToCartMutation(productId),
+    onSuccess: () => {
+
+      toast({
+        title: "نجاح",
+        description: "تم إضافة العنصر إلى السلة",
+        // يمكنك إضافة المزيد من الخصائص هنا إذا لزم الأمر
+      });
+      
+      // Invalidate and refetch cart data
+      queryClient.invalidateQueries({ queryKey: ['cart'] });
+      console.log(" item added to cart successfully")
+    },
+    onError: (error) => {
+      console.error('Error adding product to cart:', error);
+      // Handle error (e.g., show an error message to the user)
+    },
+  });
+
+  const handleAddToCart = (id: string) => {
+    mutation.mutate(id);
+  };
+
+
 
   const [isReviews, setIsReviews] = useState(true)
   const {data:packageData, isLoading:packageLoading} = useQuery({
@@ -154,9 +195,9 @@ export default function ProductPage({ params }: { params: { package: string } })
               ))}
             </ul>
           </div>
-          <button className="flex items-center justify-center w-full bg-purple text-white px-6 py-3 rounded-lg hover:bg-purple-700 transition duration-300">
-            <span className="ml-2">إضافة للسلة</span>
-            <ShoppingBag className="w-5 h-5" />
+          <button onClick={()=>handleAddToCart(Package._id)} className="flex items-center justify-center w-full bg-purple text-white px-6 py-3 rounded-lg hover:bg-purple-700 transition duration-300">
+            <span className="ml-2">{mutation.isPending ? 'جاري الإضافة...' : 'إضافة للسلة'}</span>
+            <ShoppingBag className=" ml-2 w-5 h-5" />
           </button>
         </div>
         <div className="h-64 lg:h-auto w-full lg:w-1/2">

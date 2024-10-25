@@ -32,7 +32,7 @@ const addToCartMutation = async (productId: string) => {
 };
 
 const Product: React.FC<ProductProps> = ({ id, image, title, rating, reviewCount, price, originalPrice }) => {
-  const dispatch = useDispatch();
+
   const queryClient = useQueryClient();
 
   const mutation = useMutation({
