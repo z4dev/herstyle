@@ -6,6 +6,7 @@ import { CheckCircleIcon, XCircleIcon, RefreshCcwIcon } from "lucide-react"; // 
 import axiosInstance from "@/utils/axiosInstance";
 import { useDispatch, useSelector } from "react-redux";
 import { clearAddress } from "@/utils/addressSlice";
+import { getCookie } from "cookies-next";
 
 const PaymentCallback: React.FC = () => {
   const router = useRouter();
@@ -18,7 +19,8 @@ const PaymentCallback: React.FC = () => {
   const [iconColor, setIconColor] = useState<string>("");
   const address = useSelector((state: any) => state.address); // Access the address state from Redux
   const dispatch = useDispatch();
-
+  console.log(address);
+  const addressCookies = getCookie("address");
   useEffect(() => {
     const checkPaymentStatus = async () => {
       if (status === "completed" || status === "paid") {
@@ -26,14 +28,7 @@ const PaymentCallback: React.FC = () => {
           try {
             const response = await axiosInstance.post("/cart/checkout", {
               paymentMethod: "INSTANT",
-              address: {
-                firstLine: address.firstLine,
-                googleLocation: address.googleLocation,
-                city: address.city,
-                postalCode: address.postalCode,
-                street: address.street,
-                country: "السعودية", // Default country
-              },
+              address: JSON.parse(addressCookies ?? ""),
               paymentId: paymentId,
             });
             dispatch(clearAddress());
@@ -72,7 +67,7 @@ const PaymentCallback: React.FC = () => {
 
   return (
     <div
-      className={`flex flex-col items-center justify-center min-h-screen text-center ${iconColor}`}
+      className={`flex flex-col items-center justify-start pt-40 min-h-screen text-center ${iconColor}`}
     >
       <div className="mb-4">{icon}</div>
       <h1 className="text-2xl font-bold">{message}</h1>
