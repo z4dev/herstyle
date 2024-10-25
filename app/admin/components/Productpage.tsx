@@ -1,15 +1,22 @@
-'use client'
-import React, { useState } from 'react'
-import { Plus, Trash, X } from 'lucide-react'
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import axios from 'axios'
-import { Button } from '@/components/ui/button'
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { Table, TableHeader, TableBody, TableHead, TableRow, TableCell } from '@/components/ui/table'
-import { Textarea } from '@/components/ui/textarea'
-import axiosInstance from '@/utils/axiosInstance'
+"use client";
+import React, { useState, useCallback } from "react";
+import { Plus, Trash, X } from "lucide-react";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import axios from "axios";
+import { Button } from "@/components/ui/button";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Table,
+  TableHeader,
+  TableBody,
+  TableHead,
+  TableRow,
+  TableCell,
+} from "@/components/ui/table";
+import { Textarea } from "@/components/ui/textarea";
+import axiosInstance from "@/utils/axiosInstance";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -19,124 +26,180 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from "@/components/ui/alert-dialog"
-import { CldUploadButton } from 'next-cloudinary'
+} from "@/components/ui/alert-dialog";
+import { CldUploadButton } from "next-cloudinary";
+
+import { debounce } from "lodash";
 
 // Function to fetch products
 const fetchProducts = async () => {
-  const { data } = await axiosInstance.get('products')
-  return data.data.products
-}
+  const { data } = await axiosInstance.get("products");
+  return data.data.products;
+};
+
+const fetchRecommendations = async (term: string) => {
+  if (!term.trim()) return { data: { packages: [] } }; // Return empty packages if no term
+
+  const { data } = await axiosInstance.get(`packages?search=${term}`);
+
+  // Assuming the response structure is as provided
+  if (data.success) {
+    return data.data.packages; // Return the packages directly
+  } else {
+    throw new Error("Failed to fetch recommendations");
+  }
+};
 
 function Productpage() {
-  const queryClient = useQueryClient()
+  const queryClient = useQueryClient();
   const [newProduct, setNewProduct] = useState({
-    name: '',
-    description: '',
+    name: "",
+    description: "",
     images: [] as string[],
     availableQuantity: 0,
     price: {
       originalPrice: 0,
-      finalPrice: 0
+      finalPrice: 0,
     },
     quantity: 0,
-    tags: [] as string[]
-  })
-  const [productToDelete, setProductToDelete] = useState<string | null>(null)
+    tags: [] as string[],
+    packageId: "",
+  });
+  const [productToDelete, setProductToDelete] = useState<string | null>(null);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
+  const [showRecommendations, setShowRecommendations] = useState(false);
 
-  const { data: products, isLoading, isError } = useQuery({
-    queryKey: ['admin-products'],
+  const debouncedSetSearch = useCallback(
+    debounce((term: string) => {
+      setDebouncedSearchTerm(term);
+    }, 300),
+    []
+  );
+
+  const {
+    data: products,
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: ["admin-products"],
     queryFn: fetchProducts,
-  })
+  });
 
-  async function adminAddProduct(newProduct:any){
-    console.log("newProduct =",newProduct)
+  async function adminAddProduct(newProduct: any) {
     try {
-      const response = await axiosInstance.post('products', newProduct);
+      const response = await axiosInstance.post("products", newProduct);
       return response.data;
     } catch (error) {
-      console.log('Error adding product:', error);
+      console.log("Error adding product:", error);
       throw error;
     }
   }
 
-  const addProductMutation:any = useMutation({
-    mutationFn:adminAddProduct,
+  const addProductMutation: any = useMutation({
+    mutationFn: adminAddProduct,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['admin-products'] })
+      queryClient.invalidateQueries({ queryKey: ["admin-products"] });
       setNewProduct({
-        name: '',
-        description: '',
+        name: "",
+        description: "",
         images: [],
         availableQuantity: 0,
         price: {
           originalPrice: 0,
-          finalPrice: 0
+          finalPrice: 0,
         },
         quantity: 0,
-        tags: [] as string[]
-      })
-      console.log("success")
+        tags: [] as string[],
+        packageId: "",
+      });
+      console.log("success");
     },
-  })
+  });
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target
-    if (name === 'originalPrice' || name === 'finalPrice') {
-      setNewProduct(prev => ({
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+    if (name === "originalPrice" || name === "finalPrice") {
+      setNewProduct((prev) => ({
         ...prev,
-        price: { ...prev.price, [name]: Number(value) }
-      }))
-    } else if (name === 'tags') {
-      setNewProduct(prev => ({ ...prev, [name]: value.split(',').map(tag => tag.trim()) }))
+        price: { ...prev.price, [name]: Number(value) },
+      }));
+    } else if (name === "tags") {
+      setNewProduct((prev) => ({
+        ...prev,
+        [name]: value.split(",").map((tag) => tag.trim()),
+      }));
     } else {
-      setNewProduct(prev => ({ ...prev, [name]: ['quantity', 'availableQuantity'].includes(name) ? Number(value) : value }))
+      setNewProduct((prev) => ({
+        ...prev,
+        [name]: ["quantity", "availableQuantity"].includes(name)
+          ? Number(value)
+          : value,
+      }));
     }
-  }
+  };
 
   const addProduct = (e: React.FormEvent) => {
-    e.preventDefault()
-    addProductMutation.mutate(newProduct)
-  }
+    e.preventDefault();
+    addProductMutation.mutate(newProduct);
+  };
 
-  const deleteProductMutation:any = useMutation({
-    mutationFn: (productId: string) => axiosInstance.delete(`products/${productId}`),
+  const deleteProductMutation: any = useMutation({
+    mutationFn: (productId: string) =>
+      axiosInstance.delete(`products/${productId}`),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['admin-products'] })
+      queryClient.invalidateQueries({ queryKey: ["admin-products"] });
     },
-  })
+  });
 
   const handleDeleteClick = (id: string) => {
-    setProductToDelete(id)
-  }
+    setProductToDelete(id);
+  };
 
   const handleConfirmDelete = () => {
     if (productToDelete) {
-      deleteProductMutation.mutate(productToDelete)
-      setProductToDelete(null)
+      deleteProductMutation.mutate(productToDelete);
+      setProductToDelete(null);
     }
-  }
+  };
 
   const handleCancelDelete = () => {
-    setProductToDelete(null)
-  }
+    setProductToDelete(null);
+  };
 
   const handleUploadSuccess = (result: any) => {
-    setNewProduct(prev => ({
+    setNewProduct((prev) => ({
       ...prev,
-      images: [...prev.images, result.info.secure_url]
-    }))
-  }
+      images: [...prev.images, result.info.secure_url],
+    }));
+  };
 
   const removeImage = (index: number) => {
-    setNewProduct(prev => ({
+    setNewProduct((prev) => ({
       ...prev,
-      images: prev.images.filter((_, i) => i !== index)
-    }))
-  }
+      images: prev.images.filter((_, i) => i !== index),
+    }));
+  };
 
-  if (isLoading) return <div>جاري التحميل...</div>
-  if (isError) return <div>حدث خطأ أثناء تحميل المنتجات</div>
+  const fetchRecommendationsQuery = useQuery({
+    queryKey: ["search", debouncedSearchTerm],
+    queryFn: () => fetchRecommendations(debouncedSearchTerm),
+    enabled: !!debouncedSearchTerm.trim(), // Only run if there's a search term
+  });
+
+  const recommendations = fetchRecommendationsQuery.data || [];
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setShowRecommendations(true);
+    const term = e.target.value;
+    setSearchTerm(term);
+    debouncedSetSearch(term);
+  };
+
+  if (isLoading) return <div>جاري التحميل...</div>;
+  if (isError) return <div>حدث خطأ أثناء تحميل المنتجات</div>;
 
   return (
     <Card>
@@ -148,41 +211,130 @@ function Productpage() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <div className="space-y-2">
               <Label htmlFor="originalPrice">السعر الأصلي</Label>
-              <Input id="originalPrice" name="originalPrice" type="number"  onChange={handleInputChange} required />
+              <Input
+                id="originalPrice"
+                name="originalPrice"
+                type="number"
+                className="text-right"
+                onChange={handleInputChange}
+                required
+              />
             </div>
             <div className="space-y-2">
               <Label htmlFor="finalPrice">السعر النهائي</Label>
-              <Input id="finalPrice" name="finalPrice" type="number"  onChange={handleInputChange} required />
+              <Input
+                id="finalPrice"
+                name="finalPrice"
+                type="number"
+                className="text-right"
+                onChange={handleInputChange}
+                required
+              />
             </div>
             <div className="space-y-2">
               <Label htmlFor="name">اسم المنتج</Label>
-              <Input id="name" name="name" value={newProduct.name} onChange={handleInputChange} required />
+              <Input
+                id="name"
+                name="name"
+                value={newProduct.name}
+                className="text-right"
+                onChange={handleInputChange}
+                required
+              />
             </div>
             <div className="space-y-2">
               <Label htmlFor="quantity">الكمية</Label>
-              <Input id="quantity" name="quantity" type="number"  onChange={handleInputChange} required />
+              <Input
+                id="quantity"
+                name="quantity"
+                type="number"
+                className="text-right"
+                onChange={handleInputChange}
+                required
+              />
             </div>
             <div className="space-y-2">
               <Label htmlFor="availableQuantity">الكمية المتاحة</Label>
-              <Input id="availableQuantity" name="availableQuantity" type="number"  onChange={handleInputChange} required />
+              <Input
+                id="availableQuantity"
+                name="availableQuantity"
+                type="number"
+                className="text-right"
+                onChange={handleInputChange}
+                required
+              />
             </div>
             <div className="space-y-2">
               <Label htmlFor="tags">العلامات (مفصولة بفواصل)</Label>
-              <Input id="tags" name="tags" value={newProduct.tags.join(', ')} onChange={handleInputChange} required />
+              <Input
+                id="tags"
+                name="tags"
+                value={newProduct.tags.join(", ")}
+                className="text-right"
+                onChange={handleInputChange}
+                required
+              />
+            </div>
+            <div className="relative w-full space-y-2 lg:col-span-3">
+              <Label htmlFor="packageId">حزمة</Label>
+              <Input
+                type="text"
+                placeholder="...البحث"
+                className="py-1 lg:py-2 p-2 pr-10 pl-4 rounded-md text-black w-full   text-right"
+                value={searchTerm}
+                onChange={handleSearchChange}
+              />
+              {searchTerm.trim() !== "" &&
+                recommendations.length > 0 &&
+                !fetchRecommendationsQuery.isLoading &&
+                showRecommendations && (
+                  <div className="absolute z-10 w-full mt-1 bg-white border border-purple rounded-md shadow-lg">
+                    {recommendations.map(
+                      (item: { _id: string; name: string }) => (
+                        <div
+                          key={item._id}
+                          onClick={() => {
+                            setSearchTerm(item.name);
+                            setNewProduct((prev) => ({
+                              ...prev,
+                              packageId: item._id,
+                            }));
+                            setShowRecommendations(false);
+                          }}
+                        >
+                          <div className="p-2 hover:bg-gray-100 cursor-pointer text-right">
+                            <div className="font-semibold">{item.name}</div>
+                          </div>
+                        </div>
+                      )
+                    )}
+                  </div>
+                )}
             </div>
           </div>
-          
+
           <div className="space-y-2">
             <Label htmlFor="description">وصف المنتج</Label>
-            <Textarea id="description" name="description" value={newProduct.description} onChange={handleInputChange} required className="w-full h-24" />
+            <Textarea
+              id="description"
+              name="description"
+              value={newProduct.description}
+              className="text-right w-full h-24"
+              onChange={handleInputChange}
+              required
+            />
           </div>
-          
+
           <div className="space-y-2">
             <Label htmlFor="images">صور المنتج</Label>
             <div className="mt-2 flex justify-end flex-wrap gap-4">
               {newProduct.images.map((image, index) => (
                 <div key={index} className="relative group">
-                  <img src={image} alt={`Uploaded ${index + 1}`} className="w-24 h-24 object-cover rounded-lg shadow-md" />
+                  <img
+                    src={image}
+                    alt={`Uploaded ${index + 1}`}
+                    className="w-24 h-24 object-cover rounded-lg shadow-md"
+                  />
                   <button
                     type="button"
                     onClick={() => removeImage(index)}
@@ -201,14 +353,14 @@ function Productpage() {
               </CldUploadButton>
             </div>
           </div>
-          
+
           <Button
             type="submit"
             className="w-full bg-purple hover:bg-purple-700"
             disabled={addProductMutation.isLoading}
           >
             <Plus className="w-4 h-4 mr-2" />
-            {addProductMutation.isLoading ? 'جاري الإضافة...' : 'إضافة منتج'}
+            {addProductMutation.isLoading ? "جاري الإضافة..." : "إضافة منتج"}
           </Button>
         </form>
 
@@ -222,29 +374,30 @@ function Productpage() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {products && products.map((product:any) => (
-              <TableRow key={product._id}>
-                <TableCell>
-                  <img
-                    src={product.images[0]}
-                    alt={product.name}
-                    className="w-12 h-12 object-cover rounded-lg"
-                  />
-                </TableCell>
-                <TableCell>{product.name}</TableCell>
-                <TableCell>{product.price.finalPrice} ريال</TableCell>
-                <TableCell>
-                  <Button
-                    variant="destructive"
-                    size="sm"
-                    onClick={() => handleDeleteClick(product._id)}
-                    disabled={deleteProductMutation.isLoading}
-                  >
-                    <Trash className="w-4 h-4" />
-                  </Button>
-                </TableCell>
-              </TableRow>
-            ))}
+            {products &&
+              products.map((product: any) => (
+                <TableRow key={product._id}>
+                  <TableCell>
+                    <img
+                      src={product.images[0]}
+                      alt={product.name}
+                      className="w-12 h-12 object-cover rounded-lg"
+                    />
+                  </TableCell>
+                  <TableCell>{product.name}</TableCell>
+                  <TableCell>{product.price.finalPrice} ريال</TableCell>
+                  <TableCell>
+                    <Button
+                      variant="destructive"
+                      size="sm"
+                      onClick={() => handleDeleteClick(product._id)}
+                      disabled={deleteProductMutation.isLoading}
+                    >
+                      <Trash className="w-4 h-4" />
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))}
           </TableBody>
         </Table>
 
@@ -253,18 +406,26 @@ function Productpage() {
             <AlertDialogHeader>
               <AlertDialogTitle>تأكيد الحذف</AlertDialogTitle>
               <AlertDialogDescription>
-                هل أنت متأكد أنك تريد حذف هذا المنتج؟ لا يمكن التراجع عن هذا الإجراء.
+                هل أنت متأكد أنك تريد حذف هذا المنتج؟ لا يمكن التراجع عن هذا
+                الإجراء.
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
-              <AlertDialogCancel onClick={handleCancelDelete}>إلغاء</AlertDialogCancel>
-              <AlertDialogAction className="bg-purple hover:bg-purple-700" onClick={handleConfirmDelete}>حذف</AlertDialogAction>
+              <AlertDialogCancel onClick={handleCancelDelete}>
+                إلغاء
+              </AlertDialogCancel>
+              <AlertDialogAction
+                className="bg-purple hover:bg-purple-700"
+                onClick={handleConfirmDelete}
+              >
+                حذف
+              </AlertDialogAction>
             </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialog>
       </CardContent>
     </Card>
-  )
+  );
 }
 
-export default Productpage
+export default Productpage;

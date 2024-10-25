@@ -6,6 +6,7 @@ import Footer from "./(components)/Footer";
 import TanStack from "@/utils/TanStack";
 import Redux from "./(components)/Redux";
 import Whatapp from "./(components)/Whatapp";
+import { Toaster } from "@/components/ui/toaster";
 
 const cairo = Cairo({
   subsets: ["latin", "arabic"],
@@ -32,6 +33,7 @@ export default function RootLayout({
         <TanStack>
           <Redux>
             <Header />
+            <Toaster />
             {children}
             </Redux>
         </TanStack>

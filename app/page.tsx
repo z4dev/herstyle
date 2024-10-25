@@ -74,7 +74,7 @@ export default function Home() {
           </h2>
           <h2 className="text-2xl  mb-4">اختاري منتجك الراقي من متجرنا</h2>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6">
           {/* Repeat this product card 4 times */}
           {[...Array(4)].map((_, index) => (
             <ProductSkelton key={index} isLoading={isLoading} />
@@ -105,7 +105,7 @@ export default function Home() {
           <h3 className="text-2xl font-bold text-purple">لشعرك أكثر نعومة</h3>
           <h2 className="text-2xl mb-4">نعومة شعرك تحصليها من عندنا</h2>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6">
           {/* Repeat this product card 4 times */}
           {[...Array(4)].map((_, index) => (
             <ProductSkelton key={index} isLoading={isLoading} />
