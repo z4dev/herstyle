@@ -47,11 +47,9 @@ const MoyasarPayment: React.FC<{ cartInfo: any }> = ({ cartInfo }) => {
                 .join(", ") ?? "-"
             }\n`,
             publishable_api_key:
-              process.env.NEXT_PUBLIC_MOYASAR_PUBLISHABLE_KEY ??
-              "pk_test_nGnC14STJ9Qcbbs6QiNZo8SGYquvG9otmYePBXh3",
+              process.env.NEXT_PUBLIC_MOYASAR_PUBLISHABLE_KEY ,
             callback_url:
-              process.env.NEXT_PUBLIC_BASE_URL ??
-              "http://localhost:3000" + "/payment/callback",
+              process.env.NEXT_PUBLIC_BASE_URL +"/payment/callback",
             methods: ["creditcard"],
             secret_api_key: "",
             on_completed: function (payment: any) {
