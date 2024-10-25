@@ -64,7 +64,7 @@ const AddressAndPaymentForm = () => {
     const token = getCookie("auth_token");
     const role = localStorage.getItem("role");
 
-    if (!token) {
+    if (!token || role !== "CLIENT") {
       router.push("/");
     }
   }, [getCookie("auth_token")]);
