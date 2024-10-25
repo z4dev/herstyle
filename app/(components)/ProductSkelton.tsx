@@ -10,7 +10,7 @@ interface ProductProps {
 const Product: React.FC<ProductProps> = ({ isLoading = false }) => {
   if (isLoading) {
     return (
-      <div className="bg-white w-[250px] rounded-lg shadow-md p-4 ">
+      <div className="bg-white w-[250px] rounded-lg shadow-md p-4">
         <Skeleton className="h-[300px] w-full rounded-t-lg mb-4" />
         <Skeleton className="h-6 w-3/4 mb-2 ml-auto" />
         <div className="flex items-center justify-end mb-2">

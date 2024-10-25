@@ -60,7 +60,7 @@ const Product: React.FC<ProductProps> = ({ id, image, title, rating, reviewCount
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-md  w-[250px]">
+    <div className="bg-white rounded-lg shadow-md w-[250px]">
       <div className="relative mb-4">
         <Image src={image} alt={title} width={200} height={200} className="object-cover h-[300px] w-full rounded-t-lg" />
       </div>
