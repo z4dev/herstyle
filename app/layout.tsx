@@ -26,6 +26,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <link
+          rel="stylesheet"
+          href="https://cdn.moyasar.com/mpf/1.5.2/moyasar.css"
+        ></link>
+      </head>
       <body
         className={`${cairo.variable} bg-[#FBFBFC] font-sans flex flex-col min-h-screen justify-between relative`}
       >
@@ -33,7 +39,7 @@ export default function RootLayout({
           <Redux>
             <Header />
             {children}
-            </Redux>
+          </Redux>
         </TanStack>
         <Whatapp />
         <Footer />
