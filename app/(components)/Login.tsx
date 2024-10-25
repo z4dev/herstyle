@@ -42,6 +42,7 @@ export function Login() {
   const [isSignupOpen, setIsSignupOpen] = useState(false);
   const { register, handleSubmit, formState: { errors } } = useForm<LoginFormData>();
   const [user, setUser] = useState<string | null>(null)
+  const [error , setError] = useState("")
 
   const loginMutation = useMutation({
     mutationFn: loginUser,
@@ -63,6 +64,7 @@ export function Login() {
     onError: (error) => {
       // Handle login error
       console.error('Login failed', error);
+      setError("بيانات الاعتماد خاطئة"); // Set error message in Arabic for wrong credentials
     },
   });
 
@@ -124,6 +126,7 @@ export function Login() {
                 </Label>
                 <Checkbox id="IsPersistent" {...register("IsPersistent")} />
               </div>
+              {error && <p>{error}</p> }
             </div>
             <DialogFooter>
               <div className="w-full">

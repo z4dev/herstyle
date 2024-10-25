@@ -17,12 +17,6 @@ import axiosInstance from "@/utils/axiosInstance";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 
-// interface CartItem {
-//   _id: string;
-//   productId: string;
-//   quantity: number;
-//   totalPrice: number;
-// }
 
 async function getCart() {
   try {
@@ -66,6 +60,7 @@ export default function Cart() {
   });
 
   console.log("cart", data);
+  console.log("length",data?.data?.carts[0]?.products?.length)
 
   const cartItems =
     data?.data?.carts[0]?.packages.concat(data?.data?.carts[0]?.products) || [];
@@ -106,9 +101,9 @@ export default function Cart() {
         onClick={() => setIsOpen(!isOpen)}
       >
         <ShoppingBag className="h-6 w-6" />
-        {totalQuantity > 0 && (
+        {data?.data?.carts[0]?.products?.length + data?.data?.carts[0]?.packages?.length > 0 && (
           <Badge className="absolute bg-purple hover:bg-purple flex items-center justify-center -top-2 -right-2 h-6 w-6 rounded-full p-2">
-            <p>{totalQuantity}</p>
+            <p>{ data?.data?.carts[0]?.products?.length + data?.data?.carts[0]?.packages?.length }</p>
           </Badge>
         )}
       </Button>
