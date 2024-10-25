@@ -17,9 +17,7 @@ const PaymentCallback: React.FC = () => {
   const [message, setMessage] = useState<string>("");
   const [icon, setIcon] = useState<JSX.Element | null>(null);
   const [iconColor, setIconColor] = useState<string>("");
-  const address = useSelector((state: any) => state.address); // Access the address state from Redux
   const dispatch = useDispatch();
-  console.log(address);
   const addressCookies = getCookie("address");
   useEffect(() => {
     const checkPaymentStatus = async () => {
@@ -63,7 +61,7 @@ const PaymentCallback: React.FC = () => {
     }, 5000);
 
     return () => clearTimeout(timeout); // Cleanup on unmount
-  }, [status, paymentId, router, address, dispatch]);
+  }, [status, paymentId, router, dispatch]);
 
   return (
     <div
