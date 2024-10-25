@@ -64,7 +64,7 @@ const AddressAndPaymentForm = () => {
     const token = getCookie("auth_token");
     const role = localStorage.getItem("role");
 
-    if (!token || role !== "CLIENT" ) {
+    if (!token) {
       router.push("/");
     }
   }, [getCookie("auth_token")]);
@@ -104,7 +104,7 @@ const AddressAndPaymentForm = () => {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen p-4">
-      <h1 className="text-2xl font-bold mb-4">
+      <h1 className="md:text-2xl sm:text-xl font-bold mb-4 text-center">
         إضافة العنوان واختيار طريقة الدفع
       </h1>
 
@@ -239,9 +239,9 @@ const AddressAndPaymentForm = () => {
         <Button
           type="submit"
           className="bg-purple text-white px-4 py-2 rounded w-full"
-          disabled={addressMutation.isPending && addressMutation.isError}
+          disabled={addressMutation.isPending && !addressMutation.isError}
         >
-          {addressMutation.isPending && addressMutation.isError
+          {addressMutation.isPending && !addressMutation.isError
             ? "جاري الطلب..."
             : "تأكيد الطلب"}
         </Button>
