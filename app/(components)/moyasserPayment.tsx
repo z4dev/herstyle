@@ -47,19 +47,45 @@ const MoyasarPayment: React.FC<{ cartInfo: any }> = ({ cartInfo }) => {
                 .join(", ") ?? "-"
             }\n`,
             publishable_api_key:
-              process.env.NEXT_PUBLIC_MOYASAR_PUBLISHABLE_KEY,
+              process.env.NEXT_PUBLIC_MOYASAR_PUBLISHABLE_KEY ,
             callback_url:
-              process.env.NEXT_PUBLIC_BASE_URL + "/payment/callback",
+              process.env.NEXT_PUBLIC_BASE_URL +"/payment/callback",
             methods: ["creditcard"],
+            secret_api_key: "",
             on_completed: function (payment: any) {
               return new Promise(function (resolve, reject) {
                 if (payment.status === "completed") {
-                  resolve({});
+                  resolve({ message: "Payment completed successfully." });
+                } else if (payment.status === "initiated") {
+                  resolve({
+                    message:
+                      "Payment initiated, awaiting 3D Secure confirmation.",
+                  });
                 } else {
-                  router.push("/payment/callback");
-                  reject(new Error("Payment not completed"));
+                  router.push("/payment/callback?status=failed");
+                  reject(
+                    new Error(
+                      `Payment not successful. Status: ${payment.status}`
+                    )
+                  );
                 }
               });
+            },
+            metadata: {
+              email: cartInfo.userId?.email,
+              phoneNumber: cartInfo.userId?.phoneNumber,
+              products: cartInfo.products
+                .map(
+                  (item: any) =>
+                    `name: ${item.productId.name}, quantity: ${item.quantity}, price: ${item.totalPrice}`
+                )
+                .join("; "), // Serialize array to a single string
+              packages: cartInfo.packages
+                .map(
+                  (item: any) =>
+                    `name: ${item.packageId.name}, quantity: ${item.quantity}, price: ${item.totalPrice}`
+                )
+                .join("; "), // Serialize array to a single string
             },
           });
           setLoading(false);

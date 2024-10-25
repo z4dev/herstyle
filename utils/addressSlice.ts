@@ -1,6 +1,8 @@
+'use client'
 // store/addressSlice.js
 
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { deleteCookie, setCookie } from 'cookies-next';
 
 const initialState = {
   address: {
@@ -26,9 +28,11 @@ const addressSlice = createSlice({
   reducers: {
     setAddress: (state:{address : withAddress}, action:PayloadAction<withAddress>) => {
       state.address = action.payload;
+      setCookie('address', JSON.stringify(action.payload))
     },
     clearAddress: (state:{address : withAddress}) => {
       state.address = initialState.address; 
+      deleteCookie('address')
     },
   },
 });
