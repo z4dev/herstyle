@@ -74,6 +74,38 @@ export default function ProductPage({ params }: { params: { package: string } })
   const {data:{Package , productsForThatPackage, packageComments:{comments} }} = packageData
 
 
+  const handleShare = async () => {
+    const currentUrl = window.location.href
+    
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: Package.name,
+          text: 'Check out this product!',
+          url: currentUrl,
+        })
+      } catch (error) {
+        console.error('Error sharing:', error)
+      }
+    } else {
+      try {
+        await navigator.clipboard.writeText(currentUrl)
+        toast({
+          title: "تم النسخ",
+          description: "تم نسخ الرابط إلى الحافظة",
+        })
+      } catch (error) {
+        console.error('Error copying to clipboard:', error)
+        toast({
+          title: "خطأ",
+          description: "فشل نسخ الرابط",
+          variant: "destructive",
+        })
+      }
+    }
+  }
+
+
 
   const product = {
     id: 'dummy-product',
@@ -137,7 +169,7 @@ export default function ProductPage({ params }: { params: { package: string } })
   return (
     <div className="container mx-auto px-4 lg:px-24 py-8">
       <div className="flex items-center justify-between mb-4">
-        <Button className="text-purple bg-white flex items-center gap-2 border border-purple hover:bg-purple-100">
+        <Button onClick={handleShare} className="text-purple bg-white flex items-center gap-2 border border-purple hover:bg-purple-100">
         مشاركة
         <Share2 />
         </Button>
