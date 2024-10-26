@@ -1,7 +1,7 @@
 "use client"
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -37,7 +37,9 @@ const loginUser = async (data: LoginFormData) => {
   }
 };
 
+
 export function Login() {
+  const queryClient = useQueryClient()
   const [isOpen, setIsOpen] = useState(false)
   const [isSignupOpen, setIsSignupOpen] = useState(false);
   const { register, handleSubmit, formState: { errors } , reset } = useForm<LoginFormData>();
@@ -47,6 +49,9 @@ export function Login() {
   const loginMutation = useMutation({
     mutationFn: loginUser,
     onSuccess: (data) => {
+
+       queryClient.invalidateQueries({queryKey:["cart"]})
+
       // Save the token in a cookie
       setCookie('auth_token', data.accessToken, {
         maxAge: 30 * 24 * 60 * 60, // 30 days
@@ -106,7 +111,7 @@ export function Login() {
                   className="col-span-4 focus-visible:ring-purple-500 text-right"
                   {...register("email", { required: "البريد الإلكتروني مطلوب" })}
                 />
-                {errors.email && <span className="text-red justify-end  w-full col-span-3">{errors.email.message}</span>}
+                {errors.email && <span className="text-red col-span-4 text-right">{errors.email.message}</span>}
               </div>
               <div className="grid grid-cols-4 items-center gap-4">
                 <Input
@@ -116,7 +121,7 @@ export function Login() {
                   className="col-span-4 focus-visible:ring-purple-500 text-right text-nowrap"
                   {...register("password", { required: "كلمة المرور مطلوبة" })}
                 />
-                {errors.password && <span className="text-red col-span-3">{errors.password.message}</span>}
+                {errors.password && <span className="text-red col-span-4 text-right">{errors.password.message}</span>}
               </div>
               <div className="flex items-center justify-end space-x-2 w-full rtl:space-x-reverse">
                 <Label htmlFor="IsPersistent" className="text-sm leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">

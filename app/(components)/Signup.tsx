@@ -85,7 +85,7 @@ function Signup({ isSignupOpen, setIsSignupOpen }: SignupProps) {
                 className="col-span-4 focus-visible:ring-purple-500 text-right"
                 {...register("name", { required: "الاسم مطلوب" })}
               />
-              {errors.name && <span className="text-red col-span-3 text-sm">{errors.name.message}</span>}
+              {errors.name && <span className="text-red col-span-4 text-right">{errors.name.message}</span>}
             </div>
             <div className="grid grid-cols-4 items-center">
               <Input
@@ -94,7 +94,7 @@ function Signup({ isSignupOpen, setIsSignupOpen }: SignupProps) {
                 className="col-span-4 focus-visible:ring-purple-500 text-right"
                 {...register("email", { required: "البريد الإلكتروني مطلوب", pattern: { value: /^\S+@\S+$/i, message: "البريد الإلكتروني غير صالح" } })}
               />
-              {errors.email && <span className="text-red col-span-3 text-sm">{errors.email.message}</span>}
+              {errors.email && <span className="text-red col-span-4 text-right">{errors.email.message}</span>}
             </div>
 
             <div className="grid grid-cols-4 items-center">
@@ -111,7 +111,7 @@ function Signup({ isSignupOpen, setIsSignupOpen }: SignupProps) {
             }
           })}
         />
-        {errors.phoneNumber && <span className="text-red col-span-3 text-sm">{errors.phoneNumber.message}</span>}
+        {errors.phoneNumber && <span className="text-red col-span-4 text-right">{errors.phoneNumber.message}</span>}
       </div>
 
             <div className="grid grid-cols-4 items-center">
@@ -122,7 +122,7 @@ function Signup({ isSignupOpen, setIsSignupOpen }: SignupProps) {
                 type="password"
                 {...register("password", { required: "كلمة المرور مطلوبة", minLength: { value: 6, message: "كلمة المرور يجب أن تكون على الأقل 6 أحرف" } })}
               />
-              {errors.password && <span className="text-red col-span-3 text-sm">{errors.password.message}</span>}
+              {errors.password && <span className="text-red col-span-4 text-right">{errors.password.message}</span>}
             </div>
 
 
@@ -143,7 +143,7 @@ function Signup({ isSignupOpen, setIsSignupOpen }: SignupProps) {
                   }
                 })}
               />
-              {errors.confirmPassword && <span className="text-red col-span-3 text-sm">{errors.confirmPassword.message}</span>}
+              {errors.confirmPassword && <span className="text-red col-span-4 text-right">{errors.confirmPassword.message}</span>}
             </div>
           </div>
           {error && <p className="text-purple text-sm mb-4">{error}</p>}

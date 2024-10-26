@@ -18,6 +18,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import axiosInstance from "@/utils/axiosInstance";
+import { Card, CardContent } from "@/components/ui/card";
 
 interface Profile {
   _id: string;
@@ -104,6 +105,7 @@ export default function ProfilePage() {
     deleteCookie("auth_token");
     router.push("/");
     router.refresh()
+    queryClient.invalidateQueries({ queryKey: ["cart"] });
   };
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -205,13 +207,15 @@ export default function ProfilePage() {
             </Button>
           </form>
         </TabsContent>
-        <TabsContent value="orders">
+        <TabsContent value="orders" className="w-80 lg:w-auto">
           <h2 className="text-2xl font-bold my-4 text-right">طلباتي</h2>
           {isOrdersLoading ? (
             <p>جاري تحميل الطلبات...</p>
           ) : isOrdersError ? (
             <p>حدث خطأ أثناء تحميل الطلبات. يرجى المحاولة مرة أخرى.</p>
           ) : (
+            <Card>
+              <CardContent>
             <Table>
               <TableHeader>
                 <TableRow>
@@ -250,6 +254,8 @@ export default function ProfilePage() {
                 ))}
               </TableBody>
             </Table>
+            </CardContent>
+            </Card>
           )}
         </TabsContent>
       </Tabs>
