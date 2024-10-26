@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useCallback } from "react";
-import { Plus, Trash, X } from "lucide-react";
+import { Plus, Trash, X, Edit } from "lucide-react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { Button } from "@/components/ui/button";
@@ -69,6 +69,7 @@ function Productpage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
   const [showRecommendations, setShowRecommendations] = useState(false);
+  const [isEditing, setIsEditing] = useState(false); // Add state for editing
 
   const debouncedSetSearch = useCallback(
     debounce((term: string) => {
@@ -114,6 +115,18 @@ function Productpage() {
         packageId:"undefined",
       });
       console.log("success");
+    },
+  });
+
+  const updateProductMutation:any = useMutation({
+    mutationFn: (updatedProduct: any) => axiosInstance.put(`/products/${updatedProduct._id}`, updatedProduct),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["admin-products"] });
+      resetForm(); // Reset form after successful update
+      setIsEditing(false); // Reset editing state
+    },
+    onError: () => {
+      console.log("Error updating product");
     },
   });
 
@@ -198,6 +211,48 @@ function Productpage() {
     debouncedSetSearch(term);
   };
 
+  const handleEditClick = (product: any) => {
+    setNewProduct({
+      name: product.name,
+      description: product.description,
+      images: product.images,
+      availableQuantity: product.availableQuantity,
+      price: {
+        originalPrice: product.price.originalPrice,
+        finalPrice: product.price.finalPrice,
+      },
+      quantity: product.quantity,
+      tags: product.tags,
+      packageId: product.packageId,
+    }); // Set the product data to the form
+    setIsEditing(true); // Set editing state to true
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (isEditing) {
+      updateProductMutation.mutate(newProduct); // Call update mutation if editing
+    } else {
+      addProductMutation.mutate(newProduct); // Call add mutation if not editing
+    }
+  };
+
+  const resetForm = () => {
+    setNewProduct({
+      name: "",
+      description: "",
+      images: [],
+      availableQuantity: 0,
+      price: {
+        originalPrice: 0,
+        finalPrice: 0,
+      },
+      quantity: 0,
+      tags: [] as string[],
+      packageId: "undefined",
+    });
+  };
+
   if (isLoading) return <div>جاري التحميل...</div>;
   if (isError) return <div>حدث خطأ أثناء تحميل المنتجات</div>;
 
@@ -207,7 +262,7 @@ function Productpage() {
         <CardTitle>إدارة المنتجات</CardTitle>
       </CardHeader>
       <CardContent>
-        <form onSubmit={addProduct} className="mb-8 space-y-6">
+        <form onSubmit={handleSubmit} className="mb-8 space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <div className="space-y-2">
               <Label htmlFor="originalPrice">السعر الأصلي</Label>
@@ -387,14 +442,22 @@ function Productpage() {
                   <TableCell>{product.name}</TableCell>
                   <TableCell>{product.price.finalPrice} ريال</TableCell>
                   <TableCell>
-                    <Button
-                      variant="destructive"
-                      size="sm"
-                      onClick={() => handleDeleteClick(product._id)}
-                      disabled={deleteProductMutation.isLoading}
-                    >
-                      <Trash className="w-4 h-4" />
-                    </Button>
+                    <div className="flex justify-end space-x-2">
+                      <Button
+                        variant="outline"
+                        onClick={() => handleEditClick(product)} // Add edit button
+                        disabled={updateProductMutation.isLoading}
+                      >
+                        <Edit className="w-4 h-4" />
+                      </Button>
+                      <Button
+                        variant="destructive"
+                        onClick={() => handleDeleteClick(product._id)}
+                        disabled={deleteProductMutation.isLoading}
+                      >
+                        <Trash className="w-4 h-4" />
+                      </Button>
+                    </div>
                   </TableCell>
                 </TableRow>
               ))}
