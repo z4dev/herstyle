@@ -29,6 +29,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import { toast } from "@/hooks/use-toast";
 
 async function getCoupons() {
   const { data } = await axiosInstance.get("/coupons");
@@ -76,6 +77,14 @@ function CuponPage() {
   const addCouponMutation = useMutation({
     mutationFn: addCoupon,
     onSuccess: () => {
+
+      toast({
+        title: "نجاح", // عنوان الإشعار
+        description: "تم الإضافة بنجاح", // الرسالة التي سيتم عرضها
+        duration: 3000, // المدة بالميلي ثانية
+      });
+
+      
       queryClient.invalidateQueries({ queryKey: ["coupons"] });
       console.log("coupons success");
       setCouponCode("");

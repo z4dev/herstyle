@@ -2,8 +2,6 @@
 import Image from 'next/image';
 import { ShoppingBag, Star } from 'lucide-react';
 import Link from 'next/link';
-import { useDispatch } from 'react-redux';
-import { addToCart } from '@/utils/cart';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import axiosInstance from '@/utils/axiosInstance';
 import { toast } from '@/hooks/use-toast';

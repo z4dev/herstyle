@@ -63,7 +63,7 @@ function Productpage() {
     },
     quantity: 0,
     tags: [] as string[],
-    packageId: "",
+    packageId: "undefined",
   });
   const [productToDelete, setProductToDelete] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
@@ -111,7 +111,7 @@ function Productpage() {
         },
         quantity: 0,
         tags: [] as string[],
-        packageId: "",
+        packageId:"undefined",
       });
       console.log("success");
     },

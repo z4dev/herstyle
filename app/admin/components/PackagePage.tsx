@@ -30,6 +30,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
+import { toast } from '@/hooks/use-toast'
 
 // Add this type definition
 type Package = {
@@ -65,6 +66,13 @@ function PackagePage() {
   const createPackageMutation:any = useMutation({
     mutationFn: (newPackage: any) => axiosInstance.post('/packages', newPackage),
     onSuccess: () => {
+
+      toast({
+        title: "نجاح", // عنوان الإشعار
+        description: "تم الإضافة بنجاح", // الرسالة التي سيتم عرضها
+        duration: 3000, // المدة بالميلي ثانية
+      });
+
       queryClient.invalidateQueries({ queryKey: ['admin-packages'] })
       // Reset form after successful submission
       setFormData({
