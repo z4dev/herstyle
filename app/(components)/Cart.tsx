@@ -185,7 +185,7 @@ export default function Cart() {
                       <input
                         type="text"
                         placeholder="ادخل الكود"
-                        className="flex-grow p-2 border rounded-r-md text-right"
+                        className="flex-grow p-1 lg:p-2 border rounded-r-md text-right"
                         value={couponCode}
                         onChange={(e) => setCouponCode(e.target.value)}
                       />

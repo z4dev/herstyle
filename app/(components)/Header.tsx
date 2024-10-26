@@ -128,7 +128,7 @@ function Header() {
             </svg>
           </div>
           {searchTerm.trim() !== "" && recommendations.length > 0 && !isLoading && (
-            <div className="absolute z-10 w-full mt-1 bg-white border border-purple rounded-md shadow-lg">
+            <div className="absolute z-10 w-[80vw] lg:w-full mt-1 bg-white border border-purple rounded-md shadow-lg left-1/2 transform -translate-x-1/2">
               {recommendations.map((item: { _id: string; name: string }) => (
                 <Link
                   href={`/shop/product/${item._id}`}

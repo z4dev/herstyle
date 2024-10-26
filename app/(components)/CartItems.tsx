@@ -37,7 +37,7 @@ function CartItems({id,price,name,quantity,onDelete,stateOfDeleting,type,image}:
   return (
     <div className={`flex items-center space-x-4 mb-4 w-full ${stateOfDeleting ? 'opacity-50' : ''}`}>
         <p className="text-sm text-muted-foreground  mr-auto mb-auto">
-            <span className="text-nowrap">{(quantity*price).toFixed(2)}:الإجمالي </span></p>
+            <span className="text-nowrap text-xs"> الإجمالي:{(quantity*price).toFixed(2)}ر.س</span></p>
     <div className="flex flex-col items-end text-right justify-between w-fit">
       <h3 className="font-medium">{name}</h3>
       <p className="text-sm text-muted-foreground">{price.toFixed(2)} ريس</p>
@@ -78,7 +78,7 @@ function CartItems({id,price,name,quantity,onDelete,stateOfDeleting,type,image}:
       <Button
         variant="ghost"
         size="icon"
-        className="absolute -top-4 -right-1 h-6 w-6 p-0 bg-purple text-white hover:bg-white hover:text-purple"
+        className="absolute -top-4 -right-0 h-6 w-6 p-0 bg-purple text-white hover:bg-white hover:text-purple"
       >
         <X onClick={onDelete} className="h-4 w-4" />
       </Button>
