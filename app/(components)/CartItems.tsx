@@ -11,7 +11,7 @@ import axiosInstance from '@/utils/axiosInstance';
 
 
 
-function CartItems({id,price,name,quantity,onDelete,stateOfDeleting,type}:{id:string,price:number,name:string,quantity:number,onDelete:()=>void,stateOfDeleting:boolean,type:string}) {
+function CartItems({id,price,name,quantity,onDelete,stateOfDeleting,type,image}:{id:string,price:number,name:string,quantity:number,onDelete:()=>void,stateOfDeleting:boolean,type:string , image:string}) {
     const dispatch = useDispatch();
     const queryClient = useQueryClient();
 
@@ -36,8 +36,8 @@ function CartItems({id,price,name,quantity,onDelete,stateOfDeleting,type}:{id:st
 
   return (
     <div className={`flex items-center space-x-4 mb-4 w-full ${stateOfDeleting ? 'opacity-50' : ''}`}>
-        <p className="text-sm text-muted-foreground  mr-auto mb-auto">total:
-            <span className="text-nowrap">{(quantity*price).toFixed(2)} ريس</span></p>
+        <p className="text-sm text-muted-foreground  mr-auto mb-auto">
+            <span className="text-nowrap">{(quantity*price).toFixed(2)}:الإجمالي </span></p>
     <div className="flex flex-col items-end text-right justify-between w-fit">
       <h3 className="font-medium">{name}</h3>
       <p className="text-sm text-muted-foreground">{price.toFixed(2)} ريس</p>
@@ -69,7 +69,7 @@ function CartItems({id,price,name,quantity,onDelete,stateOfDeleting,type}:{id:st
     </div>
     <div className="relative">
       <Image
-        src="/products/1.jpg"
+        src={image}
         width={100}
         height={100}
         alt="Product"
@@ -78,7 +78,7 @@ function CartItems({id,price,name,quantity,onDelete,stateOfDeleting,type}:{id:st
       <Button
         variant="ghost"
         size="icon"
-        className="absolute -top-2 -right-2 h-6 w-6 p-0 bg-purple text-white hover:bg-white hover:text-purple"
+        className="absolute -top-4 -right-1 h-6 w-6 p-0 bg-purple text-white hover:bg-white hover:text-purple"
       >
         <X onClick={onDelete} className="h-4 w-4" />
       </Button>

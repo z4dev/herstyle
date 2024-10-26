@@ -102,6 +102,7 @@ export default function ProfilePage() {
     localStorage.removeItem("role");
     deleteCookie("auth_token");
     router.push("/");
+    router.refresh()
   };
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {

@@ -63,7 +63,7 @@ function Header() {
           >
             ✕
           </button>
-          <span className="mr-auto">
+          <span className="mr-auto text-nowrap">
             تخفيضات موسمية تصل إلى 30% لمدة 30 يوم
           </span>
         </div>
@@ -127,6 +127,11 @@ function Header() {
               ))}
             </div>
           )}
+          {searchTerm.trim() !== "" && recommendations.length === 0 && !isLoading && (
+            <div className="absolute z-10 w-full mt-1 bg-white border border-purple rounded-md shadow-lg text-center p-2">
+              <span className="text-gray-500">لا توجد نتائج</span>
+            </div>
+          )}
         </div>
         <Image
           src="/logo.png"
@@ -136,7 +141,6 @@ function Header() {
           height={50}
         />
       </header>
-
       {/* Navigation */}
       <nav className="w-full flex items-center bg-purple text-white text-xs lg:text-base text-center lg:px-24 p-4">
         <Login />

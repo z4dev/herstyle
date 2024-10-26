@@ -40,7 +40,7 @@ const loginUser = async (data: LoginFormData) => {
 export function Login() {
   const [isOpen, setIsOpen] = useState(false)
   const [isSignupOpen, setIsSignupOpen] = useState(false);
-  const { register, handleSubmit, formState: { errors } } = useForm<LoginFormData>();
+  const { register, handleSubmit, formState: { errors } , reset } = useForm<LoginFormData>();
   const [user, setUser] = useState<string | null>(null)
   const [error , setError] = useState("")
 
@@ -59,12 +59,14 @@ export function Login() {
       localStorage.setItem('user', data.user.name);
       // You might want to purpleirect the user or update the UI here
       localStorage.setItem('role', data.user.role);
+      reset()
 
     },
     onError: (error) => {
       // Handle login error
       console.error('Login failed', error);
       setError("بيانات الاعتماد خاطئة"); // Set error message in Arabic for wrong credentials
+      reset()
     },
   });
 
@@ -106,9 +108,9 @@ export function Login() {
                   id="email"
                   placeholder="البريد الإلكتروني"
                   className="col-span-4 focus-visible:ring-purple-500 text-right"
-                  {...register("email", { required: "Email is requipurple" })}
+                  {...register("email", { required: "البريد الإلكتروني مطلوب" })}
                 />
-                {errors.email && <span className="text-purple">{errors.email.message}</span>}
+                {errors.email && <span className="text-red justify-end  w-full col-span-3">{errors.email.message}</span>}
               </div>
               <div className="grid grid-cols-4 items-center gap-4">
                 <Input
@@ -116,9 +118,9 @@ export function Login() {
                   placeholder="كلمة المرور"
                   type="password"
                   className="col-span-4 focus-visible:ring-purple-500 text-right text-nowrap"
-                  {...register("password", { required: "Password is required" })}
+                  {...register("password", { required: "كلمة المرور مطلوبة" })}
                 />
-                {errors.password && <span className="text-purple">{errors.password.message}</span>}
+                {errors.password && <span className="text-red col-span-3">{errors.password.message}</span>}
               </div>
               <div className="flex items-center justify-end space-x-2 w-full rtl:space-x-reverse">
                 <Label htmlFor="IsPersistent" className="text-sm leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
@@ -126,7 +128,7 @@ export function Login() {
                 </Label>
                 <Checkbox id="IsPersistent" {...register("IsPersistent")} />
               </div>
-              {error && <p>{error}</p> }
+              {error && <p className="text-red">{error}</p> }
             </div>
             <DialogFooter>
               <div className="w-full">

@@ -44,7 +44,7 @@ export default function Home() {
           height={60}
           className="object-cover absolute left-0 bottom-0"
         />
-        <button className="bg-red lg:ml-24 ml-12  text-white px-4 py-2   rounded-xl  transition duration-300">
+        <button className="bg-red lg:ml-24 ml-12 relative z-10 text-white px-4 py-2   rounded-xl  transition duration-300">
           اذا لم يناسبك <br /> استرد قيمة طلبك
         </button>
 
@@ -85,6 +85,7 @@ export default function Home() {
               .map((product: any, i: number) => (
                 <Product
                   id={`/product/${product._id}`}
+                  className="w-[250px]"
                   key={product._id}
                   image={product.images[0]}
                   title={product.name}
@@ -116,6 +117,7 @@ export default function Home() {
               .map((product: any, i: number) => (
                 <Product
                   id={`/product/${product._id}`}
+                  className="w-[250px]"
                   key={product._id}
                   image={product.images[0]}
                   title={product.name}

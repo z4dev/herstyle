@@ -377,7 +377,7 @@ function Productpage() {
             {products &&
               products.map((product: any) => (
                 <TableRow key={product._id}>
-                  <TableCell>
+                  <TableCell className="flex items-center justify-end">
                     <img
                       src={product.images[0]}
                       alt={product.name}

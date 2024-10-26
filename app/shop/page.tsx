@@ -133,12 +133,6 @@ function Page() {
           priceRange={handlePriceRangeChange}
           handleRatingFilter={handleStarsChange}
         />
-        <Button className="bg-white text-purple hover:bg-purple hover:text-white border-2 border-purple ">
-          الأكثر طلبا
-        </Button>
-        <Button className="bg-purple hover:bg-white hover:text-purple hover:border-purple border-2 border-purple text-white lg:mr-64">
-          الأحدث
-        </Button>
       </div>
       <div className="shop-content flex w-full">
         <ProductGrid

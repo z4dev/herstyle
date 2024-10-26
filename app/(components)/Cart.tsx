@@ -64,11 +64,13 @@ export default function Cart() {
     queryFn: getCart,
   });
 
-  console.log("cart", data);
-  console.log("length",data?.data?.carts[0]?.products?.length)
-
   const cartItems =
     data?.data?.carts[0]?.packages.concat(data?.data?.carts[0]?.products) || [];
+
+
+    console.log("cart items =",cartItems)
+
+
 
   const queryClient = useQueryClient();
 
@@ -133,7 +135,8 @@ export default function Cart() {
                 عليك تسجيل الدخول أولاً!
               </p>
             ) : cartItems.length > 0 ? (
-              <div className="w-full">
+              <div className="w-full ">
+                <div className={`${cartItems.length > 2 ? 'overflow-y-scroll' : 'overflow-y-clip'} h-72 overflow-hidden cart-items p-0 m-0`}>
                 {cartItems.map((item: any) => (
                   <CartItems
                     key={item._id}
@@ -142,6 +145,7 @@ export default function Cart() {
                     name={`${
                       item.productId ? item.productId.name : item.packageId.name
                     }`}
+                    image={item.productId ? item.productId.images[0] : item.packageId.images[0]}
                     quantity={item.quantity}
                     onDelete={() =>
                       handleDeleteProduct(
@@ -157,6 +161,7 @@ export default function Cart() {
                     type={item.productId ? "product" : "package"}
                   />
                 ))}
+                </div>
                 <div className="border-t pt-4 w-full">
                   <h3 className="font-medium mb-4 w-full text-center ">
                     ملخص الطلب

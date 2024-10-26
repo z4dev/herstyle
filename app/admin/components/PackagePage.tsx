@@ -263,7 +263,7 @@ function PackagePage() {
                 <TableBody>
                   {data?.map((pkg) => (
                     <TableRow key={pkg._id}>
-                      <TableCell>
+                      <TableCell className='flex items-center justify-end'>
                         <img
                           src={pkg.images[0] || '/placeholder-image.jpg'}
                           alt={pkg.name}

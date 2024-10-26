@@ -14,6 +14,7 @@ import { Input } from "@/components/ui/input";
 import { useMutation } from "@tanstack/react-query";
 import { setCookie } from "cookies-next";
 import { useRouter } from "next/navigation";
+import { toast } from "@/hooks/use-toast";
 
 interface SignupProps {
   isSignupOpen: boolean;
@@ -47,6 +48,11 @@ function Signup({ isSignupOpen, setIsSignupOpen }: SignupProps) {
       console.log("success", data);
       setIsSignupOpen(false); // Close the dialog
       reset(); // Reset the form
+      toast({
+        title: "نجاح",
+        description: "تم إنشاء حسابك بنجاح، ولكن يجب عليك التحقق من حسابك وتنشيط حسابك عبر البريد الإلكتروني.",
+        // يمكنك إضافة المزيد من الخصائص هنا إذا لزم الأمر
+      });
     },
     onError: (error: any) => {
       setError(error.response?.data?.message || "An error occurpurple during signup");
@@ -73,26 +79,26 @@ function Signup({ isSignupOpen, setIsSignupOpen }: SignupProps) {
         </DialogHeader>
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="grid gap-4 py-4">
-            <div className="grid grid-cols-4 items-center gap-4">
+            <div className="grid grid-cols-4 items-center ">
               <Input
                 id="signup-name"
                 placeholder="الاسم"
                 className="col-span-4 focus-visible:ring-purple-500 text-right"
                 {...register("name", { required: "الاسم مطلوب" })}
               />
-              {errors.name && <span className="text-purple text-sm">{errors.name.message}</span>}
+              {errors.name && <span className="text-red col-span-3 text-sm">{errors.name.message}</span>}
             </div>
-            <div className="grid grid-cols-4 items-center gap-4">
+            <div className="grid grid-cols-4 items-center">
               <Input
                 id="signup-email"
                 placeholder="البريد الإلكتروني"
                 className="col-span-4 focus-visible:ring-purple-500 text-right"
                 {...register("email", { required: "البريد الإلكتروني مطلوب", pattern: { value: /^\S+@\S+$/i, message: "البريد الإلكتروني غير صالح" } })}
               />
-              {errors.email && <span className="text-purple text-sm ">{errors.email.message}</span>}
+              {errors.email && <span className="text-red col-span-3 text-sm">{errors.email.message}</span>}
             </div>
 
-            <div className="grid grid-cols-4 items-center gap-4">
+            <div className="grid grid-cols-4 items-center">
         <Input
           id="signup-phone"
           placeholder="رقم الهاتف"
@@ -106,10 +112,10 @@ function Signup({ isSignupOpen, setIsSignupOpen }: SignupProps) {
             }
           })}
         />
-        {errors.phoneNumber && <span className="text-purple text-sm">{errors.phoneNumber.message}</span>}
+        {errors.phoneNumber && <span className="text-red col-span-3 text-sm">{errors.phoneNumber.message}</span>}
       </div>
 
-            <div className="grid grid-cols-4 items-center gap-4">
+            <div className="grid grid-cols-4 items-center">
               <Input
                 id="signup-password"
                 placeholder="كلمة المرور"
@@ -117,13 +123,13 @@ function Signup({ isSignupOpen, setIsSignupOpen }: SignupProps) {
                 type="password"
                 {...register("password", { required: "كلمة المرور مطلوبة", minLength: { value: 6, message: "كلمة المرور يجب أن تكون على الأقل 6 أحرف" } })}
               />
-              {errors.password && <span className="text-purple text-sm">{errors.password.message}</span>}
+              {errors.password && <span className="text-red col-span-3 text-sm">{errors.password.message}</span>}
             </div>
 
 
 
 
-            <div className="grid grid-cols-4 items-center gap-4">
+            <div className="grid grid-cols-4 items-center">
               <Input
                 id="signup-confirm-password"
                 placeholder="تأكيد كلمة المرور"
@@ -138,7 +144,7 @@ function Signup({ isSignupOpen, setIsSignupOpen }: SignupProps) {
                   }
                 })}
               />
-              {errors.confirmPassword && <span className="text-purple text-sm">{errors.confirmPassword.message}</span>}
+              {errors.confirmPassword && <span className="text-red col-span-3 text-sm">{errors.confirmPassword.message}</span>}
             </div>
           </div>
           {error && <p className="text-purple text-sm mb-4">{error}</p>}

@@ -17,6 +17,7 @@ interface ProductProps {
   originalPrice: number;
   discount: number;
   id: string;
+  className?:string
 }
 
 const addToCartMutation = async (productId: string) => {
@@ -31,7 +32,7 @@ const addToCartMutation = async (productId: string) => {
   return response.data;
 };
 
-const Product: React.FC<ProductProps> = ({ id, image, title, rating, reviewCount, price, originalPrice }) => {
+const Product: React.FC<ProductProps> = ({ id, image, title, rating, reviewCount, price, originalPrice, className }) => {
 
   const queryClient = useQueryClient();
 
@@ -60,7 +61,7 @@ const Product: React.FC<ProductProps> = ({ id, image, title, rating, reviewCount
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-md w-[250px]">
+    <div className={`bg-white rounded-lg shadow-md ${className} `} >
       <div className="relative mb-4">
         <Image src={image} alt={title} width={200} height={200} className="object-cover h-[300px] w-full rounded-t-lg" />
       </div>

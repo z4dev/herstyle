@@ -84,18 +84,17 @@ function Footer() {
          </div>
 
         </div>
-        <div className="text-center lg:text-right mx-auto  mt-4">
+        <div className="text-center lg:text-right mx-auto order-last  mt-4">
           <ul className="space-y-3">
             <li>الرئيسية</li>
             <li>جميع المنتجات</li>
             <li>سياسة الاستخدام</li>
             <li>من نحن</li>
-            <li>تسجيل الدخول</li>
           </ul>
         </div>
         <div className="flex flex-col  order-first lg:order-last lg:items-end items-center col-span-1 lg:col-span-1">
           <Image src="/footerImg.png" alt="Herstyle" width={100} height={50} />
-          <p className="lg:text-right text-center mt-4 text-pretty w-3/4">
+          <p className="lg:text-right text-center mt-4 text-pretty w-full lg:w-3/4">
             هو منصة المتجر الذي يناسب الجمال والأناقة وتستطيع تسوق في أي وقت من
             الخدمات الشاملة والمتنوعة لتناسب الجميع، لتتمتع الحرية المطلقة
             الخاصة بك وتصبح شريك في النجاح لدينا.

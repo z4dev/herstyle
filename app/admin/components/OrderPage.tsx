@@ -73,7 +73,7 @@ function OrderPage() {
                 <TableCell>{order.cart.totalPrice} ريال</TableCell>
                 <TableCell>
                   <span
-                    className={`px-2 py-1 rounded-full ${
+                    className={`px-2 py-1 rounded-full text-nowrap ${
                       order.status === "PENDING"
                         ? "bg-orange-200 text-orange-800"
                         : "bg-green-200 text-green-800"
@@ -111,7 +111,7 @@ function CartInfo({ order}:{order:any}) {
         <p> {order.user.phoneNumber} :رقم الهاتف</p>
       </div>
       <div>
-        <h3 className="font-semibold">عنوان التوصيل:</h3>
+        <h3 className="font-semibold">عنوان التوصيل</h3>
         <p> {order.address.street} :الشارع</p>
         <p>المدينة: {order.address.city}</p>
         <p> {order.address.postalCode} :الرمز البريدي</p>
@@ -119,7 +119,7 @@ function CartInfo({ order}:{order:any}) {
       </div>
       <div>
         <h3 className="font-semibold">المنتجات</h3>
-        <ul className="list-disc list-inside">
+        <ul className="">
           {order.cart.products.map((product:any) => (
             <li key={product._id}>
               {product.productId.name} - الكمية: {product.quantity} - السعر: {product.totalPrice} ريال
@@ -131,7 +131,7 @@ function CartInfo({ order}:{order:any}) {
         <h3 className="font-semibold">إجمالي الطلب: {order.cart.totalPrice} ريال</h3>
       </div>
       <div>
-        <h3 className="font-semibold">معلومات الدفع:</h3>
+        <h3 className="font-semibold">معلومات الدفع</h3>
         <p>طريقة الدفع : {order.paymentMethod === 'COD' ? 'الدفع عند الاستلام' : 'دفع إلكتروني'}</p>
         <p>حالة الدفع: {order.paymentStatus === 'PENDING' ? 'قيد الانتظار' : 'مكتمل'}</p>
       </div>
