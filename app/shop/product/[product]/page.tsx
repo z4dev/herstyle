@@ -15,7 +15,6 @@ import axiosInstance from '@/utils/axiosInstance';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import SingleProductSkeleton from '../../component/SingleProductSkeleton';
 import { useDispatch } from 'react-redux';
-import { addToCart } from '@/utils/cart';
 import { toast } from '@/hooks/use-toast';
 
 const addToCartMutation = async (productId: string) => {
