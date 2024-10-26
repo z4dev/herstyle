@@ -43,7 +43,6 @@ export function Login() {
   const [isOpen, setIsOpen] = useState(false)
   const [isSignupOpen, setIsSignupOpen] = useState(false);
   const { register, handleSubmit, formState: { errors } , reset } = useForm<LoginFormData>();
-  const [user, setUser] = useState<string | null>(null)
   const [error , setError] = useState("")
 
   const loginMutation = useMutation({
@@ -58,7 +57,6 @@ export function Login() {
         path: '/',
         sameSite: 'strict'
       });
-      setUser(data.user.name);
       setIsOpen(false);
       localStorage.setItem('user', data.user.name);
       // You might want to purpleirect the user or update the UI here
@@ -78,12 +76,12 @@ export function Login() {
     loginMutation.mutate(data);
   };
 
-//  if(localStorage.getItem("user")  === null) setUser(null)
+  const user = typeof window !== 'undefined' ? localStorage.getItem('user') : null; // Check if in browser
 
   return (
     <>
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
-        {user ? (
+        { user ? (
           <Link href={`/${localStorage.getItem('role') === "OWNER" ? "admin" : "profile"}`} className="flex items-center">
             <User className="text-white mr-2" size={20} />
             <span className="text-white font-semibold">{user}</span>
