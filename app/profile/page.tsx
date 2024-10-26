@@ -207,7 +207,7 @@ export default function ProfilePage() {
             </Button>
           </form>
         </TabsContent>
-        <TabsContent value="orders" className="w-80 lg:w-auto">
+        <TabsContent value="orders" className="w-[80vw] lg:w-auto">
           <h2 className="text-2xl font-bold my-4 text-right">طلباتي</h2>
           {isOrdersLoading ? (
             <p>جاري تحميل الطلبات...</p>
