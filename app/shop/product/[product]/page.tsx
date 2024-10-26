@@ -178,7 +178,7 @@ export default function ProductPage({ params }: { params: { product: string } })
         </p>
       </div>
       <div className="flex flex-col-reverse lg:flex-row gap-8">
-       <div className="md:w-1/2 flex flex-col items-end">
+       <div className="lg:w-1/2 flex flex-col items-end">
           <div className="bg-gray-100 p-4 rounded-lg  mb-6 w-full">
             <div className="flex justify-between items-center">
               <span className="text-3xl font-bold text-purple-600 text-nowrap">{data.price.finalPrice} ر.س</span>

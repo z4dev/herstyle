@@ -19,6 +19,8 @@ import { Label } from "@/components/ui/label";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import axiosInstance from "@/utils/axiosInstance";
 import { Card, CardContent } from "@/components/ui/card";
+import { useDispatch } from "react-redux";
+import { deleteName } from "@/utils/cart";
 
 interface Profile {
   _id: string;
@@ -71,6 +73,7 @@ const updateProfile = async (data: { name: string; phoneNumber: string }) => {
 export default function ProfilePage() {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState("profile");
+  const dispatch = useDispatch()
   const queryClient = useQueryClient();
 
   const {
@@ -103,6 +106,7 @@ export default function ProfilePage() {
     localStorage.removeItem("user");
     localStorage.removeItem("role");
     deleteCookie("auth_token");
+    dispatch(deleteName())
     router.push("/");
     router.refresh()
     queryClient.invalidateQueries({ queryKey: ["cart"] });

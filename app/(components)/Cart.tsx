@@ -50,12 +50,8 @@ async function applyCoupon(code: string) {
 }
 
 export default function Cart() {
-  const cart = useSelector((state: RootState) => state.cart.items);
+
   const router = useRouter();
-  const totalQuantity = useSelector(
-    (state: RootState) => state.cart.totalQuantity
-  );
-  const totalPrice = useSelector((state: RootState) => state.cart.totalPrice);
   const [isOpen, setIsOpen] = useState(false);
   const [couponCode, setCouponCode] = useState("");
 
@@ -136,7 +132,7 @@ export default function Cart() {
               </p>
             ) : cartItems.length > 0 ? (
               <div className="w-full ">
-                <div className={`${cartItems.length > 2 ? 'overflow-y-scroll' : 'overflow-y-clip'} h-72 overflow-hidden cart-items p-0 m-0`}>
+                <div className={`${cartItems.length > 2 ? 'overflow-y-scroll h-72' : 'overflow-y-clip h-fit'}  overflow-hidden cart-items p-0 m-0`}>
                 {cartItems.map((item: any) => (
                   <CartItems
                     key={item._id}

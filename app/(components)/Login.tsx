@@ -20,6 +20,9 @@ import axiosInstance from "@/utils/axiosInstance";
 import { setCookie } from "cookies-next";
 import { User } from "lucide-react";
 import Link from "next/link";
+import { useDispatch, useSelector } from "react-redux";
+import { addName } from "@/utils/cart";
+import { RootState } from "@/utils/store";
 
 type LoginFormData = {
   email: string;
@@ -40,10 +43,17 @@ const loginUser = async (data: LoginFormData) => {
 
 export function Login() {
   const queryClient = useQueryClient()
+  const dispatch = useDispatch()
   const [isOpen, setIsOpen] = useState(false)
   const [isSignupOpen, setIsSignupOpen] = useState(false);
   const { register, handleSubmit, formState: { errors } , reset } = useForm<LoginFormData>();
   const [error , setError] = useState("")
+  const user  = useSelector((state:RootState)=>state.user.name)
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem('user') || ""; // Default to an empty string if null
+    dispatch(addName(storedUser));
+  }, []);
 
   const loginMutation = useMutation({
     mutationFn: loginUser,
@@ -63,6 +73,9 @@ export function Login() {
       localStorage.setItem('role', data.user.role);
       reset()
 
+      const storedUser = localStorage.getItem('user') || ""; // Default to an empty string if null
+      dispatch(addName(storedUser));
+
     },
     onError: (error) => {
       // Handle login error
@@ -76,12 +89,10 @@ export function Login() {
     loginMutation.mutate(data);
   };
 
-  const user = typeof window !== 'undefined' ? localStorage.getItem('user') : null; // Check if in browser
-
   return (
     <>
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
-        { user ? (
+        {user ? (
           <Link href={`/${localStorage.getItem('role') === "OWNER" ? "admin" : "profile"}`} className="flex items-center">
             <User className="text-white mr-2" size={20} />
             <span className="text-white font-semibold">{user}</span>

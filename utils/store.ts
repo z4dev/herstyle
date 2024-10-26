@@ -1,10 +1,10 @@
 'use client'
 import { configureStore } from '@reduxjs/toolkit'
-import cartReducer from './cart'
+import userReduce from './cart'
 import addressReducer from './addressSlice'
 export const store = configureStore({
     reducer: {
-        cart: cartReducer,
+        user: userReduce,
         address : addressReducer
     },
 });
