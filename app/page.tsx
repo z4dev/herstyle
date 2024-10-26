@@ -27,8 +27,7 @@ export default function Home() {
   });
 
   // Console log the data from the API
-  console.log("Products data:", data);
-  console.log("Products error:", error);
+
 
 
   return (

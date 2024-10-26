@@ -115,7 +115,7 @@ function Page() {
 
   const isLoading = isLoadingProducts || isLoadingPackages;
 
-  console.log("hasNextProducts = ", hasNextProducts);
+
 
   const loadMore = () => {
     if (hasNextProducts) fetchNextProducts();

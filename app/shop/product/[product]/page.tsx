@@ -65,7 +65,6 @@ export default function ProductPage({ params }: { params: { product: string } })
     queryKey: ['view-product'],
     queryFn: async () => {
       const res = await axiosInstance.get(`/products/${params.product}`)
-      console.log("productData =", res.data)
       return res.data
     }
   })

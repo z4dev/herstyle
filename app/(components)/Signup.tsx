@@ -45,7 +45,6 @@ function Signup({ isSignupOpen, setIsSignupOpen }: SignupProps) {
   const signupMutation = useMutation({
     mutationFn: signup,
     onSuccess: (data) => {
-      console.log("success", data);
       setIsSignupOpen(false); // Close the dialog
       reset(); // Reset the form
       toast({

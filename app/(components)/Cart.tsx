@@ -68,7 +68,7 @@ export default function Cart() {
     data?.data?.carts[0]?.packages.concat(data?.data?.carts[0]?.products) || [];
 
 
-    console.log("cart items =",cartItems)
+  
 
 
 

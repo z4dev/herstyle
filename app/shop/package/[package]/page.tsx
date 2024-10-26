@@ -64,7 +64,6 @@ export default function ProductPage({ params }: { params: { package: string } })
     queryKey: ['view-package'],
     queryFn: async () => {
       const res = await axiosInstance.get(`/packages/${params.package}`)
-      console.log("packagePackage =", res.data)
       return res.data
     }
   })
@@ -73,9 +72,6 @@ export default function ProductPage({ params }: { params: { package: string } })
 
 
   const {data:{Package , productsForThatPackage, packageComments:{comments} }} = packageData
-
-  console.log("Package  comments =", packageData)
-
 
 
 

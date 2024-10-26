@@ -87,7 +87,7 @@ function CuponPage() {
     mutationFn: deleteCoupon,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["coupons"] });
-      console.log("Coupon deleted successfully");
+      ("Coupon deleted successfully");
     },
   });
 
