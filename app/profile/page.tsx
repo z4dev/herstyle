@@ -28,6 +28,7 @@ interface Profile {
   isVerified: boolean;
   createdAt: string;
   updatedAt: string;
+  phoneNumber:string
 }
 
 interface Order {
@@ -129,6 +130,8 @@ export default function ProfilePage() {
     );
   }
 
+
+
   return (
     <div className="min-w-5xl mx-auto p-6 bg-white rounded-lg shadow-md my-8">
       <Tabs value={activeTab} onValueChange={setActiveTab}>
@@ -159,7 +162,7 @@ export default function ProfilePage() {
                   className="p-2 rounded focus:outline-none"
                 />
               </div>
-              <Label className="font-medium">الاسم</Label>
+              <Label className="font-medium text-right text-nowrap">الاسم</Label>
             </div>
             <div className="flex justify-between items-center border-2 rounded-lg border-gray-200 px-2">
               <div className="flex items-center gap-2">
@@ -167,11 +170,11 @@ export default function ProfilePage() {
                 <Input
                   name="phoneNumber"
                   type="tel"
-                  defaultValue={"xxxxxxxx"}
+                  defaultValue={profile?.phoneNumber}
                   className="p-2 rounded focus:outline-none"
                 />
               </div>
-              <Label className="font-medium">رقم الهاتف</Label>
+              <Label className="font-medium text-right text-nowrap">رقم الهاتف</Label>
             </div>
             <div className="flex justify-between items-center border-2 rounded-lg border-gray-200 px-2">
               <div className="flex items-center gap-2">
@@ -182,7 +185,7 @@ export default function ProfilePage() {
                   disabled
                 />
               </div>
-              <Label className="font-medium">البريد الإلكتروني</Label>
+              <Label className="font-medium text-right text-nowrap">البريد الإلكتروني</Label>
             </div>
             <Button
               type="submit"
@@ -231,7 +234,7 @@ export default function ProfilePage() {
                     </TableCell>
                     <TableCell>
                       <span
-                        className={`px-2 py-1 rounded-full ${
+                        className={`px-2 py-1 rounded-full text-nowrap ${
                           order.status === "PENDING"
                             ? "bg-orange-200 text-orange-800"
                             : "bg-green-200 text-green-800"
@@ -241,7 +244,7 @@ export default function ProfilePage() {
                       </span>
                     </TableCell>
                     <TableCell className="text-right">
-                      {order.paymentMethod}
+                    {order.paymentMethod === "COD" ? "عند الاستلام" : "دفع إلكتروني"}
                     </TableCell>
                   </TableRow>
                 ))}

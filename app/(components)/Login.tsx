@@ -53,7 +53,6 @@ export function Login() {
         path: '/',
         sameSite: 'strict'
       });
-      console.log('Login successful', data);
       setUser(data.user.name);
       setIsOpen(false);
       localStorage.setItem('user', data.user.name);
@@ -74,26 +73,23 @@ export function Login() {
     loginMutation.mutate(data);
   };
 
-  useEffect(() => {
-    setUser(localStorage.getItem('user'));
-  }, []);
-
+//  if(localStorage.getItem("user")  === null) setUser(null)
 
   return (
     <>
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
         {user ? (
-          <Link href={`/${localStorage.getItem('role')=== "OWNER" ? "admin" : "profile"}`} className="flex items-center">
-              <User className="text-white mr-2" size={20} />
-              <span className="text-white font-semibold">{user}</span>
-            </Link>
-          ) : (
-            <DialogTrigger asChild>
+          <Link href={`/${localStorage.getItem('role') === "OWNER" ? "admin" : "profile"}`} className="flex items-center">
+            <User className="text-white mr-2" size={20} />
+            <span className="text-white font-semibold">{user}</span>
+          </Link>
+        ) : (
+          <DialogTrigger asChild>
             <button className="bg-purple text-white px-2 lg:px-4 py-2 rounded">
               تسجيل الدخول
             </button>
-        </DialogTrigger>
-          )}
+          </DialogTrigger>
+        )}
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader className="flex justify-between items-end">
             <DialogTitle>دخول</DialogTitle>

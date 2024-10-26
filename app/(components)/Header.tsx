@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useRef, useEffect } from "react";
 import { debounce } from "lodash";
 import Image from "next/image";
 import Link from "next/link";
@@ -53,6 +53,21 @@ function Header() {
     setIsSheetOpen(false);
   };
 
+  const recommendationsRef = useRef<HTMLDivElement>(null);
+
+  const handleClickOutside = (event: MouseEvent) => {
+    if (recommendationsRef.current && !recommendationsRef.current.contains(event.target as Node)) {
+      setSearchTerm(""); // Close recommendations
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   return (
     <div>
       {showTopBanner && (
@@ -73,7 +88,7 @@ function Header() {
         <div className="flex items-center space-x-4">
           <Cart />
         </div>
-        <div className="relative w-[42%] lg:w-[35%]">
+        <div className="relative w-[42%] lg:w-[35%]" ref={recommendationsRef}>
           <input
             type="text"
             placeholder="...البحث"
