@@ -158,6 +158,7 @@ export default function CouponPage() {
   const handleEdit = (couponToEdit: Coupon) => {
     setCoupon(couponToEdit);
     setIsEditing(true);
+    formRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
   const handleDeleteClick = (couponId: string) => {
@@ -183,6 +184,8 @@ export default function CouponPage() {
     });
   };
 
+  const formRef = React.useRef<HTMLFormElement | null>(null);
+
   if (isLoading) return <div>Loading...</div>;
   if (isError) return <div>Error loading coupons</div>;
 
@@ -192,7 +195,7 @@ export default function CouponPage() {
         <CardTitle>الكوبونات</CardTitle>
       </CardHeader>
       <CardContent>
-        <form onSubmit={handleSubmit} className="mb-4 space-y-6">
+        <form ref={formRef} onSubmit={handleSubmit} className="mb-4 space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <div className="space-y-2">
               <Label htmlFor="expiryDate">تاريخ انتهاء الصلاحية</Label>

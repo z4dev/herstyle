@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 import { Plus, Trash, X, Edit } from 'lucide-react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import {
@@ -67,6 +67,7 @@ function Productpage() {
   const [isEditing, setIsEditing] = useState(false)
   const [searchTerm, setSearchTerm] = useState("")
   const [showRecommendations, setShowRecommendations] = useState(false)
+  const formRef = useRef<HTMLFormElement | null>(null); // Create a ref for the form
 
   const { data: products, isLoading, error } = useQuery({
     queryKey: ['admin-products'],
@@ -187,6 +188,7 @@ function Productpage() {
   const handleEditClick = (product: Product) => {
     setFormData(product)
     setIsEditing(true)
+    formRef.current?.scrollIntoView({ behavior: 'smooth' }) // Scroll to the form
   }
 
   const handleDeleteClick = (id: string) => {
@@ -226,7 +228,7 @@ function Productpage() {
         </CardTitle>
       </CardHeader>
       <CardContent className="p-6">
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form ref={formRef} onSubmit={handleSubmit} className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 
             <div>

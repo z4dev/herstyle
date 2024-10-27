@@ -56,6 +56,7 @@ function PackagePage() {
   })
   const [packageToDelete, setPackageToDelete] = useState<string | null>(null)
   const [isEditing, setIsEditing] = useState(false)
+  const formRef = React.useRef<HTMLFormElement | null>(null); // Create a ref for the form
 
   const { data, isLoading, error } = useQuery({
     queryKey: ['admin-packages'],
@@ -170,9 +171,10 @@ function PackagePage() {
   }
 
   const handleEditClick = (pkg: Package) => {
-    setFormData(pkg)
-    setIsEditing(true)
-  }
+    setFormData(pkg);
+    setIsEditing(true);
+    formRef.current?.scrollIntoView({ behavior: 'smooth' }); // Scroll to the form
+  };
 
   const handleDeleteClick = (id: string) => {
     setPackageToDelete(id)
@@ -207,7 +209,7 @@ function PackagePage() {
         </CardTitle>
       </CardHeader>
       <CardContent className="p-6">
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form ref={formRef} onSubmit={handleSubmit} className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
            
             <div>
