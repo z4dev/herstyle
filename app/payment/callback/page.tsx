@@ -22,6 +22,11 @@ const PaymentCallback: React.FC = () => {
   useEffect(() => {
     const checkPaymentStatus = async () => {
       if (status === "completed" || status === "paid") {
+      setMessage(
+          "تم الطلب بنجاح! سيتم تحويلك إلى الصفحة الرئيسية خلال 5 ثوانٍ."
+        );
+        setIcon(<CheckCircleIcon className="w-16 h-16 text-green-500" />);
+        setIconColor("bg-green-100");
         if (paymentId) {
           try {
             const response = await axiosInstance.post("/cart/checkout", {
@@ -35,11 +40,7 @@ const PaymentCallback: React.FC = () => {
             // the payment done in payment system so it's not necessary to throw error
           }
         }
-        setMessage(
-          "تم الطلب بنجاح! سيتم تحويلك إلى الصفحة الرئيسية خلال 5 ثوانٍ."
-        );
-        setIcon(<CheckCircleIcon className="w-16 h-16 text-green-500" />);
-        setIconColor("bg-green-100");
+        
       } else if (status === "failed") {
         setMessage("فشل الدفع! سيتم تحويلك إلى الصفحة الرئيسية خلال 5 ثوانٍ.");
         setIcon(<XCircleIcon className="w-16 h-16 text-red-500" />);
