@@ -111,9 +111,9 @@ export default function ProfilePage() {
     localStorage.removeItem("role");
     deleteCookie("auth_token");
     dispatch(deleteName());
+    queryClient.invalidateQueries({ queryKey: ["cart"] });
     router.push("/");
     router.refresh();
-    queryClient.invalidateQueries({ queryKey: ["cart"] });
   };
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
