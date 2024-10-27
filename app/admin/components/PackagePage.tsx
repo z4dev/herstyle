@@ -209,19 +209,7 @@ function PackagePage() {
       <CardContent className="p-6">
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
-              <Label htmlFor="name" className="text-sm font-medium text-gray-700 mb-1">
-                اسم الحزمة
-              </Label>
-              <Input
-                id="name"
-                name="name"
-                value={formData.name}
-                onChange={handleInputChange}
-                required
-                className="w-full"
-              />
-            </div>
+           
             <div>
               <Label htmlFor="originalPrice" className="text-sm font-medium text-gray-700 mb-1">
                 السعر الأصلي
@@ -231,6 +219,19 @@ function PackagePage() {
                 name="originalPrice"
                 type="number"
                 value={formData.price?.originalPrice}
+                onChange={handleInputChange}
+                required
+                className="w-full"
+              />
+            </div>
+            <div className='order-first lg:order-none'>
+              <Label htmlFor="name" className="text-sm font-medium text-gray-700 mb-1">
+                اسم الحزمة
+              </Label>
+              <Input
+                id="name"
+                name="name"
+                value={formData.name}
                 onChange={handleInputChange}
                 required
                 className="w-full"
