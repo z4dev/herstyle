@@ -157,8 +157,8 @@ function Page() {
         />
         <FilterSection
           filter={filter}
-          onlyPackages={handleOnlyPackages}
-          onlyProducts={handleOnlyProducts}
+          onlyPackages={handleOnlyProducts}
+          onlyProducts={ handleOnlyPackages }
           priceRange={handlePriceRangeChange}
           handleRatingFilter={handleStarsChange}
         />
