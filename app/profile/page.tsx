@@ -20,7 +20,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import axiosInstance from "@/utils/axiosInstance";
 import { Card, CardContent } from "@/components/ui/card";
 import { useDispatch } from "react-redux";
-import { deleteName } from "@/utils/cart";
+import { addName, deleteName } from "@/utils/cart";
 
 interface Profile {
   _id: string;
@@ -31,7 +31,7 @@ interface Profile {
   isVerified: boolean;
   createdAt: string;
   updatedAt: string;
-  phoneNumber:string
+  phoneNumber: string;
 }
 
 interface Order {
@@ -65,16 +65,20 @@ const fetchOrders = async () => {
   return response.data;
 };
 
-const updateProfile = async (data: { name: string; phoneNumber: string }) => {
-  const response = await axiosInstance.put("profile", data);
-  return response.data;
-};
-
 export default function ProfilePage() {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState("profile");
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const queryClient = useQueryClient();
+
+  const updateProfile = async (data: { name: string; phoneNumber: string }) => {
+    if (data.name !== "") {
+      localStorage.setItem("name", data.name);
+      dispatch(addName(data.name));
+    }
+    const response = await axiosInstance.put("profile", data);
+    return response.data;
+  };
 
   const {
     data: profile,
@@ -106,9 +110,9 @@ export default function ProfilePage() {
     localStorage.removeItem("user");
     localStorage.removeItem("role");
     deleteCookie("auth_token");
-    dispatch(deleteName())
+    dispatch(deleteName());
     router.push("/");
-    router.refresh()
+    router.refresh();
     queryClient.invalidateQueries({ queryKey: ["cart"] });
   };
 
@@ -135,8 +139,6 @@ export default function ProfilePage() {
       </div>
     );
   }
-
-
 
   return (
     <div className="min-w-5xl mx-auto p-6 bg-white rounded-lg shadow-md my-8">
@@ -168,7 +170,9 @@ export default function ProfilePage() {
                   className="p-2 rounded focus:outline-none"
                 />
               </div>
-              <Label className="font-medium text-right text-nowrap">الاسم</Label>
+              <Label className="font-medium text-right text-nowrap">
+                الاسم
+              </Label>
             </div>
             <div className="flex justify-between items-center border-2 rounded-lg border-gray-200 px-2">
               <div className="flex items-center gap-2">
@@ -180,7 +184,9 @@ export default function ProfilePage() {
                   className="p-2 rounded focus:outline-none"
                 />
               </div>
-              <Label className="font-medium text-right text-nowrap">رقم الهاتف</Label>
+              <Label className="font-medium text-right text-nowrap">
+                رقم الهاتف
+              </Label>
             </div>
             <div className="flex justify-between items-center border-2 rounded-lg border-gray-200 px-2">
               <div className="flex items-center gap-2">
@@ -191,7 +197,9 @@ export default function ProfilePage() {
                   disabled
                 />
               </div>
-              <Label className="font-medium text-right text-nowrap">البريد الإلكتروني</Label>
+              <Label className="font-medium text-right text-nowrap">
+                البريد الإلكتروني
+              </Label>
             </div>
             <Button
               type="submit"
@@ -220,45 +228,55 @@ export default function ProfilePage() {
           ) : (
             <Card>
               <CardContent>
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead className="text-right">رقم الطلب</TableHead>
-                  <TableHead className="text-right">التاريخ</TableHead>
-                  <TableHead className="text-right">المبلغ الإجمالي</TableHead>
-                  <TableHead className="text-right">حالة الطلب</TableHead>
-                  <TableHead className="text-right">طريقة الدفع</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {ordersData?.data.orders.map((order: Order) => (
-                  <TableRow key={order._id}>
-                    <TableCell className="text-right">{order._id}</TableCell>
-                    <TableCell className="text-right">
-                      {new Date(order.createdAt).toLocaleDateString("ar-EG")}
-                    </TableCell>
-                    <TableCell className="text-right">
-                      {order.cart.totalPrice} ريال
-                    </TableCell>
-                    <TableCell>
-                      <span
-                        className={`px-2 py-1 rounded-full text-nowrap ${
-                          order.status === "PENDING"
-                            ? "bg-orange-200 text-orange-800"
-                            : "bg-green-200 text-green-800"
-                        }`}
-                      >
-                        {order.status === "PENDING" ? "قيد الانتظار" : "مكتمل"}
-                      </span>
-                    </TableCell>
-                    <TableCell className="text-right">
-                    {order.paymentMethod === "COD" ? "عند الاستلام" : "دفع إلكتروني"}
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-            </CardContent>
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead className="text-right">رقم الطلب</TableHead>
+                      <TableHead className="text-right">التاريخ</TableHead>
+                      <TableHead className="text-right">
+                        المبلغ الإجمالي
+                      </TableHead>
+                      <TableHead className="text-right">حالة الطلب</TableHead>
+                      <TableHead className="text-right">طريقة الدفع</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {ordersData?.data.orders.map((order: Order) => (
+                      <TableRow key={order._id}>
+                        <TableCell className="text-right">
+                          {order._id}
+                        </TableCell>
+                        <TableCell className="text-right">
+                          {new Date(order.createdAt).toLocaleDateString(
+                            "ar-EG"
+                          )}
+                        </TableCell>
+                        <TableCell className="text-right">
+                          {order.cart.totalPrice} ريال
+                        </TableCell>
+                        <TableCell>
+                          <span
+                            className={`px-2 py-1 rounded-full text-nowrap ${
+                              order.status === "PENDING"
+                                ? "bg-orange-200 text-orange-800"
+                                : "bg-green-200 text-green-800"
+                            }`}
+                          >
+                            {order.status === "PENDING"
+                              ? "قيد الانتظار"
+                              : "مكتمل"}
+                          </span>
+                        </TableCell>
+                        <TableCell className="text-right">
+                          {order.paymentMethod === "COD"
+                            ? "عند الاستلام"
+                            : "دفع إلكتروني"}
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </CardContent>
             </Card>
           )}
         </TabsContent>
