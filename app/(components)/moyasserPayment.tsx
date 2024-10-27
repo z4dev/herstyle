@@ -108,7 +108,7 @@ const MoyasarPayment: React.FC<{ cartInfo: any }> = ({ cartInfo }) => {
   }, [cartInfo]);
 
   return (
-    <div className="relative flex justify-center items-center h-screen px-2 md:px-0">
+    <div className="relative flex justify-center items-center md:h-screen md:py-0 py-5 px-2 md:px-0">
       {loading && <div className="loader"></div>}
       <form className="mysr-form">
         {/* The payment fields will be rendered by Moyasar here */}
