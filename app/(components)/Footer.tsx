@@ -79,9 +79,11 @@ function Footer() {
             </p>
 
          <div className="flex items-center justify-center lg:justify-end mt-4">
-          <p>الرقم الضريبي : 12345678</p>
+          <p>الرقم الضريبي : 0</p>
           <Image className="ml-2" width={30} height={30} src='/rkm.png' alt="rkm" />
          </div>
+
+         <p className="mt-2">FL-129067621 : رقم السجل</p>
 
         </div>
         <div className="text-center lg:text-right mx-auto order-last  mt-4">
