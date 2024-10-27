@@ -21,12 +21,22 @@ export default function Home() {
     return data.data;
   }
 
-  const { data, isLoading, error } = useQuery({
+  // New function to get packages
+  async function getPackages() {
+    const { data } = await axiosInstance.get("packages");
+    return data.data;
+  }
+
+  const { data: productsData, isLoading: productsLoading, error: productsError } = useQuery({
     queryKey: ["home-products"],
     queryFn: getProducts,
   });
 
-  // Console log the data from the API
+  // New query for packages
+  const { data: packagesData, isLoading: packagesLoading, error: packagesError } = useQuery({
+    queryKey: ["home-packages"],
+    queryFn: getPackages,
+  });
 
 
 
@@ -76,10 +86,10 @@ export default function Home() {
         <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6">
           {/* Repeat this product card 4 times */}
           {[...Array(4)].map((_, index) => (
-            <ProductSkelton key={index} isLoading={isLoading} />
+            <ProductSkelton key={index} isLoading={productsLoading} />
           ))}
-          {data &&
-            data.products
+          {productsData &&
+            productsData.products
               .slice(0, 4)
               .map((product: any, i: number) => (
                 <Product
@@ -99,7 +109,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Recommended Products */}
+      {/* Suggested Products Section */}
       <section className="mb-12 flex flex-col items-center py-4">
         <div className="text-center">
           <h3 className="text-2xl font-bold text-purple">لشعرك أكثر نعومة</h3>
@@ -108,23 +118,23 @@ export default function Home() {
         <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6">
           {/* Repeat this product card 4 times */}
           {[...Array(4)].map((_, index) => (
-            <ProductSkelton key={index} isLoading={isLoading} />
+            <ProductSkelton key={index} isLoading={packagesLoading} />
           ))}
-          {data &&
-            data.products
-              .slice(0, 4)
-              .map((product: any, i: number) => (
+          {packagesData &&
+            packagesData.packages
+              .slice(0, 4) // Get only the first 4 packages
+              .map((packageItem: any, i: number) => (
                 <Product
-                  id={`/product/${product._id}`}
+                  id={`/package/${packageItem._id}`} // Adjusted to use package ID
                   className="w-[250px]"
-                  key={product._id}
-                  image={product.images[0]}
-                  title={product.name}
-                  rating={product.rating}
-                  reviewCount={product.numReviews}
-                  price={product.price.finalPrice}
-                  originalPrice={product.price.originalPrice}
-                  discount={product.price.discount}
+                  key={packageItem._id}
+                  image={packageItem.images[0]} // Adjusted to use package image
+                  title={packageItem.name}
+                  rating={packageItem.rating}
+                  reviewCount={packageItem.numReviews}
+                  price={packageItem.price.finalPrice}
+                  originalPrice={packageItem.price.originalPrice}
+                  discount={packageItem.price.discount}
                 />
               ))}
           {/* ... Repeat for other products */}

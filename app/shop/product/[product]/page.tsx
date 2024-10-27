@@ -16,6 +16,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import SingleProductSkeleton from '../../component/SingleProductSkeleton';
 import { useDispatch } from 'react-redux';
 import { toast } from '@/hooks/use-toast';
+import RecommendedProducts from './components/RecommendedProducts';
 
 const addToCartMutation = async (productId: string) => {
 
@@ -92,44 +93,7 @@ export default function ProductPage({ params }: { params: { product: string } })
     ]
   };
 
-  const suggestedProducts = [
-    {
-      image: "/products/1.jpg",
-      title: "منتج رائع 1",
-      rating: 4.5,
-      reviewCount: 30,
-      price: 149.99,
-      originalPrice: 199.99,
-      discount: 25
-    },
-    {
-      image: "/products/2.jpg",
-      title: "منتج رائع 2",
-      rating: 4.0,
-      reviewCount: 25,
-      price: 129.99,
-      originalPrice: 169.99,
-      discount: 23
-    },
-    {
-      image: "/products/3.jpg",
-      title: "منتج رائع 3",
-      rating: 4.8,
-      reviewCount: 40,
-      price: 179.99,
-      originalPrice: 229.99,
-      discount: 22
-    },
-    {
-      image: "/products/4.jpg",
-      title: "منتج رائع 4",
-      rating: 4.2,
-      reviewCount: 35,
-      price: 159.99,
-      originalPrice: 209.99,
-      discount: 24
-    }
-  ];
+
 
   const handleShare = async () => {
     const currentUrl = window.location.href
@@ -261,22 +225,7 @@ export default function ProductPage({ params }: { params: { product: string } })
             <h1 className="text-2xl font-bold text-purple">منتجات قد تعجبك</h1>
             <h2 className="text-lg text-gray-600">اختاري منتجك الراقي من متجرنا</h2>
           </div>
-          
-          <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 p-4'>
-            {suggestedProducts.map((product, index) => (
-              <Product
-                id={index.toString()}
-                key={index}
-                image={product.image}
-                title={product.title}
-                rating={product.rating}
-                reviewCount={product.reviewCount}
-                price={product.price}
-                originalPrice={product.originalPrice}
-                discount={product.discount}
-              />
-            ))}
-          </div>
+          <RecommendedProducts />
         </div>
       </div>
     </div>

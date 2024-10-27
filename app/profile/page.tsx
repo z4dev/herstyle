@@ -5,22 +5,17 @@ import { SquarePenIcon, User } from "lucide-react";
 import { deleteCookie } from "cookies-next";
 import { useRouter } from "next/navigation";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import axiosInstance from "@/utils/axiosInstance";
-import { Card, CardContent } from "@/components/ui/card";
+
 import { useDispatch } from "react-redux";
 import { addName, deleteName } from "@/utils/cart";
+import Orders from "./Orders";
+
 
 interface Profile {
   _id: string;
@@ -34,36 +29,13 @@ interface Profile {
   phoneNumber: string;
 }
 
-interface Order {
-  _id: string;
-  user: {
-    name: string;
-    phoneNumber: string;
-  };
-  address: {
-    street: string;
-    city: string;
-    postalCode: string;
-    country: string;
-  };
-  cart: {
-    totalPrice: number;
-  };
-  status: string;
-  paymentMethod: string;
-  paymentStatus: string;
-  createdAt: string;
-}
 
 const fetchProfile = async (): Promise<Profile> => {
   const response = await axiosInstance.get("profile");
   return response.data.data;
 };
 
-const fetchOrders = async () => {
-  const response = await axiosInstance.get("orders");
-  return response.data;
-};
+
 
 export default function ProfilePage() {
   const router = useRouter();
@@ -89,14 +61,9 @@ export default function ProfilePage() {
     queryFn: fetchProfile,
   });
 
-  const {
-    data: ordersData,
-    isLoading: isOrdersLoading,
-    isError: isOrdersError,
-  } = useQuery({
-    queryKey: ["client-order"],
-    queryFn: fetchOrders,
-  });
+
+
+
 
   const updateProfileMutation: any = useMutation({
     mutationFn: updateProfile,
@@ -139,6 +106,7 @@ export default function ProfilePage() {
       </div>
     );
   }
+
 
   return (
     <div className="min-w-5xl mx-auto p-6 bg-white rounded-lg shadow-md my-8">
@@ -220,65 +188,7 @@ export default function ProfilePage() {
           </form>
         </TabsContent>
         <TabsContent value="orders" className="w-[80vw] lg:w-auto">
-          <h2 className="text-2xl font-bold my-4 text-right">طلباتي</h2>
-          {isOrdersLoading ? (
-            <p>جاري تحميل الطلبات...</p>
-          ) : isOrdersError ? (
-            <p>حدث خطأ أثناء تحميل الطلبات. يرجى المحاولة مرة أخرى.</p>
-          ) : (
-            <Card>
-              <CardContent>
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead className="text-right">رقم الطلب</TableHead>
-                      <TableHead className="text-right">التاريخ</TableHead>
-                      <TableHead className="text-right">
-                        المبلغ الإجمالي
-                      </TableHead>
-                      <TableHead className="text-right">حالة الطلب</TableHead>
-                      <TableHead className="text-right">طريقة الدفع</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {ordersData?.data.orders.map((order: Order) => (
-                      <TableRow key={order._id}>
-                        <TableCell className="text-right">
-                          {order._id}
-                        </TableCell>
-                        <TableCell className="text-right">
-                          {new Date(order.createdAt).toLocaleDateString(
-                            "ar-EG"
-                          )}
-                        </TableCell>
-                        <TableCell className="text-right">
-                          {order.cart.totalPrice} ريال
-                        </TableCell>
-                        <TableCell>
-                          <span
-                            className={`px-2 py-1 rounded-full text-nowrap ${
-                              order.status === "PENDING"
-                                ? "bg-orange-200 text-orange-800"
-                                : "bg-green-200 text-green-800"
-                            }`}
-                          >
-                            {order.status === "PENDING"
-                              ? "قيد الانتظار"
-                              : "مكتمل"}
-                          </span>
-                        </TableCell>
-                        <TableCell className="text-right">
-                          {order.paymentMethod === "COD"
-                            ? "عند الاستلام"
-                            : "دفع إلكتروني"}
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </CardContent>
-            </Card>
-          )}
+        <Orders />
         </TabsContent>
       </Tabs>
     </div>
