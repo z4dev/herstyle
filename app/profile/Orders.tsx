@@ -186,7 +186,7 @@ function Orders() {
                       {order.status === "PENDING" ? "قيد الانتظار" : "مكتمل"}
                     </span>
                   </TableCell>
-                  <TableCell className="text-right">
+                  <TableCell className="text-right ">
                     {order.paymentMethod === "COD" ? "عند الاستلام" : "دفع إلكتروني"}
                   </TableCell>
                 </TableRow>
