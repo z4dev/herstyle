@@ -77,7 +77,7 @@ const PaymentCallback: React.FC = () => {
 // Wrap the component with Suspense
 const PaymentCallbackWrapper = () => {
   return (
-    <Suspense fallback={<><div className="loader"></div>
+    <Suspense fallback={<div className="flex flex-col items-center justify-start pt-40 min-h-screen"><div className="loader"></div>
        <style jsx>{`
         .loader {
           border: 8px solid #f3f3f3;
@@ -97,7 +97,7 @@ const PaymentCallbackWrapper = () => {
           }
         }
       `}</style>
-       </>}>
+       </div>}>
       <PaymentCallback />
     </Suspense>
 
