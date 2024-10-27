@@ -22,6 +22,11 @@ const PaymentCallback: React.FC = () => {
   useEffect(() => {
     const checkPaymentStatus = async () => {
       if (status === "completed" || status === "paid") {
+      setMessage(
+          "تم الطلب بنجاح! سيتم تحويلك إلى الصفحة الرئيسية خلال 5 ثوانٍ."
+        );
+        setIcon(<CheckCircleIcon className="w-16 h-16 text-green-500" />);
+        setIconColor("bg-green-100");
         if (paymentId) {
           try {
             const response = await axiosInstance.post("/cart/checkout", {
@@ -35,11 +40,7 @@ const PaymentCallback: React.FC = () => {
             // the payment done in payment system so it's not necessary to throw error
           }
         }
-        setMessage(
-          "تم الطلب بنجاح! سيتم تحويلك إلى الصفحة الرئيسية خلال 5 ثوانٍ."
-        );
-        setIcon(<CheckCircleIcon className="w-16 h-16 text-green-500" />);
-        setIconColor("bg-green-100");
+        
       } else if (status === "failed") {
         setMessage("فشل الدفع! سيتم تحويلك إلى الصفحة الرئيسية خلال 5 ثوانٍ.");
         setIcon(<XCircleIcon className="w-16 h-16 text-red-500" />);
@@ -76,9 +77,31 @@ const PaymentCallback: React.FC = () => {
 // Wrap the component with Suspense
 const PaymentCallbackWrapper = () => {
   return (
-    <Suspense fallback={<div>Loading payment details...</div>}>
+    <Suspense fallback={<div className="flex flex-col items-center justify-start pt-40 min-h-screen"><div className="loader"></div>
+       <style jsx>{`
+        .loader {
+          border: 8px solid #f3f3f3;
+          border-top: 8px solid #564495;
+          border-radius: 50%;
+          width: 60px;
+          height: 60px;
+          animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+          0% {
+            transform: rotate(0deg);
+          }
+          100% {
+            transform: rotate(360deg);
+          }
+        }
+      `}</style>
+       </div>}>
       <PaymentCallback />
     </Suspense>
+
+
   );
 };
 
