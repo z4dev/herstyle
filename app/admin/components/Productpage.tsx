@@ -1,7 +1,7 @@
 'use client'
 
-import React, { useState, useRef } from 'react'
-import { Plus, Trash, X, Edit } from 'lucide-react'
+import React, { useState, useRef, useEffect } from 'react'
+import { Plus, Trash, X, Edit, Loader2 } from 'lucide-react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import {
   Card,
@@ -34,6 +34,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
 import { useToast } from '@/hooks/use-toast'
+import axios from 'axios'
 
 type Product = {
   _id: string;
@@ -48,6 +49,15 @@ type Product = {
   quantity: number;
   tags: string[];
   packageId: string;
+};
+
+type Package = {
+  _id: string;
+  name: string;
+  price: {
+    originalPrice: number;
+    finalPrice: number;
+  };
 };
 
 function Productpage() {
@@ -67,15 +77,60 @@ function Productpage() {
   const [isEditing, setIsEditing] = useState(false)
   const [searchTerm, setSearchTerm] = useState("")
   const [showRecommendations, setShowRecommendations] = useState(false)
-  const formRef = useRef<HTMLFormElement | null>(null); // Create a ref for the form
+  const [packages, setPackages] = useState<Package[]>([])
+  const [isLoading, setIsLoading] = useState(false)
+  const formRef = useRef<HTMLFormElement | null>(null)
+  const searchRef = useRef<HTMLDivElement>(null)
 
-  const { data: products, isLoading, error } = useQuery({
+  const { data: products, isLoading: productsLoading, error: productsError } = useQuery({
     queryKey: ['admin-products'],
     queryFn: async () => {
       const response = await axiosInstance.get('/products')
       return response.data.data.products as Product[]
     },
   })
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
+        setShowRecommendations(false)
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [])
+
+  useEffect(() => {
+    if (searchTerm) {
+      setIsLoading(true)
+      setShowRecommendations(true)
+      const delayDebounceFn = setTimeout(() => {
+        fetchPackages()
+      }, 300)
+
+      return () => clearTimeout(delayDebounceFn)
+    } else {
+      setPackages([])
+      setShowRecommendations(false)
+    }
+  }, [searchTerm])
+
+  const fetchPackages = async () => {
+    try {
+      const response = await axios.get("https://herstyleapi.onrender.com/api/v1/packages")
+      const filteredPackages = response.data.data.packages.filter((pkg: Package) =>
+        pkg.name.toLowerCase().includes(searchTerm.toLowerCase())
+      )
+      setPackages(filteredPackages)
+    } catch (error) {
+      console.error("Error fetching packages:", error)
+    } finally {
+      setIsLoading(false)
+    }
+  }
 
   const createProductMutation = useMutation({
     mutationFn: (newProduct: Partial<Product>) => axiosInstance.post('/products', newProduct),
@@ -145,7 +200,7 @@ function Productpage() {
     setFormData(prev => {
       const updatedValue = 
         name === 'originalPrice' || name === 'finalPrice'
-          ? { ...prev.price, [name]: Number(value) || 0 } // Ensure a number is always set
+          ? { ...prev.price, [name]: Number(value) || 0 }
           : name === 'tags'
           ? value.split(',').map(tag => tag.trim())
           : ['quantity', 'availableQuantity'].includes(name)
@@ -187,7 +242,7 @@ function Productpage() {
       },
       quantity: formData.quantity,
       tags: formData.tags,
-      packageId:formData.packageId || 'undefined'
+      packageId: formData.packageId || 'undefined'
     }
     console.log(productData)
     if (isEditing) {
@@ -200,7 +255,7 @@ function Productpage() {
   const handleEditClick = (product: Product) => {
     setFormData(product)
     setIsEditing(true)
-    formRef.current?.scrollIntoView({ behavior: 'smooth' }) // Scroll to the form
+    formRef.current?.scrollIntoView({ behavior: 'smooth' })
   }
 
   const handleDeleteClick = (id: string) => {
@@ -232,6 +287,12 @@ function Productpage() {
     setIsEditing(false)
   }
 
+  const handlePackageSelect = (packageId: string) => {
+    setFormData(prev => ({ ...prev, packageId }))
+    setSearchTerm('')
+    setShowRecommendations(false)
+  }
+
   return (
     <Card className="bg-white shadow-lg rounded-lg overflow-hidden">
       <CardHeader className="bg-gray-50 border-b border-gray-200">
@@ -241,7 +302,54 @@ function Productpage() {
       </CardHeader>
       <CardContent className="p-6">
         <form ref={formRef} onSubmit={handleSubmit} className="space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 ">
+            <div className="relative" ref={searchRef}>
+              <Label htmlFor="packageSearch" className="text-sm font-medium text-gray-700 mb-1">
+                البحث عن الباقة
+              </Label>
+              <div className="flex items-center">
+                <Input
+                  id="packageSearch"
+                  type="text"
+                  placeholder="ابحث عن الباقات..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="w-full"
+                />
+                {searchTerm && (
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="icon"
+                    className="absolute right-2"
+                    onClick={() => setSearchTerm('')}
+                  >
+                    <X className="h-4 w-4" />
+                  </Button>
+                )}
+              </div>
+              {showRecommendations && (
+                <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-auto">
+                  {isLoading ? (
+                    <div className="flex justify-center items-center p-4">
+                      <Loader2 className="h-6 w-6 animate-spin" />
+                    </div>
+                  ) : packages.length > 0 ? (
+                    packages.map((pkg) => (
+                      <div
+                        key={pkg._id}
+                        className="p-2 hover:bg-gray-100 cursor-pointer"
+                        onClick={() => handlePackageSelect(pkg._id)}
+                      >
+                        {pkg.name}
+                      </div>
+                    ))
+                  ) : (
+                    <div className="p-2 text-gray-500">لم يتم العثور على باقات</div>
+                  )}
+                </div>
+              )}
+            </div>
 
             <div>
               <Label htmlFor="originalPrice" className="text-sm font-medium text-gray-700 mb-1">
@@ -252,6 +360,19 @@ function Productpage() {
                 name="originalPrice"
                 type="number"
                 value={formData.price?.originalPrice}
+                onChange={handleInputChange}
+                required
+                className="w-full"
+              />
+            </div>
+            <div className='order-first lg:order-none'>
+              <Label htmlFor="name" className="text-sm font-medium text-gray-700 mb-1">
+                اسم المنتج
+              </Label>
+              <Input
+                id="name"
+                name="name"
+                value={formData.name}
                 onChange={handleInputChange}
                 required
                 className="w-full"
@@ -271,19 +392,7 @@ function Productpage() {
                 className="w-full"
               />
             </div>
-            <div className=' order-first lg:order-none'>
-              <Label htmlFor="name" className="text-sm font-medium text-gray-700 mb-1">
-                اسم المنتج
-              </Label>
-              <Input
-                id="name"
-                name="name"
-                value={formData.name}
-                onChange={handleInputChange}
-                required
-                className="w-full"
-              />
-            </div>
+            
             <div>
               <Label htmlFor="quantity" className="text-sm font-medium text-gray-700 mb-1">
                 الكمية
@@ -312,7 +421,7 @@ function Productpage() {
                 className="w-full"
               />
             </div>
-            <div>
+            <div className='col-span-3'>
               <Label htmlFor="tags" className="text-sm font-medium text-gray-700 mb-1">
                 العلامات (مفصولة بفواصل)
               </Label>
@@ -327,6 +436,7 @@ function Productpage() {
           </div>
           
           <div>
+            
             <Label htmlFor="description" className="text-sm font-medium text-gray-700 mb-1">
               وصف المنتج
             </Label>
@@ -382,15 +492,15 @@ function Productpage() {
             المنتجات الحالية
           </h3>
           <div className="bg-white overflow-hidden shadow-sm rounded-lg">
-            {isLoading ? (
+            {productsLoading ? (
               <p>جاري التحميل...</p>
-            ) : error ? (
+            ) : productsError ? (
               <p>حدث خطأ أثناء تحميل البيانات</p>
             ) : (
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead className="text-right">لصورة</TableHead>
+                    <TableHead className="text-right">الصورة</TableHead>
                     <TableHead className="text-right">الاسم</TableHead>
                     <TableHead className="text-right">السعر النهائي</TableHead>
                     <TableHead className="text-right">الكمية المتاحة</TableHead>
@@ -428,7 +538,6 @@ function Productpage() {
                           </Button>
                         </div>
                       </TableCell>
-                    
                     </TableRow>
                   ))}
                 </TableBody>
