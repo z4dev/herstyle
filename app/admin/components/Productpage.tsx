@@ -64,6 +64,7 @@ function Productpage() {
   const queryClient = useQueryClient()
   const { toast } = useToast()
   const [formData, setFormData] = useState<Partial<Product>>({
+    _id:"",
     name: '',
     description: '',
     images: [],
@@ -246,7 +247,7 @@ function Productpage() {
     }
     console.log(productData)
     if (isEditing) {
-      updateProductMutation.mutate(productData as Product)
+      updateProductMutation.mutate({...productData ,_id:formData._id} as Product)
     } else {
       createProductMutation.mutate(productData)
     }
@@ -254,6 +255,7 @@ function Productpage() {
 
   const handleEditClick = (product: Product) => {
     setFormData(product)
+    console.log("edit form data =",product)
     setIsEditing(true)
     formRef.current?.scrollIntoView({ behavior: 'smooth' })
   }
