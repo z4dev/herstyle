@@ -242,7 +242,7 @@ function PackagePage() {
                 value={formData.price?.originalPrice}
                 onChange={handleInputChange}
                 required
-                className="w-full"
+                className="w-full text-right"
               />
             </div>
             <div className='order-first lg:order-none'>
@@ -255,7 +255,7 @@ function PackagePage() {
                 value={formData.name}
                 onChange={handleInputChange}
                 required
-                className="w-full"
+                className="w-full text-right"
               />
             </div>
             <div>
@@ -269,7 +269,7 @@ function PackagePage() {
                 value={formData.price?.finalPrice}
                 onChange={handleInputChange}
                 required
-                className="w-full"
+                className="w-full text-right"
               />
             </div>
             <div>
@@ -283,7 +283,7 @@ function PackagePage() {
                 value={formData.availableQuantity}
                 onChange={handleInputChange}
                 required
-                className="w-full"
+                className="w-full text-right"
               />
             </div>
             <div className='col-span-2'>
@@ -295,7 +295,7 @@ function PackagePage() {
                 name="tags"
                 value={formData.tags?.join(', ')}
                 onChange={handleInputChange}
-                className="w-full"
+                className="w-full text-right"
               />
             </div>
             <div className='col-span-2'>
