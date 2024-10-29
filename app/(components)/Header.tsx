@@ -25,10 +25,24 @@ export default function Header() {
     []
   )
 
-  const fetchRecommendations = async (term: string) => {
+  const fetchProductRecommendations = async (term: string) => {
     if (!term.trim()) return { data: { products: [] } }
     const { data } = await axiosInstance.get(`products?search=${term}`)
     return data
+  }
+
+  
+  const fetchPackageRecommendations = async (term: string) => {
+    if (!term.trim()) return { data: { products: [] } }
+    const { data } = await axiosInstance.get(`packages?search=${term}`)
+    return data
+  }
+
+  const fetchRecommendations = async (term: string) => {
+    if (!term.trim()) return { data: { products: [], packages: [] } }
+    const productData = await fetchProductRecommendations(term)
+    const packageData = await fetchPackageRecommendations(term)
+    return { products: productData.data.products, packages: packageData.data.packages }
   }
 
   const { data: recommendationsData, isLoading, isFetching } = useQuery({
@@ -37,7 +51,8 @@ export default function Header() {
     enabled: !!debouncedSearchTerm.trim(),
   })
 
-  const recommendations = recommendationsData?.data?.products || []
+  const recommendations = recommendationsData?.products || []
+  const packageRecommendations = recommendationsData?.packages || []
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const term = e.target.value
@@ -138,18 +153,31 @@ export default function Header() {
                   <Loader2 className="h-6 w-6 text-purple animate-spin mx-auto" />
                   <span className="text-gray-500 mt-2 block">جاري التحميل...</span>
                 </div>
-              ) : recommendations.length > 0 ? (
-                recommendations.map((item: { _id: string; name: string }) => (
-                  <Link
-                    href={`/shop/product/${item._id}`}
-                    key={item._id}
-                    onClick={() => handleRecommendationClick()}
-                  >
-                    <div className="p-2 hover:bg-gray-100 cursor-pointer text-right">
-                      <div className="font-semibold">{item.name}</div>
-                    </div>
-                  </Link>
-                ))
+              ) : recommendations.length > 0 || packageRecommendations.length > 0 ? (
+                <>
+                  {recommendations.map((item: { _id: string; name: string }) => (
+                    <Link
+                      href={`/shop/product/${item._id}`}
+                      key={item._id}
+                      onClick={() => handleRecommendationClick()}
+                    >
+                      <div className="p-2 hover:bg-gray-100 cursor-pointer text-right">
+                        <div className="font-semibold">{item.name}</div>
+                      </div>
+                    </Link>
+                  ))}
+                  {packageRecommendations.map((item: { _id: string; name: string }) => (
+                    <Link
+                      href={`/shop/package/${item._id}`}
+                      key={item._id}
+                      onClick={() => handleRecommendationClick()}
+                    >
+                      <div className="p-2 hover:bg-gray-100 cursor-pointer text-right">
+                        <div className="font-semibold">{item.name}</div>
+                      </div>
+                    </Link>
+                  ))}
+                </>
               ) : (
                 <div className="text-center p-2">
                   <span className="text-gray-500">لا توجد نتائج</span>
