@@ -133,7 +133,7 @@ function Productpage() {
   }
 
   const createProductMutation = useMutation({
-    mutationFn: (newProduct: Partial<Product>) => axiosInstance.post('/products', newProduct),
+    mutationFn: (newProduct: any) => axiosInstance.post('/products', newProduct),
     onSuccess: () => {
       toast({
         title: "نجاح",
@@ -314,7 +314,7 @@ function Productpage() {
                   placeholder="ابحث عن الباقات..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full"
+                  className="w-full text-right"
                 />
                 {searchTerm && (
                   <Button
@@ -362,7 +362,7 @@ function Productpage() {
                 value={formData.price?.originalPrice}
                 onChange={handleInputChange}
                 required
-                className="w-full"
+                className="w-full text-right"
               />
             </div>
             <div className='order-first lg:order-none'>
@@ -375,7 +375,7 @@ function Productpage() {
                 value={formData.name}
                 onChange={handleInputChange}
                 required
-                className="w-full"
+                className="w-full text-right"
               />
             </div>
             <div>
@@ -389,7 +389,7 @@ function Productpage() {
                 value={formData.price?.finalPrice}
                 onChange={handleInputChange}
                 required
-                className="w-full"
+                className="w-full text-right"
               />
             </div>
             
@@ -404,7 +404,7 @@ function Productpage() {
                 value={formData.quantity}
                 onChange={handleInputChange}
                 required
-                className="w-full"
+                className="w-full text-right"
               />
             </div>
             <div>
@@ -418,7 +418,7 @@ function Productpage() {
                 value={formData.availableQuantity}
                 onChange={handleInputChange}
                 required
-                className="w-full"
+                className="w-full text-right"
               />
             </div>
             <div className='col-span-3'>
@@ -430,7 +430,7 @@ function Productpage() {
                 name="tags"
                 value={formData.tags?.join(', ')}
                 onChange={handleInputChange}
-                className="w-full"
+                className="w-full text-right" 
               />
             </div>
           </div>
@@ -446,7 +446,7 @@ function Productpage() {
               value={formData.description}
               onChange={handleInputChange}
               required
-              className="w-full h-24"
+              className="w-full h-24 text-right"
             />
           </div>
 

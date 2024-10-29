@@ -159,7 +159,7 @@ export default function Home() {
               حماية + نعومة
             </button>
             <Link
-              href="/products"
+              href="/shop"
               className=" text-white px-6 py-2 underline transition duration-300"
             >
               تسوقي الان
