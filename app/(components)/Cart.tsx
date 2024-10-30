@@ -95,6 +95,8 @@ export default function Cart() {
     }
   };
 
+  console.log("cartItems",cartItems)
+
   return (
     <div className="inline-block relative">
       <Button
@@ -133,15 +135,17 @@ export default function Cart() {
             ) : cartItems.length > 0 ? (
               <div className="w-full ">
                 <div className={`${cartItems.length > 2 ? 'overflow-y-scroll h-72' : 'overflow-y-clip h-fit'}  overflow-hidden cart-items p-0 m-0`}>
-                {cartItems.map((item: any) => (
-                  <CartItems
+                {cartItems.map((item: any) => 
+                 
+                 { 
+                  return<CartItems
                     key={item._id}
                     id={item.productId}
                     price={item.totalPrice / item.quantity}
                     name={`${
-                      item.productId ? item.productId.name : item.packageId.name
+                      item.productId ? item.productId.name : item.packageId?.name
                     }`}
-                    image={item.productId ? item.productId.images[0] : item.packageId.images[0]}
+                    image={item.productId ? item.productId.images[0] : item.packageId?.images[0]}
                     quantity={item.quantity}
                     onDelete={() =>
                       handleDeleteProduct(
@@ -155,8 +159,8 @@ export default function Cart() {
                     }
                     stateOfDeleting={deleteMutation.isPending}
                     type={item.productId ? "product" : "package"}
-                  />
-                ))}
+                  />}
+                )}
                 </div>
                 <div className="border-t pt-4 w-full">
                   <h3 className="font-medium mb-4 w-full text-center ">
