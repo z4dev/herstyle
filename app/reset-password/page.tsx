@@ -124,7 +124,7 @@ export function WrapResetPassword() {
   )
 }
 
-export const ResetPassword = ()=>{
+ export default function ResetPassword(){
   return(
     <Suspense fallback={<div> ... تحميل</div>} >
       <WrapResetPassword />
