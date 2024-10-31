@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 
-export function ResetPassword() {
+export function WrapResetPassword() {
   const [newPassword, setNewPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
@@ -124,10 +124,10 @@ export function ResetPassword() {
   )
 }
 
-export const wrapResetPassword = ()=>{
+export const ResetPassword = ()=>{
   return(
     <Suspense fallback={<div> ... تحميل</div>} >
-      <ResetPassword />
+      <WrapResetPassword />
     </Suspense>
   )
 }
