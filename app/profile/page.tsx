@@ -80,7 +80,7 @@ export default function ProfilePage() {
     dispatch(deleteName());
     queryClient.invalidateQueries({ queryKey: ["cart"] });
     router.push("/");
-    router.refresh();
+    setTimeout(()=>{location.reload()},1000)
   };
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {

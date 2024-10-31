@@ -233,7 +233,7 @@ export default function ProductPage({ params }: { params: { package: string } })
           </button>
         </div>
         
-        {isReviews ? <Reviews comments={comments} /> : <RelatedProducts data={productsForThatPackage} />}
+        {isReviews ? <Reviews comments={comments} id={params.package} /> : <RelatedProducts data={productsForThatPackage} />}
 
         {/* Suggested products section */}
         <div className='flex flex-col mt-8'>

@@ -94,11 +94,13 @@ function Page() {
   });
 
   const handleOnlyPackages = () => {
-    setIsOnlyPackages((prev) => !prev);
+    setIsOnlyPackages(true);
+    setIsOnlyProducts(false)
   };
 
   const handleOnlyProducts = () => {
-    setIsOnlyProducts((prev) => !prev);
+    setIsOnlyPackages(false);
+    setIsOnlyProducts(true)
   };
 
   const handlePriceRangeChange = (min: number, max: number) => {
@@ -130,7 +132,7 @@ function Page() {
           filter={filter}
           onlyPackages={handleOnlyPackages}
           onlyProducts={handleOnlyProducts}
-          priceRange={handlePriceRangeChange}
+          handlePriceFilter={handlePriceRangeChange}
           handleRatingFilter={handleStarsChange}
         />
       </div>
@@ -159,7 +161,7 @@ function Page() {
           filter={filter}
           onlyPackages={handleOnlyProducts}
           onlyProducts={ handleOnlyPackages }
-          priceRange={handlePriceRangeChange}
+          handlePriceFilter={handlePriceRangeChange}
           handleRatingFilter={handleStarsChange}
         />
       </div>

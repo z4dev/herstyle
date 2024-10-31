@@ -43,7 +43,7 @@ function Testmonial() {
       modules={[Pagination]}
       className="mySwiper w-full h-auto"
     >
-    {data && data.data.comments.map((comment:any , index:number) => (
+    {data && data.data.comments.slice(0,5).map((comment:any , index:number) => (
       <SwiperSlide key={index}>
         <div className="bg-white p-4 rounded-lg shadow text-center h-full flex flex-col justify-center items-center">
           <User

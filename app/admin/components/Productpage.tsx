@@ -326,7 +326,7 @@ function Productpage() {
                     className="absolute right-2"
                     onClick={() => setSearchTerm('')}
                   >
-                    <X className="h-4 w-4" />
+                    <X className="h-4 w-4 " />
                   </Button>
                 )}
               </div>

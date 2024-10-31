@@ -6,8 +6,12 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
 import { Drawer, DrawerContent, DrawerTrigger } from "@/components/ui/drawer"
+import { Slider } from '@/components/ui/slider'
 
-const FilterContent = ({ onlyPackages, onlyProducts, priceRange, handleRatingFilter}:{ onlyPackages:()=>void, onlyProducts:()=>void, priceRange:(min: number, max: number) => void, handleRatingFilter:(rating:number)=>void}) => (
+const FilterContent = ({ onlyPackages, onlyProducts, handlePriceFilter ,  handleRatingFilter}:{ onlyPackages:()=>void, handlePriceFilter: (min: number, max: number) => void, onlyProducts:()=>void,  handleRatingFilter:(rating:number)=>void}) => {
+  const [priceRange, setPriceRange] = useState([0, 1000])
+  
+  return (
     <div className="filter-section bg-white p-4 rounded-lg shadow">
       <div className='flex items-center justify-end text-purple mb-4'>
         <h2 className="text-xl font-bold text-right">الفلترة</h2>
@@ -36,45 +40,49 @@ const FilterContent = ({ onlyPackages, onlyProducts, priceRange, handleRatingFil
         <AccordionItem value="categories">
           <AccordionTrigger className="text-right">التصنيفات</AccordionTrigger>
           <AccordionContent>
-            <div className="space-y-2">
-              <div className="flex items-center justify-end space-x-2 ">
-                <Label htmlFor="category-1">بكجات</Label>
-                <Checkbox id="category-1"  onClick={onlyPackages} />
+          <RadioGroup defaultValue="packages">
+              <div className="flex items-center justify-end space-x-2 mb-2">
+                <Label htmlFor="category-packages">بكجات</Label>
+                <RadioGroupItem id="category-packages" value="packages" onClick={onlyPackages} />
               </div>
-              <div className="flex items-center justify-end space-x-2 ">
-                <Label htmlFor="category-2">منتج</Label>
-                <Checkbox id="category-2"  onClick={onlyProducts} />
+              <div className="flex items-center justify-end space-x-2 mb-2">
+                <Label htmlFor="category-products">منتج</Label>
+                <RadioGroupItem id="category-products" value="products" onClick={onlyProducts} />
               </div>
-              {/* Add more categories as needed */}
-            </div>
+            </RadioGroup>
           </AccordionContent>
         </AccordionItem>
 
         <AccordionItem value="price">
-          <AccordionTrigger className="text-right">السعر</AccordionTrigger>
+        <AccordionTrigger className="text-right">السعر</AccordionTrigger>
           <AccordionContent>
-            <RadioGroup defaultValue="50-60">
-              <div className="flex items-center justify-end space-x-2  mb-2">
-                <Label htmlFor="price-1">يبدأ من 50 إلى 60 ريال</Label>
-                <RadioGroupItem onClick={()=>priceRange(50,60)} value="50-60" id="price-1" />
+            <div className="space-y-4 mt-2" >
+              <Slider
+                className=''
+                defaultValue={[0, 1000]}
+                max={1000}
+                min={0}
+                step={1}
+                value={priceRange}
+                onValueChange={(value) => {
+                  setPriceRange(value)
+                  handlePriceFilter(value[0], value[1])
+                }}
+              />
+              <div className="flex justify-between items-center">
+                <span>{priceRange[0]} ريال</span>
+                <span>{priceRange[1]} ريال</span>
               </div>
-              <div className="flex items-center justify-end space-x-2  mb-2">
-                <Label htmlFor="price-2">يبدأ من 70 إلى 80 ريال</Label>
-                <RadioGroupItem onClick={()=>priceRange(70,80)} value="70-80" id="price-2" />
-              </div>
-              <div className="flex items-center justify-end space-x-2  mb-2">
-                <Label htmlFor="price-3">يبدأ من 80 إلى 90 ريال</Label>
-                <RadioGroupItem onClick={()=>priceRange(80,90)} value="80-90" id="price-3" />
-              </div>
-            </RadioGroup>
+            </div>
           </AccordionContent>
         </AccordionItem>
       </Accordion>
     </div>
   )
+}
 
 
-function MobileFilterSection({filter, onlyPackages, onlyProducts, priceRange, handleRatingFilter}:{filter:any, onlyPackages:()=>void, onlyProducts:()=>void, priceRange:(min: number, max: number) => void, handleRatingFilter:(rating:number)=>void}) {
+function MobileFilterSection({filter, onlyPackages, onlyProducts, handlePriceFilter, handleRatingFilter}:{filter:any, onlyPackages:()=>void, onlyProducts:()=>void, handlePriceFilter:(min: number, max: number) => void, handleRatingFilter:(rating:number)=>void}) {
   const [open, setOpen] = useState(false)
 
   return (
@@ -87,7 +95,7 @@ function MobileFilterSection({filter, onlyPackages, onlyProducts, priceRange, ha
             </Button>
           </DrawerTrigger>
           <DrawerContent>
-            <FilterContent  onlyPackages={onlyPackages} onlyProducts={onlyProducts} priceRange={priceRange} handleRatingFilter={handleRatingFilter} />
+            <FilterContent  onlyPackages={onlyPackages} onlyProducts={onlyProducts} handlePriceFilter={handlePriceFilter} handleRatingFilter={handleRatingFilter} />
           </DrawerContent>
         </Drawer>
       </div>

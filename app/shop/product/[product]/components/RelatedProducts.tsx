@@ -1,15 +1,57 @@
+import { toast } from '@/hooks/use-toast';
+import axiosInstance from '@/utils/axiosInstance';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { ShoppingBag, ShoppingCart, Star } from 'lucide-react'
 import Image from 'next/image'
 import React from 'react'
 
+const addToCartMutation = async (productId: string) => {
+const response = await axiosInstance.post(
+  `cart/add-product/${productId}`,
+  { quantity: 1 }
+);
+return response.data;
+};
+
 function RelatedProducts({data}:{data:any}) {
+
+  const queryClient = useQueryClient()
+
+
+  const mutation = useMutation({
+    mutationFn: (productId: string) => addToCartMutation(productId),
+    onSuccess: () => {
+
+      toast({
+        title: "نجاح",
+        description: "تم إضافة العنصر إلى السلة",
+        // يمكنك إضافة المزيد من الخصائص هنا إذا لزم الأمر
+      });
+      
+      // Invalidate and refetch cart data
+      queryClient.invalidateQueries({ queryKey: ['cart'] });
+      console.log(" item added to cart successfully")
+    },
+    onError: (error) => {
+      console.error('Error adding product to cart:', error);
+      // Handle error (e.g., show an error message to the user)
+    },
+  });
+
+
+  const handleAddToCart = (id: string) => {
+    mutation.mutate(id);
+  };
+
+
+
   return (
     <div className="space-y-6">
     {data.map((item:any, index:number) => (
       <div key={index} className="bg-white rounded-lg shadow-md p-4 flex flex-row-reverse items-center">
         <div className="relative w-1/5 h-32">
           <Image
-            src={`/products/${index}.jpg`}
+            src={item.images[0]}
             alt={`Related product ${index}`}
             layout="fill"
             objectFit="cover"
@@ -33,10 +75,14 @@ function RelatedProducts({data}:{data:any}) {
            {item.description}
           </p>
           <div className="flex justify-end items-center">
-            <button className=" flex border border-purple-600 items-center text-purple px-4 py-2 rounded-md text-sm hover:bg-purple-200 transition duration-300">
-              إضافة للسلة
-              <ShoppingBag className='w-4 h-4 ml-2' />
-            </button>
+          <button 
+          onClick={()=>handleAddToCart(item._id)}
+          disabled={mutation.isPending} 
+          className="mt-3 border-2 flex items-center border-purple text-purple px-4 py-2 rounded-lg hover:bg-purple hover:text-white transition duration-300 disabled:opacity-50"
+        >
+          <p>{mutation.isPending ? 'جاري الإضافة...' : 'إضافة للسلة'}</p>
+          <ShoppingBag className='ml-2' />
+        </button>
             
           </div>
         </div>

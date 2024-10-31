@@ -140,7 +140,7 @@ export default function Cart() {
                  { 
                   return<CartItems
                     key={item._id}
-                    id={item.productId}
+                    id={item.productId?item.productId:item.packageId}
                     price={item.totalPrice / item.quantity}
                     name={`${
                       item.productId ? item.productId.name : item.packageId?.name

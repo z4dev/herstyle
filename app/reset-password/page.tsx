@@ -1,7 +1,7 @@
 'use client'
 
 import { Suspense, useState  } from 'react'
-import { useSearchParams } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { Eye, EyeOff } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -18,6 +18,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 
   const searchParams = useSearchParams()
   const token = searchParams.get('token')
+  const router = useRouter()
 
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -55,6 +56,9 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
         setSuccess('تم إعادة تعيين كلمة المرور بنجاح')
         setNewPassword('')
         setConfirmPassword('')
+        setTimeout(()=>{
+          router.push("/")
+        },1000)
       } else {
         setError(data.message || 'فشل في إعادة تعيين كلمة المرور')
       }
