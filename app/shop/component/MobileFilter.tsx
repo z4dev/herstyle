@@ -43,11 +43,11 @@ const FilterContent = ({ onlyPackages, onlyProducts, handlePriceFilter ,  handle
           <RadioGroup defaultValue="packages">
               <div className="flex items-center justify-end space-x-2 mb-2">
                 <Label htmlFor="category-packages">بكجات</Label>
-                <RadioGroupItem id="category-packages" value="packages" onClick={onlyPackages} />
+                <RadioGroupItem id="category-packages" value="packages" onClick={onlyProducts} />
               </div>
               <div className="flex items-center justify-end space-x-2 mb-2">
                 <Label htmlFor="category-products">منتج</Label>
-                <RadioGroupItem id="category-products" value="products" onClick={onlyProducts} />
+                <RadioGroupItem id="category-products" value="products" onClick={ onlyPackages } />
               </div>
             </RadioGroup>
           </AccordionContent>
