@@ -10,13 +10,10 @@ import { useSearchParams , useRouter } from 'next/navigation'
 
 const verifyAccount = async (token:string|null) => {
     try {
-        const response = await axios.post(`https://herstyleapi.onrender.com/api/v1/verify-account`, {
-          params: { token },
-        });
-        console.log("verification success = ", response.data);
+        const response = await axios.post(`https://herstyleapi.onrender.com/api/v1/users/verify-account`,  { token });
         return response.data; // Assuming the response data contains the message you need
     } catch(e) {
-        console.log("Error in verifying = ", e);
+        console.error("Error in verifying = ", e);
     }
 };
 
@@ -26,8 +23,6 @@ function VerifyPage() {
   const router = useRouter()
 
   const token = searchParams.get('token')
-
-  console.log('token',token)
 
     const verificationMutation = useMutation({
      mutationFn: (token:string|null)=>verifyAccount(token),

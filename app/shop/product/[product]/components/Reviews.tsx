@@ -1,13 +1,19 @@
-'use client'
+"use client";
 
 import React, { useState } from "react";
-import { Star } from "lucide-react";
+import { Star, User } from "lucide-react";
 import DateOfComment from "@/app/shop/component/Date";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axiosInstance from "@/utils/axiosInstance";
 import { toast } from "@/hooks/use-toast";
 
-export default function Reviews({ comments = [], id = "" }: { comments: any[]; id: string }) {
+export default function Reviews({
+  comments = [],
+  id = "",
+}: {
+  comments: any[];
+  id: string;
+}) {
   const queryClient = useQueryClient();
 
   const [newComment, setNewComment] = useState("");
@@ -22,15 +28,15 @@ export default function Reviews({ comments = [], id = "" }: { comments: any[]; i
   };
 
   const addComment = useMutation({
-    mutationFn: async ({ productId, content, stars }: any) => 
+    mutationFn: async ({ productId, content, stars }: any) =>
       await axiosInstance.post("/comments", { productId, content, stars }),
     onSuccess: () => {
       toast({
         title: "نجاح",
         description: "تم إضافة التعليق",
       });
-      queryClient.invalidateQueries({ queryKey: ['view-package'] });
-      queryClient.invalidateQueries({queryKey:['view-product']})
+      queryClient.invalidateQueries({ queryKey: ["view-package"] });
+      queryClient.invalidateQueries({ queryKey: ["view-product"] });
       setNewComment("");
       setNewRating(0);
     },
@@ -40,7 +46,7 @@ export default function Reviews({ comments = [], id = "" }: { comments: any[]; i
         description: "حدث خطأ أثناء إضافة التعليق",
         variant: "destructive",
       });
-    }
+    },
   });
 
   const handleSubmit = () => {
@@ -61,24 +67,39 @@ export default function Reviews({ comments = [], id = "" }: { comments: any[]; i
           <p className="text-gray-500 text-center">لا توجد تعليقات بعد.</p>
         </div>
       ) : (
-        <div className={`cart-items ${comments.length > 5 ? 'h-[100vh] overflow-y-scroll' : ''}`} style={{ direction: 'rtl', textAlign: 'right' }}>
+        <div
+          className={`cart-items ${
+            comments.length > 5 ? "h-[100vh] overflow-y-scroll" : ""
+          }`}
+          style={{ direction: "rtl", textAlign: "right" }}
+        >
           {comments.map((review: any) => (
-            <div key={review.id} className="mb-6 pb-6 border-b border-gray-200 last:border-b-0">
+            <div
+              key={review.id}
+              className="mb-6 pb-6 border-b border-gray-200 last:border-b-0"
+            >
               <div className="flex items-center justify-between mb-2">
                 <div className="flex items-center">
-                  <div className="w-12 h-12 rounded-full bg-gray-300 mr-4"></div>
-                  <div className="flex flex-col items-start">
+                  <User
+                    className="mx-auto mb-4 text-purple border-2 border-purple rounded-full p-2"
+                    size={64}
+                  />
+                  <div className="flex flex-col items-start mr-2">
                     <h3 className="font-bold text-lg">{review.userId.name}</h3>
                     <div className="flex items-center mt-1">
                       {[...Array(5)].map((_, i) => (
                         <Star
                           key={i}
                           className={`w-4 h-4 ${
-                            i < review.stars ? "text-yellow-400 fill-current" : "text-gray-300"
+                            i < review.stars
+                              ? "text-yellow-400 fill-current"
+                              : "text-gray-300"
                           }`}
                         />
                       ))}
-                      <span className="text-gray-600 text-sm ml-2">({review.stars})</span>
+                      <span className="text-gray-600 text-sm ml-2">
+                        ({review.stars})
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -98,7 +119,9 @@ export default function Reviews({ comments = [], id = "" }: { comments: any[]; i
             <Star
               key={index}
               className={`w-6 h-6 cursor-pointer ${
-                index < newRating ? "text-yellow-400 fill-current" : "text-gray-300"
+                index < newRating
+                  ? "text-yellow-400 fill-current"
+                  : "text-gray-300"
               }`}
               onClick={() => handleRatingChange(index + 1)}
             />
@@ -112,8 +135,8 @@ export default function Reviews({ comments = [], id = "" }: { comments: any[]; i
           placeholder="اكتب تعليقك هنا..."
           required
         />
-        <button 
-          onClick={handleSubmit} 
+        <button
+          onClick={handleSubmit}
           className="mt-2 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
           disabled={addComment.isPending}
         >

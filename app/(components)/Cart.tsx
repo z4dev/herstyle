@@ -95,8 +95,6 @@ export default function Cart() {
     }
   };
 
-  console.log("cartItems",cartItems)
-
   return (
     <div className="inline-block relative">
       <Button
