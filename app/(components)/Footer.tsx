@@ -106,9 +106,9 @@ function Footer() {
       <div className="mt-8 text-center flex items-center justify-center">
         <Link
           href="https://rab-t.com/"
-          className="text-center hover:text-black hover:underline flex items-center flex-row-reverse"
+          className="text-center hover:text-black hover:underline flex items-center flex-col"
         >
-         <p>2024 sep جميع الحقوق محفوظة لدى </p> <Image src='/company.png' className="mr-3" alt="company logo" height={40} width={40}/>
+         <p>2024 sep جميع الحقوق محفوظة لدى </p> <Image src='/company.png' className="mr-3" alt="company logo" height={100} width={100}/>
         </Link>
       </div>
     </footer>

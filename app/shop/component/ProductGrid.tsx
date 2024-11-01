@@ -20,7 +20,7 @@ function ProductGrid({
 }) {
   return (
     <div className="min-h-screen w-full">
-      <div className="product-grid w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 p-6">
+      <div className="product-grid w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 p-6 justify-items-center">
       {isLoading ? (
           Array(6).fill(null).map((_, index) => (
             <ProductSkelton key={index} isLoading={isLoading} />
@@ -30,6 +30,7 @@ function ProductGrid({
             {products?.map((product: any) => (
               <Product
                 key={product._id}
+                className="w-[250px]"
                 id={`/product/${product._id}`}
                 image={product.images[0]}
                 title={product.name}
