@@ -17,14 +17,17 @@ import Testmonial from "./(components)/Testmonial";
 
 export default function Home() {
   async function getProducts() {
-    const { data } = await axiosInstance.get("products");
-    return data.data;
+    const { data:products } = await axiosInstance.get("products?tags=green");
+    const{data:packages} =await axiosInstance.get("packages?tags=green")
+    return [...products.data.products ,...packages.data.packages];
   }
 
   // New function to get packages
   async function getPackages() {
-    const { data } = await axiosInstance.get("packages");
-    return data.data;
+    const { data:products } = await axiosInstance.get("products?tags=blue");
+    const{data:packages} =await axiosInstance.get("packages?tags=blue")
+    console.log(products , packages)
+    return [...products.data.products ,...packages.data.packages];
   }
 
   const { data: productsData, isLoading: productsLoading, error: productsError } = useQuery({
@@ -91,8 +94,8 @@ export default function Home() {
             <ProductSkelton key={index} isLoading={packagesLoading} />
           ))}
           {packagesData &&
-            packagesData.packages
-              .slice(0, 4) // Get only the first 4 packages
+            packagesData
+              ?.slice(0, 4) // Get only the first 4 packages
               .map((packageItem: any, i: number) => (
                 <Product
                   id={`/package/${packageItem._id}`} // Adjusted to use package ID
@@ -123,8 +126,7 @@ export default function Home() {
             <ProductSkelton key={index} isLoading={productsLoading} />
           ))}
           {productsData &&
-            productsData.products
-              .slice(0, 4)
+            productsData?.slice(0, 4)
               .map((product: any, i: number) => (
                 <Product
                   id={`/product/${product._id}`}
