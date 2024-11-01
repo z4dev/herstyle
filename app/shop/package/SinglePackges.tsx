@@ -28,7 +28,7 @@ function SinglePackges() {
         .map((packageItem: any, i: number) => (
           <Product
             id={`/package/${packageItem._id}`} // Adjusted to use package ID
-            className="w-full"
+            className="w-auto lg:w-[250px]"
             key={packageItem._id}
             image={packageItem.images[0]} // Adjusted to use package image
             title={packageItem.name}

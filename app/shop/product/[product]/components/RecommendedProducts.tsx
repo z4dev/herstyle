@@ -28,7 +28,7 @@ function RecommendedProducts() {
         .map((product: any, i: number) => (
           <Product
             id={`/product/${product._id}`}
-            className="w-[250px]"
+            className="  w-auto lg:w-[250px]"
             key={product._id}
             image={product.images[0]}
             title={product.name}
