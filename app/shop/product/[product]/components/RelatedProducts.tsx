@@ -49,13 +49,12 @@ function RelatedProducts({data}:{data:any}) {
     <div className="space-y-6">
     {data.map((item:any, index:number) => (
       <div key={index} className="bg-white rounded-lg shadow-md p-4 flex flex-row-reverse items-start md:items-center">
-        <div className="relative  w-1/3 h-44  md:w-1/5 md:h-32">
+        <div className="relative  w-1/3   md:w-1/4 h-[175px]">
           <Image
             src={item.images[0]}
             alt={`Related product ${index}`}
             layout="fill"
-            objectFit="contain"
-            className="rounded-lg"
+            className="rounded-lg w-full h-full"
           />
         </div>
         <div className="w-4/5 pr-4 flex flex-col justify-between">
@@ -78,7 +77,7 @@ function RelatedProducts({data}:{data:any}) {
           <button 
           onClick={()=>handleAddToCart(item._id)}
           disabled={mutation.isPending} 
-          className="mt-3 border-2 flex items-center border-purple text-purple px-4 py-2 rounded-lg hover:bg-purple hover:text-white transition duration-300 disabled:opacity-50"
+          className=" hidden mt-3 border-2 md:flex items-center border-purple text-purple px-4 py-2 rounded-lg hover:bg-purple hover:text-white transition duration-300 disabled:opacity-50"
         >
           <p>{mutation.isPending ? 'جاري الإضافة...' : 'إضافة للسلة'}</p>
           <ShoppingBag className='ml-2' />
