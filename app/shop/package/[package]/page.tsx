@@ -1,5 +1,5 @@
 "use client";
-import { Share2, ShoppingBag, Star } from 'lucide-react';
+import { Share2, ShoppingBag, Star, X } from 'lucide-react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination } from 'swiper/modules';
 import Image from 'next/image';
@@ -24,6 +24,9 @@ import SinglePackges from '../SinglePackges';
 
 const addToCartMutation = async (productId: string) => {
 
+
+  const [fullScreenImage, setFullScreenImage] = useState<string | null>(null)
+
   const response = await axiosInstance.post(
     `cart/add-package/${productId}`,
     { quantity: 1 }
@@ -35,7 +38,7 @@ export default function ProductPage({ params }: { params: { package: string } })
 
 
   const queryClient = useQueryClient()
-
+  const [fullScreenImage, setFullScreenImage] = useState<string | null>(null)
 
   const mutation:any = useMutation({
     mutationFn: (productId: string) => addToCartMutation(productId),
@@ -206,6 +209,7 @@ export default function ProductPage({ params }: { params: { package: string } })
                     alt={`Product image ${index}`}
                     layout="fill"
                     className='h-full w-full'
+                    onClick={() => setFullScreenImage(image)}
                   />
                 </div>
               </SwiperSlide>
@@ -214,6 +218,33 @@ export default function ProductPage({ params }: { params: { package: string } })
         </div>
 
       </div>
+
+       {/* Full-screen image modal */}
+       {fullScreenImage && (
+        <div
+          className="fixed inset-0  bg-black bg-opacity-75 flex items-center h-screen justify-center z-50"
+          onClick={() => setFullScreenImage(null)}
+        >
+          <div className="max-w-4xl h-[80vh] md:h-[100vh] ">
+            <button
+              className="absolute  top-4 right-4 text-white bg-black bg-opacity-50 rounded-full p-2"
+              onClick={(e) => {
+                e.stopPropagation()
+                setFullScreenImage(null)
+              }}
+            >
+              <X className="w-6 h-6" />
+            </button>
+            <Image
+              src={fullScreenImage}
+              alt="Full-screen product image"
+              width={800}
+              height={800}
+              className='h-full w-full'
+            />
+          </div>
+        </div>
+      )}
 
      
       {/* New section for related products and reviews */}
