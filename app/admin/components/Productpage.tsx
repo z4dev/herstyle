@@ -304,7 +304,7 @@ function Productpage() {
       </CardHeader>
       <CardContent className="p-6">
         <form ref={formRef} onSubmit={handleSubmit} className="space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 ">
+          <div className="grid  lg:grid-cols-3 gap-6 ">
             <div className="relative" ref={searchRef}>
               <Label htmlFor="packageSearch" className="text-sm font-medium text-gray-700 mb-1">
                 البحث عن الباقة
@@ -423,7 +423,7 @@ function Productpage() {
                 className="w-full text-right"
               />
             </div>
-            <div className='col-span-3'>
+            <div className='lg:col-span-3'>
               <Label htmlFor="tags" className="text-sm font-medium text-gray-700 mb-1">
                 العلامات (مفصولة بفواصل)
               </Label>

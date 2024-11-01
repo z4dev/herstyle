@@ -286,7 +286,7 @@ function PackagePage() {
                 className="w-full text-right"
               />
             </div>
-            <div className='col-span-2'>
+            <div className='lg:col-span-2'>
               <Label htmlFor="tags" className="text-sm font-medium text-gray-700 mb-1">
                 العلامات (مفصولة بفواصل)
               </Label>
@@ -298,7 +298,7 @@ function PackagePage() {
                 className="w-full text-right"
               />
             </div>
-            <div className='col-span-2'>
+            <div className='lg:col-span-2'>
               <Label htmlFor="description" className="text-sm font-medium text-gray-700 mb-1">
                 وصف الحزمة
               </Label>
