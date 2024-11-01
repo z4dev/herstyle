@@ -1,5 +1,6 @@
 "use client";
 import { useRouter } from "next/navigation";
+import { useQueryClient } from "@tanstack/react-query";
 // components/MoyasarPayment.js
 
 import { useEffect, useState } from "react";
@@ -11,6 +12,7 @@ declare global {
 const MoyasarPayment: React.FC<{ cartInfo: any }> = ({ cartInfo }) => {
   const [loading, setLoading] = useState(true);
   const router = useRouter();
+  const queryClient = useQueryClient()
   useEffect(() => {
     if (cartInfo) {
       const script = document.createElement("script");
@@ -55,7 +57,9 @@ const MoyasarPayment: React.FC<{ cartInfo: any }> = ({ cartInfo }) => {
             on_completed: function (payment: any) {
               return new Promise(function (resolve, reject) {
                 if (payment.status === "completed") {
+                  queryClient.invalidateQueries({ queryKey: ['cart'] });
                   resolve({ message: "Payment completed successfully." });
+
                 } else if (payment.status === "initiated") {
                   resolve({
                     message:

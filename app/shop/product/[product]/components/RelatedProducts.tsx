@@ -48,20 +48,20 @@ function RelatedProducts({data}:{data:any}) {
   return (
     <div className="space-y-6">
     {data.map((item:any, index:number) => (
-      <div key={index} className="bg-white rounded-lg shadow-md p-4 flex flex-row-reverse items-center">
-        <div className="relative w-1/5 h-32">
+      <div key={index} className="bg-white rounded-lg shadow-md p-4 flex flex-row-reverse items-start md:items-center">
+        <div className="relative  w-1/3 h-44  md:w-1/5 md:h-32">
           <Image
             src={item.images[0]}
             alt={`Related product ${index}`}
             layout="fill"
-            objectFit="cover"
+            objectFit="contain"
             className="rounded-lg"
           />
         </div>
         <div className="w-4/5 pr-4 flex flex-col justify-between">
           <div className="flex justify-between items-center mb-2">
              <span className="font-bold text-lg text-purple">{item.price.finalPrice} ر.س</span>
-             <div className='flex items-center'>
+             <div className='flex md:flex-row flex-col-reverse items-end md:items-center'>
             <div className="flex items-center mr-2">
                 <span className="text-sm text-gray-600 mr-2">(25)</span>
               {[...Array(5)].map((_, i) => (

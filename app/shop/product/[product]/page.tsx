@@ -140,7 +140,7 @@ export default function ProductPage({ params }: { params: { product: string } })
           الرئيسية / المتجر / {data.name}
         </p>
       </div>
-      <div className="flex flex-col-reverse lg:flex-row gap-8">
+      <div className=" h-screen lg:h-[80vh] flex flex-col-reverse lg:flex-row gap-8">
        <div className="lg:w-1/2 flex flex-col items-end">
           <div className="bg-gray-100 p-4 rounded-lg  mb-6 w-full">
             <div className="flex justify-between items-center">
@@ -180,7 +180,7 @@ export default function ProductPage({ params }: { params: { product: string } })
             <ShoppingBag className=" ml-2 w-5 h-5" />
           </button>
         </div>
-        <div className=" h-64 lg:h-auto w-full lg:w-1/2">
+        <div className="  h-full w-full lg:w-1/2">
           <Swiper
             modules={[Pagination]}
             spaceBetween={30}
@@ -195,7 +195,7 @@ export default function ProductPage({ params }: { params: { product: string } })
                     src={image}
                     alt={`Product image ${index}`}
                     layout="fill"
-                    objectFit="cover"
+                    className='w-full h-full'
                   />
                 </div>
               </SwiperSlide>

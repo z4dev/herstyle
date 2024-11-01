@@ -40,12 +40,20 @@ export default function Reviews({
       setNewComment("");
       setNewRating(0);
     },
-    onError: () => {
-      toast({
-        title: "خطأ",
-        description: "حدث خطأ أثناء إضافة التعليق",
-        variant: "destructive",
-      });
+    onError: (e: any) => {
+      if (e.status === 401) {
+        toast({
+          title: "خطأ",
+          description: "حدث خطأ أثناء إضافة التعليق. يرجى تسجيل الدخول أولاً.",
+          variant: "destructive",
+        });
+      } else {
+        toast({
+          title: "خطأ",
+          description: "حدث خطأ أثناء إضافة التعليق",
+          variant: "destructive",
+        });
+      }
     },
   });
 

@@ -18,7 +18,7 @@ function SinglePackges() {
           });
       
   return (
-    <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 p-4'>
+    <div className='grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 gap-6 p-4 justify-items-center'>
     {[...Array(4)].map((_, index) => (
       <ProductSkelton key={index} isLoading={packagesLoading} />
     ))}
@@ -28,7 +28,7 @@ function SinglePackges() {
         .map((packageItem: any, i: number) => (
           <Product
             id={`/package/${packageItem._id}`} // Adjusted to use package ID
-            className="w-[250px]"
+            className="w-full"
             key={packageItem._id}
             image={packageItem.images[0]} // Adjusted to use package image
             title={packageItem.name}

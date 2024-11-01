@@ -135,11 +135,11 @@ export default function ProductPage({ params }: { params: { package: string } })
         مشاركة
         <Share2 />
         </Button>
-        <p className="text-gray-600">
+        <p className="text-gray-600  text-xs md:text-base">
           الرئيسية / المتجر / {Package.name}
         </p>
       </div>
-      <div className="flex flex-col-reverse md:flex-row gap-8">
+      <div className="h-screen lg:h-[80vh] flex flex-col-reverse lg:flex-row gap-8">
        <div className="lg:w-1/2 flex flex-col items-end">
           <div className="bg-gray-100 p-4 rounded-lg  mb-6 w-full">
             <div className="flex justify-between items-center">
@@ -190,7 +190,7 @@ export default function ProductPage({ params }: { params: { package: string } })
             <ShoppingBag className=" ml-2 w-5 h-5" />
           </button>
         </div>
-        <div className="h-64 lg:h-auto w-full lg:w-1/2">
+        <div className="h-full w-full lg:w-1/2">
           <Swiper
             modules={[Pagination]}
             spaceBetween={30}
@@ -200,12 +200,12 @@ export default function ProductPage({ params }: { params: { package: string } })
           >
             {packageData.data.Package.images.map((image:any ,index:number) => (
               <SwiperSlide key={index}>
-                <div className="relative w-full h-full">
+                <div className="relative w-full h-full ">
                   <Image
                     src={image}
                     alt={`Product image ${index}`}
                     layout="fill"
-                    objectFit="cover"
+                    className='h-full w-full'
                   />
                 </div>
               </SwiperSlide>
