@@ -108,7 +108,7 @@ function Footer() {
           href="https://rab-t.com/"
           className="text-center hover:text-black hover:underline flex items-center flex-row-reverse"
         >
-         <p>2024 sep جميع الحقوق محفوظة لدى </p> <Image src='/company.jpg' className="mr-3" alt="company logo" height={40} width={40}/>
+         <p>2024 sep جميع الحقوق محفوظة لدى </p> <Image src='/company.png' className="mr-3" alt="company logo" height={40} width={40}/>
         </Link>
       </div>
     </footer>
