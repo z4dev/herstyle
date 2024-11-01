@@ -23,10 +23,6 @@ import SinglePackges from '../SinglePackges';
 
 
 const addToCartMutation = async (productId: string) => {
-
-
-  const [fullScreenImage, setFullScreenImage] = useState<string | null>(null)
-
   const response = await axiosInstance.post(
     `cart/add-package/${productId}`,
     { quantity: 1 }
