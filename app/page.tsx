@@ -19,7 +19,7 @@ export default function Home() {
   async function getProducts() {
     const { data:products } = await axiosInstance.get("products?tags=green");
     const{data:packages} =await axiosInstance.get("packages?tags=green")
-    return [...products.data.products ,...packages.data.packages];
+    return {products:products.data.products ,packages:packages.data.packages};
   }
 
   // New function to get packages
@@ -27,7 +27,7 @@ export default function Home() {
     const { data:products } = await axiosInstance.get("products?tags=blue");
     const{data:packages} =await axiosInstance.get("packages?tags=blue")
     console.log(products , packages)
-    return [...products.data.products ,...packages.data.packages];
+    return {products:products.data.products ,packages:packages.data.packages};
   }
 
   const { data: productsData, isLoading: productsLoading, error: productsError } = useQuery({
@@ -40,6 +40,8 @@ export default function Home() {
     queryKey: ["home-packages"],
     queryFn: getPackages,
   });
+
+  console.log(packagesData)
 
 
 
@@ -94,8 +96,25 @@ export default function Home() {
             <ProductSkelton key={index} isLoading={packagesLoading} />
           ))}
           {packagesData &&
-            packagesData
-              ?.slice(0, 4) // Get only the first 4 packages
+            packagesData.products
+              ?.slice(0, 2) // Get only the first 4 packages
+              .map((packageItem: any, i: number) => (
+                <Product
+                  id={`/product/${packageItem._id}`} // Adjusted to use package ID
+                  className="w-[250px]"
+                  key={packageItem._id}
+                  image={packageItem.images[0]} // Adjusted to use package image
+                  title={packageItem.name}
+                  rating={packageItem.rating}
+                  reviewCount={packageItem.numReviews}
+                  price={packageItem.price.finalPrice}
+                  originalPrice={packageItem.price.originalPrice}
+                  discount={packageItem.price.discount}
+                />
+              ))}
+              {packagesData &&
+            packagesData.packages
+              ?.slice(0, 2) // Get only the first 4 packages
               .map((packageItem: any, i: number) => (
                 <Product
                   id={`/package/${packageItem._id}`} // Adjusted to use package ID
@@ -126,10 +145,26 @@ export default function Home() {
             <ProductSkelton key={index} isLoading={productsLoading} />
           ))}
           {productsData &&
-            productsData?.slice(0, 4)
+            productsData?.products.slice(0, 3)
               .map((product: any, i: number) => (
                 <Product
                   id={`/product/${product._id}`}
+                  className="w-[250px]"
+                  key={product._id}
+                  image={product.images[0]}
+                  title={product.name}
+                  rating={product.rating}
+                  reviewCount={product.numReviews}
+                  price={product.price.finalPrice}
+                  originalPrice={product.price.originalPrice}
+                  discount={product.price.discount}
+                />
+              ))}
+               {productsData &&
+            productsData?.packages.slice(0, 1)
+              .map((product: any, i: number) => (
+                <Product
+                  id={`/package/${product._id}`}
                   className="w-[250px]"
                   key={product._id}
                   image={product.images[0]}

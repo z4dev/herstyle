@@ -19,7 +19,7 @@ interface ProductProps {
 }
 
 const addToCartMutation = async (productId: string) => {
-
+  console.log(productId)
     const array = productId.split("/")
     const type = array[1]
     const id = array[array.length - 1]
