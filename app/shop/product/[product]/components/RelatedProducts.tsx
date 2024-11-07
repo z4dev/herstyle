@@ -3,6 +3,7 @@ import axiosInstance from '@/utils/axiosInstance';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { ShoppingBag, ShoppingCart, Star } from 'lucide-react'
 import Image from 'next/image'
+import Link from 'next/link';
 import React from 'react'
 
 const addToCartMutation = async (productId: string) => {
@@ -49,13 +50,15 @@ function RelatedProducts({data}:{data:any}) {
     <div className="space-y-6">
     {data.map((item:any, index:number) => (
       <div key={index} className="bg-white rounded-lg shadow-md p-4 flex flex-row-reverse items-start md:items-center">
-        <div className="relative  w-1/3   md:w-1/4 h-[175px]">
+        <div className="relative  w-1/3   md:w-1/4 h-[200px]">
+         <Link href={`/shop/product/${item._id}`}>
           <Image
             src={item.images[0]}
             alt={`Related product ${index}`}
             layout="fill"
             className="rounded-lg w-full h-full"
           />
+          </Link>
         </div>
         <div className="w-4/5 pr-4 flex flex-col justify-between">
           <div className="flex justify-between items-center mb-2">
@@ -67,7 +70,9 @@ function RelatedProducts({data}:{data:any}) {
                 <Star key={i} className="w-4 h-4 text-yellow-400 fill-current" />
               ))}
             </div>
+            <Link href={`/shop/product/${item._id}`}>
             <h3 className="text-lg font-semibold text-right">{item.name}</h3>
+            </Link>
             </div>
           </div>
           <p className="text-right text-sm text-gray-600 mb-4">

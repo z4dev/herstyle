@@ -62,7 +62,7 @@ export default function ProductPage({ params }: { params: { package: string } })
 
 
 
-  const [isReviews, setIsReviews] = useState(true)
+  const [isReviews, setIsReviews] = useState(false)
   const {data:packageData, isLoading:packageLoading} = useQuery({
     queryKey: ['view-package'],
     queryFn: async () => {
