@@ -24,7 +24,7 @@ function Carousel() {
         className="mySwiper"
       >
         <SwiperSlide>
-          <Link href="/shop/package/671e5f7fe801785445d7f09a">
+          <Link href="/shop/product/672ba4e09e16953b66fa8629">
             <Image
               src="/banners/b1.jpg"
               alt="Image Slider"
@@ -35,7 +35,7 @@ function Carousel() {
           </Link>
         </SwiperSlide>
         <SwiperSlide>
-        <Link href="/shop/package/671e5f7fe801785445d7f09a">
+        <Link href="/shop/product/6720dbe1bd7078dee3304891">
           <Image
             src="/banners/b2.jpg"
             alt="Image Slider 2"
@@ -46,7 +46,7 @@ function Carousel() {
           </Link>
         </SwiperSlide>
         <SwiperSlide>
-        <Link href="/shop/package/671e5f7fe801785445d7f09a">
+        <Link href="/shop/product/6720d821bd7078dee33047e8">
             <Image
               src="/banners/b3.jpg"
               alt="Image Slider 3"
@@ -57,7 +57,7 @@ function Carousel() {
           </Link>
         </SwiperSlide>
         <SwiperSlide>
-        <Link href="/shop/package/671e5f7fe801785445d7f09a">
+        <Link href="/shop/product/672ba4e09e16953b66fa8629">
           <Image
             src="/banners/b4.jpg"
             alt="Image Slider 3"
@@ -68,7 +68,7 @@ function Carousel() {
           </Link>
         </SwiperSlide>
         <SwiperSlide>
-          <Link href='/shop/package/671e4eebe801785445d7ed73'>
+          <Link href='/shop/product/6720d9e8bd7078dee3304845'>
           <Image
             src="/banners/b5.jpg"
             alt="Image Slider 3"
@@ -79,7 +79,7 @@ function Carousel() {
           </Link>
         </SwiperSlide>
         <SwiperSlide>
-        <Link href="/shop/package/671e5f7fe801785445d7f09a">
+        <Link href="/shop/product/672ba4e09e16953b66fa8629">
           <Image
             src="/banners/b6.jpg"
             alt="Image Slider 3"

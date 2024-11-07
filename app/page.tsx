@@ -105,7 +105,6 @@ export default function Home() {
 
           {packagesData &&
             packagesData.packages
-              ?.slice(0, 2) // Get only the first 4 packages
               .map((packageItem: any, i: number) => (
                 <Product
                   id={`/package/${packageItem._id}`} // Adjusted to use package ID
@@ -123,7 +122,6 @@ export default function Home() {
 
           {packagesData &&
             packagesData.products
-              ?.slice(0, 3) // Get only the first 4 packages
               .map((packageItem: any, i: number) => (
                 <Product
                   id={`/product/${packageItem._id}`} // Adjusted to use package ID
@@ -157,7 +155,6 @@ export default function Home() {
 
           {productsData &&
             productsData?.packages
-              .slice(0, 1)
               .map((product: any, i: number) => (
                 <Product
                   id={`/package/${product._id}`}
@@ -175,7 +172,6 @@ export default function Home() {
 
           {productsData &&
             productsData?.products
-              .slice(0, 3)
               .map((product: any, i: number) => (
                 <Product
                   id={`/product/${product._id}`}
