@@ -121,7 +121,7 @@ function Productpage() {
 
   const fetchPackages = async () => {
     try {
-      const response = await axios.get("https://herstyleapi.onrender.com/api/v1/packages")
+      const response = await axios.get("https://api.her-style.com/api/v1/packages")
       const filteredPackages = response.data.data.packages.filter((pkg: Package) =>
         pkg.name.toLowerCase().includes(searchTerm.toLowerCase())
       )
