@@ -98,8 +98,60 @@ export default function Home() {
           <h2 className="text-2xl  mb-4">اختاري منتجك الراقي من متجرنا</h2>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6">
+
+
+        {[...Array(4)].map((_, index) => (
+            <ProductSkelton key={index} isLoading={productsLoading} />
+          ))}
+
+          {productsData &&
+            productsData?.packages
+              .map((product: any, i: number) => (
+                <Product
+                  id={`/package/${product._id}`}
+                  className="w-[250px]"
+                  key={product._id}
+                  image={product.images[0]}
+                  title={product.name}
+                  rating={product.rating}
+                  reviewCount={product.numReviews}
+                  price={product.price.finalPrice}
+                  originalPrice={product.price.originalPrice}
+                  discount={product.price.discount}
+                />
+              ))}
+
+          {productsData &&
+            productsData?.products
+              .map((product: any, i: number) => (
+                <Product
+                  id={`/product/${product._id}`}
+                  className="w-[250px]"
+                  key={product._id}
+                  image={product.images[0]}
+                  title={product.name}
+                  rating={product.rating}
+                  reviewCount={product.numReviews}
+                  price={product.price.finalPrice}
+                  originalPrice={product.price.originalPrice}
+                  discount={product.price.discount}
+                />
+              ))}
+          {/* ... Repeat for other products */}
+        </div>
+      </section>
+
+      {/* Suggested Products Section */}
+      <section className="mb-12 flex flex-col items-center py-4">
+        <div className="text-center">
+          <h3 className="text-2xl font-bold text-purple">لشعرك أكثر نعومة</h3>
+          <h2 className="text-2xl mb-4">نعومة شعرك تحصليها من عندنا</h2>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6">
           {/* Repeat this product card 4 times */}
-          {[...Array(4)].map((_, index) => (
+
+ {/* Repeat this product card 4 times */}
+ {[...Array(4)].map((_, index) => (
             <ProductSkelton key={index} isLoading={packagesLoading} />
           ))}
 
@@ -137,55 +189,6 @@ export default function Home() {
                 />
               ))}
 
-          {/* ... Repeat for other products */}
-        </div>
-      </section>
-
-      {/* Suggested Products Section */}
-      <section className="mb-12 flex flex-col items-center py-4">
-        <div className="text-center">
-          <h3 className="text-2xl font-bold text-purple">لشعرك أكثر نعومة</h3>
-          <h2 className="text-2xl mb-4">نعومة شعرك تحصليها من عندنا</h2>
-        </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6">
-          {/* Repeat this product card 4 times */}
-          {[...Array(4)].map((_, index) => (
-            <ProductSkelton key={index} isLoading={productsLoading} />
-          ))}
-
-          {productsData &&
-            productsData?.packages
-              .map((product: any, i: number) => (
-                <Product
-                  id={`/package/${product._id}`}
-                  className="w-[250px]"
-                  key={product._id}
-                  image={product.images[0]}
-                  title={product.name}
-                  rating={product.rating}
-                  reviewCount={product.numReviews}
-                  price={product.price.finalPrice}
-                  originalPrice={product.price.originalPrice}
-                  discount={product.price.discount}
-                />
-              ))}
-
-          {productsData &&
-            productsData?.products
-              .map((product: any, i: number) => (
-                <Product
-                  id={`/product/${product._id}`}
-                  className="w-[250px]"
-                  key={product._id}
-                  image={product.images[0]}
-                  title={product.name}
-                  rating={product.rating}
-                  reviewCount={product.numReviews}
-                  price={product.price.finalPrice}
-                  originalPrice={product.price.originalPrice}
-                  discount={product.price.discount}
-                />
-              ))}
 
           {/* ... Repeat for other products */}
         </div>
