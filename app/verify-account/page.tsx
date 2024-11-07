@@ -10,7 +10,7 @@ import { useSearchParams , useRouter } from 'next/navigation'
 
 const verifyAccount = async (token:string|null) => {
     try {
-        const response = await axios.post(`https://api.her-style.com/api/v1/users/verify-account`,  { token });
+        const response = await axios.post(`https://herstyleapi.onrender.com/api/v1/users/verify-account`,  { token });
         return response.data; // Assuming the response data contains the message you need
     } catch(e) {
         console.error("Error in verifying = ", e);

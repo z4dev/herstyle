@@ -48,7 +48,7 @@ type Product = {
   };
   quantity: number;
   tags: string[];
-  packageId: string;
+  packageId?: string;
 };
 
 type Package = {
@@ -121,7 +121,7 @@ function Productpage() {
 
   const fetchPackages = async () => {
     try {
-      const response = await axios.get("https://api.her-style.com/api/v1/packages")
+      const response = await axios.get("https://herstyleapi.onrender.com/api/v1/packages")
       const filteredPackages = response.data.data.packages.filter((pkg: Package) =>
         pkg.name.toLowerCase().includes(searchTerm.toLowerCase())
       )
@@ -243,13 +243,12 @@ function Productpage() {
       },
       quantity: formData.quantity,
       tags: formData.tags,
-      packageId: formData.packageId || 'undefined'
     }
     console.log(productData)
     if (isEditing) {
       updateProductMutation.mutate({...productData ,_id:formData._id} as Product)
     } else {
-      createProductMutation.mutate(productData)
+      createProductMutation.mutate({...productData , packageId:formData.packageId})
     }
   }
 
