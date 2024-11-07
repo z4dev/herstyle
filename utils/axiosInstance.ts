@@ -4,7 +4,7 @@ import { deleteCookie, getCookie, setCookie } from 'cookies-next';
 import { cookies } from 'next/headers';
 
 const axiosInstance = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL || 'https://herstyleapi.onrender.com/api/v1',
+  baseURL: process.env.NEXT_PUBLIC_API_URL || 'https://api.her-style.com/api/v1',
   headers: {
     'Content-Type': 'application/json',
   },
