@@ -48,7 +48,7 @@ const loginUser = async (data: LoginFormData) => {
 
 const resetPassword = async (data: ForgotPasswordFormData) => {
   try {
-    const response = await axios.post('https://herstyleapi.onrender.com/api/v1/users/reset-password-link', data);
+    const response = await axios.post('https://api.her-style.com/api/v1/users/reset-password-link', data);
     console.log(response)
     return response.data;
   } catch (error) {
