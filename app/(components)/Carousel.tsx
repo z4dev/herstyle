@@ -35,6 +35,7 @@ function Carousel() {
           </Link>
         </SwiperSlide>
         <SwiperSlide>
+        <Link href="/shop/package/671e5f7fe801785445d7f09a">
           <Image
             src="/banners/b2.jpg"
             alt="Image Slider 2"
@@ -42,9 +43,10 @@ function Carousel() {
             height={400}
             className="w-full rounded-lg lg:h-full h-60"
           />
+          </Link>
         </SwiperSlide>
         <SwiperSlide>
-          <Link href="/shop/package/671e5f7fe801785445d7f09a">
+        <Link href="/shop/package/671e5f7fe801785445d7f09a">
             <Image
               src="/banners/b3.jpg"
               alt="Image Slider 3"
@@ -55,7 +57,7 @@ function Carousel() {
           </Link>
         </SwiperSlide>
         <SwiperSlide>
-          <Link href='shop/package/671e4e63e801785445d7ed45'>
+        <Link href="/shop/package/671e5f7fe801785445d7f09a">
           <Image
             src="/banners/b4.jpg"
             alt="Image Slider 3"
@@ -77,7 +79,7 @@ function Carousel() {
           </Link>
         </SwiperSlide>
         <SwiperSlide>
-          <Link href="/shop/package/6720b1efc622738dbb32dc2e">
+        <Link href="/shop/package/671e5f7fe801785445d7f09a">
           <Image
             src="/banners/b6.jpg"
             alt="Image Slider 3"

@@ -12,38 +12,47 @@ import axiosInstance from "@/utils/axiosInstance";
 import ProductSkelton from "./(components)/ProductSkelton";
 import Testmonial from "./(components)/Testmonial";
 
-
-
-
 export default function Home() {
   async function getProducts() {
-    const { data:products } = await axiosInstance.get("products?tags=green");
-    const{data:packages} =await axiosInstance.get("packages?tags=green")
-    return {products:products.data.products ,packages:packages.data.packages};
+    const { data: products } = await axiosInstance.get("products?tags=green");
+    const { data: packages } = await axiosInstance.get("packages?tags=green");
+    return {
+      products: products.data.products,
+      packages: packages.data.packages,
+    };
   }
 
   // New function to get packages
   async function getPackages() {
-    const { data:products } = await axiosInstance.get("products?tags=blue");
-    const{data:packages} =await axiosInstance.get("packages?tags=blue")
-    console.log(products , packages)
-    return {products:products.data.products ,packages:packages.data.packages};
+    const { data: products } = await axiosInstance.get("products?tags=blue");
+    const { data: packages } = await axiosInstance.get("packages?tags=blue");
+    console.log(products, packages);
+    return {
+      products: products.data.products,
+      packages: packages.data.packages,
+    };
   }
 
-  const { data: productsData, isLoading: productsLoading, error: productsError } = useQuery({
+  const {
+    data: productsData,
+    isLoading: productsLoading,
+    error: productsError,
+  } = useQuery({
     queryKey: ["home-products"],
     queryFn: getProducts,
   });
 
   // New query for packages
-  const { data: packagesData, isLoading: packagesLoading, error: packagesError } = useQuery({
+  const {
+    data: packagesData,
+    isLoading: packagesLoading,
+    error: packagesError,
+  } = useQuery({
     queryKey: ["home-packages"],
     queryFn: getPackages,
   });
 
-  console.log(packagesData)
-
-
+  console.log(packagesData);
 
   return (
     <main className="container mx-auto p-8  px-4 lg:px-24">
@@ -89,30 +98,12 @@ export default function Home() {
           <h2 className="text-2xl  mb-4">اختاري منتجك الراقي من متجرنا</h2>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6">
-
-
           {/* Repeat this product card 4 times */}
           {[...Array(4)].map((_, index) => (
             <ProductSkelton key={index} isLoading={packagesLoading} />
           ))}
+
           {packagesData &&
-            packagesData.products
-              ?.slice(0, 2) // Get only the first 4 packages
-              .map((packageItem: any, i: number) => (
-                <Product
-                  id={`/product/${packageItem._id}`} // Adjusted to use package ID
-                  className="w-[250px]"
-                  key={packageItem._id}
-                  image={packageItem.images[0]} // Adjusted to use package image
-                  title={packageItem.name}
-                  rating={packageItem.rating}
-                  reviewCount={packageItem.numReviews}
-                  price={packageItem.price.finalPrice}
-                  originalPrice={packageItem.price.originalPrice}
-                  discount={packageItem.price.discount}
-                />
-              ))}
-              {packagesData &&
             packagesData.packages
               ?.slice(0, 2) // Get only the first 4 packages
               .map((packageItem: any, i: number) => (
@@ -129,6 +120,25 @@ export default function Home() {
                   discount={packageItem.price.discount}
                 />
               ))}
+
+          {packagesData &&
+            packagesData.products
+              ?.slice(0, 3) // Get only the first 4 packages
+              .map((packageItem: any, i: number) => (
+                <Product
+                  id={`/product/${packageItem._id}`} // Adjusted to use package ID
+                  className="w-[250px]"
+                  key={packageItem._id}
+                  image={packageItem.images[0]} // Adjusted to use package image
+                  title={packageItem.name}
+                  rating={packageItem.rating}
+                  reviewCount={packageItem.numReviews}
+                  price={packageItem.price.finalPrice}
+                  originalPrice={packageItem.price.originalPrice}
+                  discount={packageItem.price.discount}
+                />
+              ))}
+
           {/* ... Repeat for other products */}
         </div>
       </section>
@@ -140,28 +150,14 @@ export default function Home() {
           <h2 className="text-2xl mb-4">نعومة شعرك تحصليها من عندنا</h2>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6">
-           {/* Repeat this product card 4 times */}
-           {[...Array(4)].map((_, index) => (
+          {/* Repeat this product card 4 times */}
+          {[...Array(4)].map((_, index) => (
             <ProductSkelton key={index} isLoading={productsLoading} />
           ))}
+
           {productsData &&
-            productsData?.products.slice(0, 3)
-              .map((product: any, i: number) => (
-                <Product
-                  id={`/product/${product._id}`}
-                  className="w-[250px]"
-                  key={product._id}
-                  image={product.images[0]}
-                  title={product.name}
-                  rating={product.rating}
-                  reviewCount={product.numReviews}
-                  price={product.price.finalPrice}
-                  originalPrice={product.price.originalPrice}
-                  discount={product.price.discount}
-                />
-              ))}
-               {productsData &&
-            productsData?.packages.slice(0, 1)
+            productsData?.packages
+              .slice(0, 1)
               .map((product: any, i: number) => (
                 <Product
                   id={`/package/${product._id}`}
@@ -176,6 +172,25 @@ export default function Home() {
                   discount={product.price.discount}
                 />
               ))}
+
+          {productsData &&
+            productsData?.products
+              .slice(0, 3)
+              .map((product: any, i: number) => (
+                <Product
+                  id={`/product/${product._id}`}
+                  className="w-[250px]"
+                  key={product._id}
+                  image={product.images[0]}
+                  title={product.name}
+                  rating={product.rating}
+                  reviewCount={product.numReviews}
+                  price={product.price.finalPrice}
+                  originalPrice={product.price.originalPrice}
+                  discount={product.price.discount}
+                />
+              ))}
+
           {/* ... Repeat for other products */}
         </div>
       </section>
@@ -215,7 +230,7 @@ export default function Home() {
             يمتاز متجرنا بالتقييم الإيجابي من قبل العملاء
           </h2>
         </div>
-       <Testmonial />
+        <Testmonial />
       </section>
     </main>
   );
