@@ -1,18 +1,13 @@
-'use client'
+"use client";
 
-import React, { useState, useRef, useEffect } from 'react'
-import { Plus, Trash, X, Edit, Loader2 } from 'lucide-react'
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardContent,
-} from "@/components/ui/card"
-import { Label } from "@/components/ui/label"
-import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
-import { Textarea } from "@/components/ui/textarea"
+import React, { useState, useRef, useEffect } from "react";
+import { Plus, Trash, X, Edit, Loader2 } from "lucide-react";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
 import {
   Table,
   TableHeader,
@@ -20,9 +15,9 @@ import {
   TableHead,
   TableRow,
   TableCell,
-} from "@/components/ui/table"
-import axiosInstance from '@/utils/axiosInstance'
-import { CldUploadButton } from 'next-cloudinary'
+} from "@/components/ui/table";
+import axiosInstance from "@/utils/axiosInstance";
+import { CldUploadButton } from "next-cloudinary";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -32,9 +27,9 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from "@/components/ui/alert-dialog"
-import { useToast } from '@/hooks/use-toast'
-import axios from 'axios'
+} from "@/components/ui/alert-dialog";
+import { useToast } from "@/hooks/use-toast";
+import axios from "axios";
 
 type Product = {
   _id: string;
@@ -61,88 +56,99 @@ type Package = {
 };
 
 function Productpage() {
-  const queryClient = useQueryClient()
-  const { toast } = useToast()
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
   const [formData, setFormData] = useState<Partial<Product>>({
-    _id:"",
-    name: '',
-    description: '',
+    _id: "",
+    name: "",
+    description: "",
     images: [],
     availableQuantity: 0,
     price: { originalPrice: 0, finalPrice: 0 },
     quantity: 0,
     tags: [],
-    packageId: 'undefined',
-  })
-  const [productToDelete, setProductToDelete] = useState<string | null>(null)
-  const [isEditing, setIsEditing] = useState(false)
-  const [searchTerm, setSearchTerm] = useState("")
-  const [showRecommendations, setShowRecommendations] = useState(false)
-  const [packages, setPackages] = useState<Package[]>([])
-  const [isLoading, setIsLoading] = useState(false)
-  const formRef = useRef<HTMLFormElement | null>(null)
-  const searchRef = useRef<HTMLDivElement>(null)
+    packageId: "undefined",
+  });
+  const [productToDelete, setProductToDelete] = useState<string | null>(null);
+  const [isEditing, setIsEditing] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [showRecommendations, setShowRecommendations] = useState(false);
+  const [packages, setPackages] = useState<Package[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const formRef = useRef<HTMLFormElement | null>(null);
+  const searchRef = useRef<HTMLDivElement>(null);
 
-  const { data: products, isLoading: productsLoading, error: productsError } = useQuery({
-    queryKey: ['admin-products'],
+  const {
+    data: products,
+    isLoading: productsLoading,
+    error: productsError,
+  } = useQuery({
+    queryKey: ["admin-products"],
     queryFn: async () => {
-      const response = await axiosInstance.get('/products')
-      return response.data.data.products as Product[]
+      const response = await axiosInstance.get("/products");
+      return response.data.data.products as Product[];
     },
-  })
+  });
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
-        setShowRecommendations(false)
+      if (
+        searchRef.current &&
+        !searchRef.current.contains(event.target as Node)
+      ) {
+        setShowRecommendations(false);
       }
-    }
+    };
 
-    document.addEventListener('mousedown', handleClickOutside)
+    document.addEventListener("mousedown", handleClickOutside);
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside)
-    }
-  }, [])
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   useEffect(() => {
     if (searchTerm) {
-      setIsLoading(true)
-      setShowRecommendations(true)
+      setIsLoading(true);
+      setShowRecommendations(true);
       const delayDebounceFn = setTimeout(() => {
-        fetchPackages()
-      }, 300)
+        fetchPackages();
+      }, 300);
 
-      return () => clearTimeout(delayDebounceFn)
+      return () => clearTimeout(delayDebounceFn);
     } else {
-      setPackages([])
-      setShowRecommendations(false)
+      setPackages([]);
+      setShowRecommendations(false);
     }
-  }, [searchTerm])
+  }, [searchTerm]);
 
   const fetchPackages = async () => {
     try {
-      const response = await axios.get("https://herstyleapi.onrender.com/api/v1/packages")
-      const filteredPackages = response.data.data.packages.filter((pkg: Package) =>
-        pkg.name.toLowerCase().includes(searchTerm.toLowerCase())
-      )
-      setPackages(filteredPackages)
+      const response = await axios.get(
+        "https://herstyleapi.onrender.com/api/v1/packages"
+      );
+      const filteredPackages = response.data.data.packages.filter(
+        (pkg: Package) =>
+          pkg.name.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+      setPackages(filteredPackages);
     } catch (error) {
-      console.error("Error fetching packages:", error)
+      console.error("Error fetching packages:", error);
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
   const createProductMutation = useMutation({
-    mutationFn: (newProduct: any) => axiosInstance.post('/products', newProduct),
+    mutationFn: (newProduct: any) =>
+      axiosInstance.post("/products", newProduct),
     onSuccess: () => {
       toast({
         title: "نجاح",
         description: "تم إضافة المنتج بنجاح",
         duration: 3000,
-      })
-      queryClient.invalidateQueries({ queryKey: ['admin-products'] })
-      resetForm()
+      });
+      queryClient.invalidateQueries({ queryKey: ["admin-products"] });
+      resetForm();
     },
     onError: () => {
       toast({
@@ -150,21 +156,22 @@ function Productpage() {
         description: "فشل في إضافة المنتج",
         variant: "destructive",
         duration: 3000,
-      })
+      });
     },
-  })
+  });
 
   const updateProductMutation = useMutation({
-    mutationFn: (updatedProduct: Product) => axiosInstance.put(`/products/${updatedProduct._id}`, updatedProduct),
+    mutationFn: (updatedProduct: Product) =>
+      axiosInstance.put(`/products/${updatedProduct._id}`, updatedProduct),
     onSuccess: () => {
       toast({
         title: "نجاح",
         description: "تم تحديث المنتج بنجاح",
         duration: 3000,
-      })
-      queryClient.invalidateQueries({ queryKey: ['admin-products'] })
-      resetForm()
-      setIsEditing(false)
+      });
+      queryClient.invalidateQueries({ queryKey: ["admin-products"] });
+      resetForm();
+      setIsEditing(false);
     },
     onError: () => {
       toast({
@@ -172,19 +179,20 @@ function Productpage() {
         description: "فشل في تحديث المنتج",
         variant: "destructive",
         duration: 3000,
-      })
+      });
     },
-  })
+  });
 
   const deleteProductMutation = useMutation({
-    mutationFn: (productId: string) => axiosInstance.delete(`/products/${productId}`),
+    mutationFn: (productId: string) =>
+      axiosInstance.delete(`/products/${productId}`),
     onSuccess: () => {
       toast({
         title: "نجاح",
         description: "تم حذف المنتج بنجاح",
         duration: 3000,
-      })
-      queryClient.invalidateQueries({ queryKey: ['admin-products'] })
+      });
+      queryClient.invalidateQueries({ queryKey: ["admin-products"] });
     },
     onError: () => {
       toast({
@@ -192,107 +200,123 @@ function Productpage() {
         description: "فشل في حذف المنتج",
         variant: "destructive",
         duration: 3000,
-      })
+      });
     },
-  })
+  });
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     const { name, value } = e.target;
-    setFormData(prev => {
-      const updatedValue = 
-        name === 'originalPrice' || name === 'finalPrice'
+    setFormData((prev) => {
+      const updatedValue =
+        name === "originalPrice" || name === "finalPrice"
           ? { ...prev.price, [name]: Number(value) || 0 }
-          : name === 'tags'
-          ? value.split(',').map(tag => tag.trim())
-          : ['quantity', 'availableQuantity'].includes(name)
+          : name === "tags"
+          ? value.split(",").map((tag) => tag.trim())
+          : ["quantity", "availableQuantity"].includes(name)
           ? Number(value)
           : value;
 
       return {
         ...prev,
         [name]: updatedValue,
-        ...(name === 'originalPrice' || name === 'finalPrice' ? { price: { originalPrice: prev.price?.originalPrice || 0, finalPrice: prev.price?.finalPrice || 0, [name]: Number(value) || 0 } } : {})
+        ...(name === "originalPrice" || name === "finalPrice"
+          ? {
+              price: {
+                originalPrice: prev.price?.originalPrice || 0,
+                finalPrice: prev.price?.finalPrice || 0,
+                [name]: Number(value) || 0,
+              },
+            }
+          : {}),
       };
     });
-  }
+  };
 
   const handleUploadSuccess = (result: any) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      images: [...(prev.images || []), result.info.secure_url]
-    }))
-  }
+      images: [...(prev.images || []), result.info.secure_url],
+    }));
+  };
 
   const removeImage = (index: number) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      images: prev.images?.filter((_, i) => i !== index)
-    }))
-  }
+      images: prev.images?.filter((_, i) => i !== index),
+    }));
+  };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
+    e.preventDefault();
     const productData = {
       name: formData.name,
       description: formData.description,
-      images: formData.images?.filter(img => img !== '') || [],
+      images: formData.images?.filter((img) => img !== "") || [],
       availableQuantity: formData.availableQuantity,
       price: {
         originalPrice: formData.price?.originalPrice || 0,
-        finalPrice: formData.price?.finalPrice || 0
+        finalPrice: formData.price?.finalPrice || 0,
       },
       quantity: formData.quantity,
       tags: formData.tags,
-    }
-    console.log(productData)
+      packageId: formData.packageId
+    };
+    console.log(productData);
     if (isEditing) {
-      updateProductMutation.mutate({...productData ,_id:formData._id} as Product)
+      updateProductMutation.mutate({
+        ...productData,
+        _id: formData._id,
+      } as Product);
     } else {
-      createProductMutation.mutate({...productData , packageId:formData.packageId})
+      createProductMutation.mutate({
+        ...productData,
+      });
     }
-  }
+  };
 
   const handleEditClick = (product: Product) => {
-    setFormData(product)
-    console.log("edit form data =",product)
-    setIsEditing(true)
-    formRef.current?.scrollIntoView({ behavior: 'smooth' })
-  }
+    setFormData(product);
+    console.log("edit form data =", product);
+    setIsEditing(true);
+    formRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
 
   const handleDeleteClick = (id: string) => {
-    setProductToDelete(id)
-  }
+    setProductToDelete(id);
+  };
 
   const handleConfirmDelete = () => {
     if (productToDelete) {
-      deleteProductMutation.mutate(productToDelete)
-      setProductToDelete(null)
+      deleteProductMutation.mutate(productToDelete);
+      setProductToDelete(null);
     }
-  }
+  };
 
   const handleCancelDelete = () => {
-    setProductToDelete(null)
-  }
+    setProductToDelete(null);
+  };
 
   const resetForm = () => {
     setFormData({
-      name: '',
-      description: '',
+      name: "",
+      description: "",
       images: [],
       availableQuantity: 0,
       price: { originalPrice: 0, finalPrice: 0 },
       quantity: 0,
       tags: [],
-      packageId: 'undefined',
-    })
-    setIsEditing(false)
-  }
+      packageId: "undefined",
+    });
+    setIsEditing(false);
+  };
 
-  const handlePackageSelect = (packageId: string) => {
-    setFormData(prev => ({ ...prev, packageId }))
-    setSearchTerm('')
-    setShowRecommendations(false)
-  }
+  const handlePackageSelect = (packageId: string , packageName:string) => {
+    setFormData((prev) => ({ ...prev, packageId }));
+    setSearchTerm(packageName);
+    setShowRecommendations(false);
+  };
 
   return (
     <Card className="bg-white shadow-lg rounded-lg overflow-hidden">
@@ -305,7 +329,10 @@ function Productpage() {
         <form ref={formRef} onSubmit={handleSubmit} className="space-y-6">
           <div className="grid  lg:grid-cols-3 gap-6 ">
             <div className="relative" ref={searchRef}>
-              <Label htmlFor="packageSearch" className="text-sm font-medium text-gray-700 mb-1">
+              <Label
+                htmlFor="packageSearch"
+                className="text-sm font-medium text-gray-700 mb-1"
+              >
                 البحث عن الباقة
               </Label>
               <div className="flex items-center">
@@ -316,16 +343,21 @@ function Productpage() {
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   className="w-full text-right"
+                  onClick={() => {
+                    if (packages.length > 0) {
+                      setSearchTerm(packages[0].name);
+                    }
+                  }}
                 />
                 {searchTerm && (
                   <Button
                     type="button"
                     variant="ghost"
                     size="icon"
-                    className="absolute right-2"
-                    onClick={() => setSearchTerm('')}
+                    className="absolute left-2"
+                    onClick={() => setSearchTerm("")}
                   >
-                    <X className="h-4 w-4 " />
+                    <X className="h-4 w-4" />
                   </Button>
                 )}
               </div>
@@ -340,20 +372,25 @@ function Productpage() {
                       <div
                         key={pkg._id}
                         className="p-2 hover:bg-gray-100 cursor-pointer"
-                        onClick={() => handlePackageSelect(pkg._id)}
+                        onClick={() => handlePackageSelect(pkg._id , pkg.name)}
                       >
                         {pkg.name}
                       </div>
                     ))
                   ) : (
-                    <div className="p-2 text-gray-500">لم يتم العثور على باقات</div>
+                    <div className="p-2 text-gray-500">
+                      لم يتم العثور على باقات
+                    </div>
                   )}
                 </div>
               )}
             </div>
 
             <div>
-              <Label htmlFor="originalPrice" className="text-sm font-medium text-gray-700 mb-1">
+              <Label
+                htmlFor="originalPrice"
+                className="text-sm font-medium text-gray-700 mb-1"
+              >
                 السعر الأصلي
               </Label>
               <Input
@@ -366,8 +403,11 @@ function Productpage() {
                 className="w-full text-right"
               />
             </div>
-            <div className='order-first lg:order-none'>
-              <Label htmlFor="name" className="text-sm font-medium text-gray-700 mb-1">
+            <div className="order-first lg:order-none">
+              <Label
+                htmlFor="name"
+                className="text-sm font-medium text-gray-700 mb-1"
+              >
                 اسم المنتج
               </Label>
               <Input
@@ -380,7 +420,10 @@ function Productpage() {
               />
             </div>
             <div>
-              <Label htmlFor="finalPrice" className="text-sm font-medium text-gray-700 mb-1">
+              <Label
+                htmlFor="finalPrice"
+                className="text-sm font-medium text-gray-700 mb-1"
+              >
                 السعر النهائي
               </Label>
               <Input
@@ -393,9 +436,12 @@ function Productpage() {
                 className="w-full text-right"
               />
             </div>
-            
+
             <div>
-              <Label htmlFor="quantity" className="text-sm font-medium text-gray-700 mb-1">
+              <Label
+                htmlFor="quantity"
+                className="text-sm font-medium text-gray-700 mb-1"
+              >
                 الكمية
               </Label>
               <Input
@@ -409,7 +455,10 @@ function Productpage() {
               />
             </div>
             <div>
-              <Label htmlFor="availableQuantity" className="text-sm font-medium text-gray-700 mb-1">
+              <Label
+                htmlFor="availableQuantity"
+                className="text-sm font-medium text-gray-700 mb-1"
+              >
                 الكمية المتاحة
               </Label>
               <Input
@@ -422,23 +471,28 @@ function Productpage() {
                 className="w-full text-right"
               />
             </div>
-            <div className='lg:col-span-3'>
-              <Label htmlFor="tags" className="text-sm font-medium text-gray-700 mb-1">
+            <div className="lg:col-span-3">
+              <Label
+                htmlFor="tags"
+                className="text-sm font-medium text-gray-700 mb-1"
+              >
                 العلامات (مفصولة بفواصل)
               </Label>
               <Input
                 id="tags"
                 name="tags"
-                value={formData.tags?.join(', ')}
+                value={formData.tags?.join(", ")}
                 onChange={handleInputChange}
-                className="w-full text-right" 
+                className="w-full text-right"
               />
             </div>
           </div>
-          
+
           <div>
-            
-            <Label htmlFor="description" className="text-sm font-medium text-gray-700 mb-1">
+            <Label
+              htmlFor="description"
+              className="text-sm font-medium text-gray-700 mb-1"
+            >
               وصف المنتج
             </Label>
             <Textarea
@@ -452,11 +506,17 @@ function Productpage() {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="images" className="text-lg font-semibold">صور المنتج</Label>
+            <Label htmlFor="images" className="text-lg font-semibold">
+              صور المنتج
+            </Label>
             <div className="mt-2 flex flex-wrap gap-4 justify-end">
               {formData.images?.map((image, index) => (
                 <div key={index} className="relative group">
-                  <img src={image} alt={`Uploaded ${index + 1}`} className="w-32 h-32 object-cover rounded-lg shadow-md" />
+                  <img
+                    src={image}
+                    alt={`Uploaded ${index + 1}`}
+                    className="w-32 h-32 object-cover rounded-lg shadow-md"
+                  />
                   <button
                     type="button"
                     onClick={() => removeImage(index)}
@@ -479,12 +539,18 @@ function Productpage() {
           <Button
             type="submit"
             className="w-full bg-purple hover:bg-purple-700 text-white"
-            disabled={createProductMutation.isPending || updateProductMutation.isPending}
+            disabled={
+              createProductMutation.isPending || updateProductMutation.isPending
+            }
           >
             <Plus className="w-4 h-4 mr-2" />
             {isEditing
-              ? (updateProductMutation.isPending ? 'تحديث...' : 'تحديث المنتج')
-              : (createProductMutation.isPending ? 'إضافة...' : 'إضافة منتج')}
+              ? updateProductMutation.isPending
+                ? "تحديث..."
+                : "تحديث المنتج"
+              : createProductMutation.isPending
+              ? "إضافة..."
+              : "إضافة منتج"}
           </Button>
         </form>
 
@@ -511,14 +577,16 @@ function Productpage() {
                 <TableBody>
                   {products?.map((product) => (
                     <TableRow key={product._id}>
-                      <TableCell className='flex items-center justify-end'>
+                      <TableCell className="flex items-center justify-end">
                         <img
-                          src={product.images[0] || '/placeholder-image.jpg'}
+                          src={product.images[0] || "/placeholder-image.jpg"}
                           alt={product.name}
                           className="w-12 h-12 object-cover rounded-full"
                         />
                       </TableCell>
-                      <TableCell className="font-medium">{product.name}</TableCell>
+                      <TableCell className="font-medium">
+                        {product.name}
+                      </TableCell>
                       <TableCell>{product.price.finalPrice} ريال</TableCell>
                       <TableCell>{product.availableQuantity}</TableCell>
                       <TableCell>
@@ -552,18 +620,26 @@ function Productpage() {
             <AlertDialogHeader>
               <AlertDialogTitle>تأكيد الحذف</AlertDialogTitle>
               <AlertDialogDescription>
-                هل أنت متأكد أنك تريد حذف هذا المنتج؟ هذه العملية لا يمكن التراجع عنها.
+                هل أنت متأكد أنك تريد حذف هذا المنتج؟ هذه العملية لا يمكن
+                التراجع عنها.
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
-              <AlertDialogCancel onClick={handleCancelDelete}>إلغاء</AlertDialogCancel>
-              <AlertDialogAction className="bg-purple hover:bg-purple-700" onClick={handleConfirmDelete}>حذف</AlertDialogAction>
+              <AlertDialogCancel onClick={handleCancelDelete}>
+                إلغاء
+              </AlertDialogCancel>
+              <AlertDialogAction
+                className="bg-purple hover:bg-purple-700"
+                onClick={handleConfirmDelete}
+              >
+                حذف
+              </AlertDialogAction>
             </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialog>
       </CardContent>
     </Card>
-  )
+  );
 }
 
-export default Productpage
+export default Productpage;
