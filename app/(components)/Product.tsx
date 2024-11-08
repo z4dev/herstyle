@@ -59,8 +59,8 @@ const Product: React.FC<ProductProps> = ({ id, image, title, rating, reviewCount
   };
 
   return (
-    <div className={`bg-white rounded-lg shadow-md ${className} w-[250px]  h-fit`} >
-      <div className="relative mb-4 overflow-hidden h-[400px] lg:h-[50vh]">
+    <div className={`bg-white rounded-lg shadow-md ${className} w-[250px]  h-fit xl:w-[80%]`} >
+      <div className="relative mb-4 overflow-hidden h-[400px] lg:h-[50vh] xl:h-[40vh]">
         <Link href={`/shop/${id}`}>
         <Image src={image} alt={title} width={200} height={200} className="w-full h-full rounded-t-lg" />
         </Link>
