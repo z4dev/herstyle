@@ -119,7 +119,7 @@ export default function ProductPage({ params }: { params: { product: string } })
           الرئيسية / المتجر / {data.name}
         </p>
       </div>
-      <div className="h-screen lg:h-[80vh] flex flex-col-reverse lg:flex-row gap-8">
+      <div className="h-fit flex flex-col-reverse lg:flex-row gap-8">
         <div className="lg:w-1/2 flex flex-col items-end">
           <div className="bg-gray-100 p-4 rounded-lg mb-6 w-full">
             <div className="flex justify-between items-center">
@@ -160,7 +160,7 @@ export default function ProductPage({ params }: { params: { product: string } })
             spaceBetween={30}
             slidesPerView={1}
             pagination={{ clickable: true }}
-            className="w-full h-full rounded-lg"
+            className="w-full  h-[450px] lg:h-[650px] rounded-lg"
           >
             {productData.data.product.images.map((image: string, index: number) => (
               <SwiperSlide key={index}>
@@ -169,7 +169,7 @@ export default function ProductPage({ params }: { params: { product: string } })
                     src={image}
                     alt={`Product image ${index}`}
                     layout="fill"
-                    className="w-full h-full object-cover cursor-pointer"
+                    className="w-full h-full cursor-pointer"
                     onClick={() => setFullScreenImage(image)}
                   />
                 </div>
