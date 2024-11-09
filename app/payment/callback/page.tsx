@@ -7,12 +7,14 @@ import axiosInstance from "@/utils/axiosInstance";
 import { useDispatch, useSelector } from "react-redux";
 import { clearAddress } from "@/utils/addressSlice";
 import { getCookie } from "cookies-next";
+import { useQueryClient } from "@tanstack/react-query";
 
 const PaymentCallback: React.FC = () => {
   const router = useRouter();
   const queryParams = useSearchParams(); // Get status from query parameters
   const status = queryParams.get("status"); // Extract the status only once
   const paymentId = queryParams.get("id"); // Extract payment ID
+  const queryClient = useQueryClient()
 
   const [message, setMessage] = useState<string>("");
   const [icon, setIcon] = useState<JSX.Element | null>(null);
@@ -59,6 +61,7 @@ const PaymentCallback: React.FC = () => {
     // Redirect to homepage after 5 seconds
     const timeout = setTimeout(() => {
       router.push("/");
+      queryClient.invalidateQueries({queryKey:["cart"]})
     }, 5000);
 
     return () => clearTimeout(timeout); // Cleanup on unmount
