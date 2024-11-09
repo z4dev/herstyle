@@ -250,7 +250,7 @@ function Productpage() {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const productData = {
+    const productData:any = {
       name: formData.name,
       description: formData.description,
       images: formData.images?.filter((img) => img !== "") || [],
@@ -261,10 +261,10 @@ function Productpage() {
       },
       quantity: formData.quantity,
       tags: formData.tags,
-      packageId: formData.packageId
     };
-    console.log(productData);
     if (isEditing) {
+      if(formData.packageId !== "undefined" ) productData.packageId  = formData.packageId
+      console.log("product data",productData);
       updateProductMutation.mutate({
         ...productData,
         _id: formData._id,
@@ -318,6 +318,12 @@ function Productpage() {
     setShowRecommendations(false);
   };
 
+  const handleDeletepackageId = (e:any) =>{
+    e.preventDefault()
+    setSearchTerm("")
+    setFormData((prev) => ({ ...prev, packageId:"undefined" }));
+  }
+
   return (
     <Card className="bg-white shadow-lg rounded-lg overflow-hidden">
       <CardHeader className="bg-gray-50 border-b border-gray-200">
@@ -355,7 +361,7 @@ function Productpage() {
                     variant="ghost"
                     size="icon"
                     className="absolute left-2"
-                    onClick={() => setSearchTerm("")}
+                    onClick={handleDeletepackageId}
                   >
                     <X className="h-4 w-4" />
                   </Button>
