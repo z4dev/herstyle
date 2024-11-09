@@ -48,6 +48,8 @@ function OrderPage() {
 
   const orders = data?.data?.data?.orders || []
 
+  const filteredOrders = orders.filter((order:any) => order.status !== "CANCELLED")
+
   const openDialog = (order: any) => {
     setSelectedOrder(order)
     setIsDialogOpen(true)
@@ -101,7 +103,7 @@ function OrderPage() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {orders.map((order: any) => (
+            {filteredOrders.map((order: any) => (
               <TableRow key={order._id}>
                 <TableCell>
                   <button
