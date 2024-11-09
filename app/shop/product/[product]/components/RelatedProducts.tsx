@@ -50,7 +50,7 @@ function RelatedProducts({data}:{data:any}) {
     <div className="space-y-6">
     {data.map((item:any, index:number) => (
       <div key={index} className="bg-white rounded-lg shadow-md p-4 flex  flex-col lg:flex-row-reverse items-start md:items-center">
-        <div className="relative  w-full   md:w-1/4  h-[340px] lg:h-[230px]">
+        <div className="relative  w-full   md:w-1/4  h-[340px] lg:h-[290px]">
          <Link href={`/shop/product/${item._id}`}>
           <Image
             src={item.images[0]}
