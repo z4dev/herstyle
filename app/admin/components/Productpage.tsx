@@ -44,6 +44,7 @@ type Product = {
   quantity: number;
   tags: string[];
   packageId?: string;
+  packageName?: string;
 };
 
 type Package = {
@@ -68,6 +69,7 @@ function Productpage() {
     quantity: 0,
     tags: [],
     packageId: "undefined",
+    packageName: "",
   });
   const [productToDelete, setProductToDelete] = useState<string | null>(null);
   const [isEditing, setIsEditing] = useState(false);
@@ -124,7 +126,7 @@ function Productpage() {
   const fetchPackages = async () => {
     try {
       const response = await axios.get(
-        "https://herstyleapi.onrender.com/api/v1/packages"
+        "https://api.her-style.com/api/v1/packages"
       );
       const filteredPackages = response.data.data.packages.filter(
         (pkg: Package) =>
@@ -250,7 +252,7 @@ function Productpage() {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const productData:any = {
+    const productData: any = {
       name: formData.name,
       description: formData.description,
       images: formData.images?.filter((img) => img !== "") || [],
@@ -263,9 +265,11 @@ function Productpage() {
       tags: formData.tags,
     };
     if (isEditing) {
-      if(formData.packageId !== "undefined" ) productData.packageId  = formData.packageId
-      if(formData.packageId !== "undefined" && searchTerm == '' )   productData.packageId  = 'undefined'
-      console.log("product data",productData);
+      if (formData.packageId !== "undefined")
+        productData.packageId = formData.packageId;
+      if (formData.packageId !== "undefined" && searchTerm == "")
+        productData.packageId = "undefined";
+      console.log("product data", productData);
       updateProductMutation.mutate({
         ...productData,
         _id: formData._id,
@@ -313,17 +317,17 @@ function Productpage() {
     setIsEditing(false);
   };
 
-  const handlePackageSelect = (packageId: string , packageName:string) => {
+  const handlePackageSelect = (packageId: string, packageName: string) => {
     setFormData((prev) => ({ ...prev, packageId }));
     setSearchTerm(packageName);
     setShowRecommendations(false);
   };
 
-  const handleDeletepackageId = (e:any) =>{
-    e.preventDefault()
-    setSearchTerm("")
-    setFormData((prev) => ({ ...prev, packageId:"undefined" }));
-  }
+  const handleDeletepackageId = (e: any) => {
+    e.preventDefault();
+    setSearchTerm("");
+    setFormData((prev) => ({ ...prev, packageId: "undefined" }));
+  };
 
   return (
     <Card className="bg-white shadow-lg rounded-lg overflow-hidden">
@@ -348,6 +352,9 @@ function Productpage() {
                   type="text"
                   placeholder="ابحث عن الباقات..."
                   value={searchTerm}
+                  style={{
+                    unicodeBidi: "bidi-override",
+                  }}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   className="w-full text-right"
                   onClick={() => {
@@ -379,7 +386,7 @@ function Productpage() {
                       <div
                         key={pkg._id}
                         className="p-2 hover:bg-gray-100 cursor-pointer"
-                        onClick={() => handlePackageSelect(pkg._id , pkg.name)}
+                        onClick={() => handlePackageSelect(pkg._id, pkg.name)}
                       >
                         {pkg.name}
                       </div>
@@ -420,6 +427,9 @@ function Productpage() {
               <Input
                 id="name"
                 name="name"
+                style={{
+                  unicodeBidi: "bidi-override",
+                }}
                 value={formData.name}
                 onChange={handleInputChange}
                 required
@@ -488,6 +498,9 @@ function Productpage() {
               <Input
                 id="tags"
                 name="tags"
+                style={{
+                  unicodeBidi: "bidi-override",
+                }}
                 value={formData.tags?.join(", ")}
                 onChange={handleInputChange}
                 className="w-full text-right"
@@ -506,6 +519,10 @@ function Productpage() {
               id="description"
               name="description"
               value={formData.description}
+              dir="auto"
+              style={{
+                unicodeBidi: "bidi-override",
+              }}
               onChange={handleInputChange}
               required
               className="w-full h-24 text-right"
