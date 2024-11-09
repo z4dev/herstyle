@@ -244,10 +244,6 @@ export default function CouponPage() {
             <div className="space-y-2 order-first md:order-last">
               <Label htmlFor="couponCode">رمز الكوبون</Label>
               <Input
-                id="couponCode"
-                style={{
-                  unicodeBidi: "bidi-override",
-                }}
                 required
                 value={coupon.code || ""}
                 onChange={(e) => setCoupon({ ...coupon, code: e.target.value })}

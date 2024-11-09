@@ -352,9 +352,7 @@ function Productpage() {
                   type="text"
                   placeholder="ابحث عن الباقات..."
                   value={searchTerm}
-                  style={{
-                    unicodeBidi: "bidi-override",
-                  }}
+
                   onChange={(e) => setSearchTerm(e.target.value)}
                   className="w-full text-right"
                   onClick={() => {
@@ -427,9 +425,7 @@ function Productpage() {
               <Input
                 id="name"
                 name="name"
-                style={{
-                  unicodeBidi: "bidi-override",
-                }}
+  
                 value={formData.name}
                 onChange={handleInputChange}
                 required
@@ -498,9 +494,7 @@ function Productpage() {
               <Input
                 id="tags"
                 name="tags"
-                style={{
-                  unicodeBidi: "bidi-override",
-                }}
+
                 value={formData.tags?.join(", ")}
                 onChange={handleInputChange}
                 className="w-full text-right"
@@ -520,9 +514,6 @@ function Productpage() {
               name="description"
               value={formData.description}
               dir="auto"
-              style={{
-                unicodeBidi: "bidi-override",
-              }}
               onChange={handleInputChange}
               required
               className="w-full h-24 text-right"

@@ -252,9 +252,6 @@ function PackagePage() {
               <Input
                 id="name"
                 name="name"
-                style={{
-                  unicodeBidi: "bidi-override",
-                }}
                 value={formData.name}
                 onChange={handleInputChange}
                 required
@@ -296,9 +293,6 @@ function PackagePage() {
               <Input
                 id="tags"
                 name="tags"
-                style={{
-                  unicodeBidi: "bidi-override",
-                }}
                 value={formData.tags?.join(', ')}
                 onChange={handleInputChange}
                 className="w-full text-right"
@@ -311,9 +305,6 @@ function PackagePage() {
               <Textarea
                 id="description"
                 name="description"
-                style={{
-                  unicodeBidi: "bidi-override",
-                }}
                 value={formData.description}
                 onChange={handleInputChange}
                 required
