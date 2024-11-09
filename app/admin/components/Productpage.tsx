@@ -264,7 +264,6 @@ function Productpage() {
     };
     if (isEditing) {
       if(formData.packageId !== "undefined" ) productData.packageId  = formData.packageId
-      console.log(searchTerm)
       if(formData.packageId !== "undefined" && searchTerm == '' )   productData.packageId  = 'undefined'
       console.log("product data",productData);
       updateProductMutation.mutate({

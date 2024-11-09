@@ -97,46 +97,45 @@ export default function Home() {
           </h2>
           <h2 className="text-2xl  mb-4">اختاري منتجك الراقي من متجرنا</h2>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6">
-
-
-        {[...Array(4)].map((_, index) => (
+        <div
+          style={{ direction: "rtl" }}
+          className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6"
+        >
+          {[...Array(4)].map((_, index) => (
             <ProductSkelton key={index} isLoading={productsLoading} />
           ))}
 
           {productsData &&
-            productsData?.packages
-              .map((product: any, i: number) => (
-                <Product
-                  id={`/package/${product._id}`}
-                  className="w-[250px]"
-                  key={product._id}
-                  image={product.images[0]}
-                  title={product.name}
-                  rating={product.rating}
-                  reviewCount={product.numReviews}
-                  price={product.price.finalPrice}
-                  originalPrice={product.price.originalPrice}
-                  discount={product.price.discount}
-                />
-              ))}
+            productsData?.packages.map((product: any, i: number) => (
+              <Product
+                id={`/package/${product._id}`}
+                className="w-[250px]"
+                key={product._id}
+                image={product.images[0]}
+                title={product.name}
+                rating={product.rating}
+                reviewCount={product.numReviews}
+                price={product.price.finalPrice}
+                originalPrice={product.price.originalPrice}
+                discount={product.price.discount}
+              />
+            ))}
 
           {productsData &&
-            productsData?.products
-              .map((product: any, i: number) => (
-                <Product
-                  id={`/product/${product._id}`}
-                  className="w-[250px]"
-                  key={product._id}
-                  image={product.images[0]}
-                  title={product.name}
-                  rating={product.rating}
-                  reviewCount={product.numReviews}
-                  price={product.price.finalPrice}
-                  originalPrice={product.price.originalPrice}
-                  discount={product.price.discount}
-                />
-              ))}
+            productsData?.products.map((product: any, i: number) => (
+              <Product
+                id={`/product/${product._id}`}
+                className="w-[250px]"
+                key={product._id}
+                image={product.images[0]}
+                title={product.name}
+                rating={product.rating}
+                reviewCount={product.numReviews}
+                price={product.price.finalPrice}
+                originalPrice={product.price.originalPrice}
+                discount={product.price.discount}
+              />
+            ))}
           {/* ... Repeat for other products */}
         </div>
       </section>
@@ -147,48 +146,48 @@ export default function Home() {
           <h3 className="text-2xl font-bold text-purple">لشعرك أكثر نعومة</h3>
           <h2 className="text-2xl mb-4">نعومة شعرك تحصليها من عندنا</h2>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6">
+        <div
+          style={{ direction: "rtl" }}
+          className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6"
+        >
           {/* Repeat this product card 4 times */}
 
- {/* Repeat this product card 4 times */}
- {[...Array(4)].map((_, index) => (
+          {/* Repeat this product card 4 times */}
+          {[...Array(4)].map((_, index) => (
             <ProductSkelton key={index} isLoading={packagesLoading} />
           ))}
 
           {packagesData &&
-            packagesData.packages
-              .map((packageItem: any, i: number) => (
-                <Product
-                  id={`/package/${packageItem._id}`} // Adjusted to use package ID
-                  className="w-[250px]"
-                  key={packageItem._id}
-                  image={packageItem.images[0]} // Adjusted to use package image
-                  title={packageItem.name}
-                  rating={packageItem.rating}
-                  reviewCount={packageItem.numReviews}
-                  price={packageItem.price.finalPrice}
-                  originalPrice={packageItem.price.originalPrice}
-                  discount={packageItem.price.discount}
-                />
-              ))}
+            packagesData.packages.map((packageItem: any, i: number) => (
+              <Product
+                id={`/package/${packageItem._id}`} // Adjusted to use package ID
+                className="w-[250px]"
+                key={packageItem._id}
+                image={packageItem.images[0]} // Adjusted to use package image
+                title={packageItem.name}
+                rating={packageItem.rating}
+                reviewCount={packageItem.numReviews}
+                price={packageItem.price.finalPrice}
+                originalPrice={packageItem.price.originalPrice}
+                discount={packageItem.price.discount}
+              />
+            ))}
 
           {packagesData &&
-            packagesData.products
-              .map((packageItem: any, i: number) => (
-                <Product
-                  id={`/product/${packageItem._id}`} // Adjusted to use package ID
-                  className="w-[250px]"
-                  key={packageItem._id}
-                  image={packageItem.images[0]} // Adjusted to use package image
-                  title={packageItem.name}
-                  rating={packageItem.rating}
-                  reviewCount={packageItem.numReviews}
-                  price={packageItem.price.finalPrice}
-                  originalPrice={packageItem.price.originalPrice}
-                  discount={packageItem.price.discount}
-                />
-              ))}
-
+            packagesData.products.map((packageItem: any, i: number) => (
+              <Product
+                id={`/product/${packageItem._id}`} // Adjusted to use package ID
+                className="w-[250px]"
+                key={packageItem._id}
+                image={packageItem.images[0]} // Adjusted to use package image
+                title={packageItem.name}
+                rating={packageItem.rating}
+                reviewCount={packageItem.numReviews}
+                price={packageItem.price.finalPrice}
+                originalPrice={packageItem.price.originalPrice}
+                discount={packageItem.price.discount}
+              />
+            ))}
 
           {/* ... Repeat for other products */}
         </div>
