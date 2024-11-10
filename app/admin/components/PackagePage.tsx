@@ -242,6 +242,7 @@ function PackagePage() {
                 onChange={handleInputChange}
                 required
                 className="w-full text-right"
+                
               />
             </div>
             <div className='order-first lg:order-none'>
@@ -255,6 +256,7 @@ function PackagePage() {
                 onChange={handleInputChange}
                 required
                 className="w-full text-right"
+                dir="rtl"
               />
             </div>
             <div>
@@ -295,6 +297,7 @@ function PackagePage() {
                 value={formData.tags?.join(', ')}
                 onChange={handleInputChange}
                 className="w-full text-right"
+                dir="rtl"
               />
             </div>
             <div className='lg:col-span-2'>
@@ -308,6 +311,7 @@ function PackagePage() {
                 onChange={handleInputChange}
                 required
                 className="w-full h-24 text-right"
+                dir="rtl"
               />
             </div>
           </div>

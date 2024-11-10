@@ -111,22 +111,10 @@ export default function ProductPage({ params }: { params: { package: string } })
   }
 
 
+  console.log("package =",Package.price.finalPrice , Package.price.originalPrice , Package.price.finalPrice / Package.price.originalPrice ) 
 
-  const product = {
-    id: 'dummy-product',
-    name: 'منتج تجريبي',
-    rating: 4,
-    reviews: 120,
-    price: 199.99,
-    originalPrice: 249.99,
-    description: 'هذا وصف تجريبي للمنتج. يمكن أن يحتوي على تفاصيل حول المنتج وميزاته.',
-    contents: [
-      'العنصر الأول',
-      'العنصر الثاني',
-      'العنصر الثالث',
-      'العنصر الرابع'
-    ]
-  };
+
+
 
 
   return (
@@ -150,19 +138,19 @@ export default function ProductPage({ params }: { params: { package: string } })
             <div className="flex justify-between items-center py-2">
 
             <div className="text-right">
-              {Package.price.originalPrice && (
+              
                 <div className="flex items-center justify-end mt-1">
-                  <span className="mr-2 text-sm text-red-500">%{Math.floor(((Package.price.finalPrice - Package.price.originalPrice) / Package.price.finalPrice) * 100)} خصم</span>
-                  <span className="text-sm line-through text-gray-500">{Package.price.finalPrice} ر.س</span>
+                  <span className="mr-2 text-sm text-red-500">%{100-Math.floor((Package.price.finalPrice / Package.price.originalPrice) * 100)} خصم</span>
+                  <span className="text-sm line-through text-gray-500">{Package.price.originalPrice} ر.س</span>
                 </div>
-              )}
+            
             </div>
 
             <div className="flex items-center justify-end mb-2">
-              <span className="ml-2 text-sm text-gray-600">({product.reviews})</span>
+              <span className="ml-2 text-sm text-gray-600">(10)</span>
               <div className="flex">
                 {[...Array(5)].map((_, i) => (
-                  <Star key={i} className={`w-4 h-4 ${i < product.rating ? 'text-yellow-400 fill-current' : 'text-gray-300'}`} />
+                  <Star key={i} className={`w-4 h-4 ${i < Package.stars ? 'text-yellow-400 fill-current' : 'text-gray-300'}`} />
                 ))}
               </div>
             </div>

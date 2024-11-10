@@ -350,7 +350,7 @@ function Productpage() {
                   type="text"
                   placeholder="ابحث عن الباقات..."
                   value={searchTerm}
-
+                  dir="rtl"
                   onChange={(e) => setSearchTerm(e.target.value)}
                   className="w-full text-right"
                   onClick={() => {
@@ -358,6 +358,7 @@ function Productpage() {
                       setSearchTerm(packages[0].name);
                     }
                   }}
+                  
                 />
                 {searchTerm && (
                   <Button
@@ -423,7 +424,7 @@ function Productpage() {
               <Input
                 id="name"
                 name="name"
-  
+                dir="rtl"
                 value={formData.name}
                 onChange={handleInputChange}
                 required
@@ -492,7 +493,7 @@ function Productpage() {
               <Input
                 id="tags"
                 name="tags"
-
+                dir="rtl"
                 value={formData.tags?.join(", ")}
                 onChange={handleInputChange}
                 className="w-full text-right"
@@ -509,9 +510,9 @@ function Productpage() {
             </Label>
             <Textarea
               id="description"
+               dir="rtl"
               name="description"
               value={formData.description}
-              dir="auto"
               onChange={handleInputChange}
               required
               className="w-full h-24 text-right"
