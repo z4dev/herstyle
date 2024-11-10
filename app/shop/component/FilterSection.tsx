@@ -23,7 +23,7 @@ function FilterSection({
   const [priceRange, setPriceRange] = React.useState([0, 1000])
 
   return (
-    <div className="filter-section lg:block hidden lg:w-64 bg-white p-4 rounded-lg h-fit shadow">
+    <div className="filter-section lg:block hidden lg:w-64 bg-white p-4 mt-6 rounded-lg h-fit shadow">
       <div className='flex items-center justify-end text-primary mb-4'>
         <h2 className="text-xl font-bold text-right">الفلترة</h2>
         <Filter className="mr-2" />

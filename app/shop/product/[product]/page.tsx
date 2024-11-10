@@ -38,10 +38,13 @@ export default function ProductPage({ params }: { params: { product: string } })
         description: "تم إضافة العنصر إلى السلة",
       })
       queryClient.invalidateQueries({ queryKey: ['cart'] })
-      console.log("item added to cart successfully")
     },
-    onError: (error) => {
-      console.error('Error adding product to cart:', error)
+    onError: () => {
+      toast({
+        title: "خطأ",
+        description:"يرجى تسجيل الدخول لإضافة إلى السلة",
+        variant: "destructive",
+      });
     },
   })
 

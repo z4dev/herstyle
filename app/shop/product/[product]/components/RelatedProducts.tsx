@@ -31,7 +31,6 @@ function RelatedProducts({data}:{data:any}) {
       
       // Invalidate and refetch cart data
       queryClient.invalidateQueries({ queryKey: ['cart'] });
-      console.log(" item added to cart successfully")
     },
     onError: (error) => {
       console.error('Error adding product to cart:', error);

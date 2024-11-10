@@ -55,7 +55,7 @@ function Signup({ isSignupOpen, setIsSignupOpen }: SignupProps) {
     },
     onError: (error: any) => {
       setError(error.response?.data?.message || "An error occurpurple during signup");
-      console.log("error", error);
+      
     },
   });
 

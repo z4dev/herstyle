@@ -26,7 +26,7 @@ export default function Home() {
   async function getPackages() {
     const { data: products } = await axiosInstance.get("products?tags=blue");
     const { data: packages } = await axiosInstance.get("packages?tags=blue");
-    console.log(products, packages);
+   
     return {
       products: products.data.products,
       packages: packages.data.packages,
@@ -54,7 +54,7 @@ export default function Home() {
     queryFn: getPackages,
   });
 
-  console.log("packages =", packagesData)
+ 
 
   return (
     <main className="container mx-auto p-8  px-4 lg:px-24">

@@ -179,7 +179,6 @@ function PackagePage() {
       },
       images: formData.images?.filter(img => img !== '') || []
     }
-    console.log("packageData = ",packageData)
     if (isEditing) {
       updatePackageMutation.mutate(packageData as Package)
     } else {

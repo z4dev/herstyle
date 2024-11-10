@@ -41,7 +41,6 @@ const loginUser = async (data: LoginFormData) => {
     const response = await axiosInstance.post('/users/login', data);
     return response.data;
   } catch (error) {
-    console.log("Login error:", error);
     throw error;
   }
 };
@@ -49,10 +48,8 @@ const loginUser = async (data: LoginFormData) => {
 const resetPassword = async (data: ForgotPasswordFormData) => {
   try {
     const response = await axios.post('https://api.her-style.com/api/v1/users/reset-password-link', data);
-    console.log(response)
     return response.data;
   } catch (error) {
-    console.log("Password reset error:", error);
     throw error;
   }
 };

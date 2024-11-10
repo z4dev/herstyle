@@ -26,7 +26,7 @@ function Carousel() {
         <SwiperSlide>
           <Link href="/shop/product/672ba4e09e16953b66fa8629">
             <Image
-              src="/banners/b1.jpg"
+              src="https://res.cloudinary.com/dnugszkww/image/upload/v1731253895/b1_mdewd6.jpg"
               alt="Image Slider"
               width={1200}
               height={400}
@@ -37,7 +37,7 @@ function Carousel() {
         <SwiperSlide>
         <Link href="/shop/product/6720dbe1bd7078dee3304891">
           <Image
-            src="/banners/b2.jpg"
+            src="https://res.cloudinary.com/dnugszkww/image/upload/v1731253948/b2_gmihwh.jpg"
             alt="Image Slider 2"
             width={1200}
             height={400}
@@ -48,7 +48,7 @@ function Carousel() {
         <SwiperSlide>
         <Link href="/shop/product/6720d821bd7078dee33047e8">
             <Image
-              src="/banners/b3.jpg"
+              src="https://res.cloudinary.com/dnugszkww/image/upload/v1731253939/b3_qq8xt8.jpg"
               alt="Image Slider 3"
               width={1200}
               height={400}
@@ -59,7 +59,7 @@ function Carousel() {
         <SwiperSlide>
         <Link href="/shop/product/672ba4e09e16953b66fa8629">
           <Image
-            src="/banners/b4.jpg"
+            src="https://res.cloudinary.com/dnugszkww/image/upload/v1731253928/b4_skn4ym.jpg"
             alt="Image Slider 3"
             width={1200}
             height={400}
@@ -70,7 +70,7 @@ function Carousel() {
         <SwiperSlide>
           <Link href='/shop/product/6720d9e8bd7078dee3304845'>
           <Image
-            src="/banners/b5.jpg"
+            src="https://res.cloudinary.com/dnugszkww/image/upload/v1731253954/b5_m9wlka.jpg"
             alt="Image Slider 3"
             width={1200}
             height={400}
@@ -81,7 +81,7 @@ function Carousel() {
         <SwiperSlide>
         <Link href="/shop/product/672ba4e09e16953b66fa8629">
           <Image
-            src="/banners/b6.jpg"
+            src="https://res.cloudinary.com/dnugszkww/image/upload/v1731253953/b6_zrypj7.jpg"
             alt="Image Slider 3"
             width={1200}
             height={400}

@@ -19,15 +19,17 @@ interface ProductProps {
 }
 
 const addToCartMutation = async (productId: string) => {
-  console.log(productId)
+ 
     const array = productId.split("/")
     const type = array[1]
     const id = array[array.length - 1]
-  const response = await axiosInstance.post(
-    `cart/add-${type}/${id}`,
-    { quantity: 1 }
-  );
-  return response.data;
+    
+      const response = await axiosInstance.post(
+        `cart/add-${type}/${id}`,
+        { quantity: 1 }
+      );
+      console.log(response)
+      return response.data;
 };
 
 const Product: React.FC<ProductProps> = ({ id, image, title, rating, reviewCount, price, originalPrice, className }) => {
@@ -37,7 +39,6 @@ const Product: React.FC<ProductProps> = ({ id, image, title, rating, reviewCount
   const mutation = useMutation({
     mutationFn: (productId: string) => addToCartMutation(productId),
     onSuccess: () => {
-
       toast({
         title: "نجاح",
         description: "تم إضافة العنصر إلى السلة",
@@ -46,11 +47,14 @@ const Product: React.FC<ProductProps> = ({ id, image, title, rating, reviewCount
       
       // Invalidate and refetch cart data
       queryClient.invalidateQueries({ queryKey: ['cart'] });
-      console.log(" item added to cart successfully")
+      
     },
-    onError: (error) => {
-      console.error('Error adding product to cart:', error);
-      // Handle error (e.g., show an error message to the user)
+    onError: () => {
+      toast({
+        title: "خطأ",
+        description: "حدث خطأ أثنا ضافة المنتج لى السلة",
+        variant: "destructive",
+      });
     },
   });
 

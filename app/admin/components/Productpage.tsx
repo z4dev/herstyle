@@ -269,7 +269,6 @@ function Productpage() {
         productData.packageId = formData.packageId;
       if (formData.packageId !== "undefined" && searchTerm == "")
         productData.packageId = "undefined";
-      console.log("product data", productData);
       updateProductMutation.mutate({
         ...productData,
         _id: formData._id,
@@ -283,7 +282,6 @@ function Productpage() {
 
   const handleEditClick = (product: Product) => {
     setFormData(product);
-    console.log("edit form data =", product);
     setIsEditing(true);
     formRef.current?.scrollIntoView({ behavior: "smooth" });
   };

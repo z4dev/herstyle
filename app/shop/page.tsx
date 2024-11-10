@@ -12,7 +12,7 @@ function Page() {
   const [stars, setStars] = useState<number | null>(null);
 
   const fetchProducts = useCallback(
-    async ({ pageParam = 1, limit = 5 }) => {
+    async ({ pageParam = 1, limit = 4 }) => {
       const res = await axiosInstance.get("products", {
         params: {
           page: pageParam,
@@ -28,7 +28,7 @@ function Page() {
   );
 
   const fetchPackages = useCallback(
-    async ({ pageParam = 1, limit = 4 }) => {
+    async ({ pageParam = 1, limit = 3 }) => {
       const res = await axiosInstance.get("packages", {
         params: {
           page: pageParam,
@@ -125,7 +125,7 @@ function Page() {
   };
 
   return (
-    <div className="shop-container">
+    <div className="shop-container  mx-auto px-4 lg:px-24 py-8">
       <div className="shop-header"></div>
       <div className="shop-actions p-4 w-full flex justify-end gap-4">
         <MobileFilterSection

@@ -22,7 +22,6 @@ function CartItems({id,price,name,quantity,onDelete,stateOfDeleting,type,image}:
         });
         return response.data;
       } catch (error) {
-        console.log("error in updating package quantity", error);
       }
     }
 

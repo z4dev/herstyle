@@ -99,7 +99,6 @@ function Orders() {
     setSelectedOrder(order);
   };
 
-  console.log(selectedOrder)
 
   return (
     <>

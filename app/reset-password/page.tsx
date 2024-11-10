@@ -49,8 +49,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 
       const data = await response.json()
 
-      console.log("data",data)
-      console.log({ token, newPassword })
 
       if (response.ok) {
         setSuccess('تم إعادة تعيين كلمة المرور بنجاح')

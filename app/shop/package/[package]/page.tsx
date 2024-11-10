@@ -48,11 +48,13 @@ export default function ProductPage({ params }: { params: { package: string } })
       
       // Invalidate and refetch cart data
       queryClient.invalidateQueries({ queryKey: ['cart'] });
-      console.log(" item added to cart successfully")
     },
-    onError: (error) => {
-      console.error('Error adding product to cart:', error);
-      // Handle error (e.g., show an error message to the user)
+    onError: () => {
+      toast({
+        title: "خطأ",
+        description: "يرجى تسجيل الدخول لإضافة إلى السلة",
+        variant: "destructive",
+      });
     },
   });
 

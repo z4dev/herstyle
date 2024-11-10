@@ -23,7 +23,6 @@ async function getCart() {
     const response = await axiosInstance.get("/cart");
     return response.data;
   } catch (error) {
-    console.log("Error fetching cart:", error);
     throw error;
   }
 }
@@ -35,7 +34,7 @@ async function deleteProductFromCart(productId: string, type: string) {
     );
     return response.data;
   } catch (error) {
-    console.log(error);
+    
   }
 }
 
@@ -44,7 +43,7 @@ async function applyCoupon(code: string) {
     const response = await axiosInstance.post("cart/apply-coupon", { code });
     return response.data;
   } catch (error) {
-    console.log("Error applying coupon:", error);
+    
     throw error;
   }
 }
