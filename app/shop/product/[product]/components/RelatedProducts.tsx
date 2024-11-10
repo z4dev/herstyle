@@ -63,10 +63,9 @@ function RelatedProducts({data}:{data:any}) {
           <div className="flex justify-between items-center mb-2">
              <span className="font-bold text-lg text-purple">{item.price.finalPrice} ر.س</span>
              <div className='flex md:flex-row flex-col-reverse items-end md:items-center'>
-            <div className="flex items-center mr-2">
-                <span className="text-sm text-gray-600 mr-2">(25)</span>
+            <div className="flex flex-row-reverse items-center mr-2">
               {[...Array(5)].map((_, i) => (
-                <Star key={i} className="w-4 h-4 text-yellow-400 fill-current" />
+                <Star key={i}  className={`w-4 h-4 ${i < item.stars ? 'text-yellow-400 fill-current' : 'text-gray-300'}`} />
               ))}
             </div>
             <Link href={`/shop/product/${item._id}`}>

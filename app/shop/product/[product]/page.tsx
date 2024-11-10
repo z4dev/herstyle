@@ -122,7 +122,7 @@ export default function ProductPage({ params }: { params: { product: string } })
                   </div>
               </div>
               <div className="flex items-center justify-end mb-2">
-                <div className="flex">
+                <div className="flex flex-row-reverse">
                   {[...Array(5)].map((_, i) => (
                     <Star key={i} className={`w-4 h-4 ${i < data.stars ? 'text-yellow-400 fill-current' : 'text-gray-300'}`} />
                   ))}
