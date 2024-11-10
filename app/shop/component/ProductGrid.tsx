@@ -20,7 +20,7 @@ function ProductGrid({
 }) {
   return (
     <div className="min-h-screen w-full">
-      <div style={{direction:'rtl'}} className="product-grid w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 p-6 justify-items-center">
+      <div style={{direction:'rtl'}} className="product-grid w-full grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-12 p-6 justify-items-center">
         {(products.length === 0 && packages.length === 0 && !isLoading) &&  <div className="h-full w-full flex items-center justify-center  md:col-span-2 lg:col-span-3"> <p>لا توجد منتجات في المتجر</p></div> }
       {isLoading ? (
           Array(6).fill(null).map((_, index) => (
