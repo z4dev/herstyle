@@ -163,7 +163,7 @@ export default function ProductPage({ params }: { params: { product: string } })
             spaceBetween={30}
             slidesPerView={1}
             pagination={{ clickable: true }}
-            className="w-full  h-[450px] lg:h-[650px] rounded-lg"
+            className="w-full  h-[450px] sm:h-[650px] lg:h-[650px] rounded-lg"
           >
             {productData.data.product.images.map((image: string, index: number) => (
               <SwiperSlide key={index}>

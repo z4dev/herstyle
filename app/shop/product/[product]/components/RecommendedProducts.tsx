@@ -17,7 +17,7 @@ function RecommendedProducts() {
       });
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 gap-6 p-4 justify-items-center">
+    <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6 p-4 justify-items-center">
     {/* Repeat this product card 4 times */}
     {[...Array(4)].map((_, index) => (
       <ProductSkelton key={index} isLoading={productsLoading} />

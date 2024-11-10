@@ -307,7 +307,7 @@ function PackagePage() {
                 value={formData.description}
                 onChange={handleInputChange}
                 required
-                className="w-full h-24"
+                className="w-full h-24 text-right"
               />
             </div>
           </div>
