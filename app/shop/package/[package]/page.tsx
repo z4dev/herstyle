@@ -141,7 +141,6 @@ export default function ProductPage({ params }: { params: { package: string } })
             </div>
 
             <div className="flex items-center justify-end mb-2">
-              <span className="ml-2 text-sm text-gray-600">(10)</span>
               <div className="flex">
                 {[...Array(5)].map((_, i) => (
                   <Star key={i} className={`w-4 h-4 ${i < Package.stars ? 'text-yellow-400 fill-current' : 'text-gray-300'}`} />

@@ -59,7 +59,7 @@ function RelatedProducts({data}:{data:any}) {
           />
           </Link>
         </div>
-        <div className=" mt-4 sm:w-1/2 sm:px-2 lg:mt-0 lg:w-4/5 lg:pr-4 flex flex-col justify-between">
+        <div className="mt-4 sm:w-1/2 sm:px-2 lg:mt-0 lg:w-4/5 lg:pr-4 flex flex-col justify-between">
           <div className="flex justify-between items-center mb-2">
              <span className="font-bold text-lg text-purple">{item.price.finalPrice} ر.س</span>
              <div className='flex md:flex-row flex-col-reverse items-end md:items-center'>
@@ -74,8 +74,8 @@ function RelatedProducts({data}:{data:any}) {
             </Link>
             </div>
           </div>
-          <p className="text-right text-sm text-gray-600 mb-4">
-           {item.description}
+          <p className="text-right text-sm text-gray-600 mb-4" dir='rtl'>
+          {item.description.length > 350 ? `${item.description.slice(0, 350)}...` : item.description}
           </p>
           <div className="flex justify-end items-center">
           <button 

@@ -74,8 +74,7 @@ const Product: React.FC<ProductProps> = ({ id, image, title, rating, reviewCount
       <h3 className="font-bold text-lg mb-2 text-right">{title}</h3>
       </Link>
       <div className="flex items-center justify-end mb-2">
-        <span className="text-sm text-gray-600 mr-1">({reviewCount ? reviewCount : '0'})</span>
-        <div className="flex">
+        <div className="flex flex-row-reverse">
           {[...Array(5)].map((_, i) => (
             <Star key={i} className={`w-4 h-4 ${i < rating ? 'text-yellow-400 fill-current' : 'text-gray-300'}`} />
           ))}
