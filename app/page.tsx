@@ -33,6 +33,8 @@ export default function Home() {
     };
   }
 
+  
+
   const {
     data: productsData,
     isLoading: productsLoading,
@@ -52,7 +54,7 @@ export default function Home() {
     queryFn: getPackages,
   });
 
-  console.log(packagesData);
+  console.log("packages =", packagesData)
 
   return (
     <main className="container mx-auto p-8  px-4 lg:px-24">
