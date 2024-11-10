@@ -52,7 +52,7 @@ function ProductGrid({
               id={`/package/${el._id}`}
               image={el.images[0]}
               title={el.name}
-              rating={el.rating}
+              rating={el.stars}
               reviewCount={el.numReviews}
               price={el.price.finalPrice}
               originalPrice={el.price.originalPrice}

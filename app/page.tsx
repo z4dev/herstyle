@@ -183,7 +183,7 @@ export default function Home() {
                 key={packageItem._id}
                 image={packageItem.images[0]} // Adjusted to use package image
                 title={packageItem.name}
-                rating={packageItem.rating}
+                rating={packageItem.stars}
                 reviewCount={packageItem.numReviews}
                 price={packageItem.price.finalPrice}
                 originalPrice={packageItem.price.originalPrice}

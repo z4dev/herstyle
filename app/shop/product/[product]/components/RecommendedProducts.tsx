@@ -31,7 +31,7 @@ function RecommendedProducts() {
             key={product._id}
             image={product.images[0]}
             title={product.name}
-            rating={product.rating}
+            rating={product.stars}
             reviewCount={product.numReviews}
             price={product.price.finalPrice}
             originalPrice={product.price.originalPrice}
