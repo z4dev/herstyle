@@ -49,7 +49,7 @@ function RelatedProducts({data}:{data:any}) {
     <div className="space-y-6">
     {data.map((item:any, index:number) => (
       <div key={index} className="bg-white rounded-lg shadow-md p-4 flex  flex-col sm:flex-row-reverse items-start md:items-center">
-        <div className="relative  w-full   md:w-1/4  h-[400px] sm:h-[290px] lg:h-[290px]">
+        <div className="relative  w-full sm:w-1/2 lg:w-1/4  h-[400px] sm:h-[310px] ">
          <Link href={`/shop/product/${item._id}`}>
           <Image
             src={item.images[0]}
@@ -59,7 +59,7 @@ function RelatedProducts({data}:{data:any}) {
           />
           </Link>
         </div>
-        <div className=" mt-4 lg:mt-0 lg:w-4/5 lg:pr-4 flex flex-col justify-between">
+        <div className=" mt-4 sm:w-1/2 sm:px-2 lg:mt-0 lg:w-4/5 lg:pr-4 flex flex-col justify-between">
           <div className="flex justify-between items-center mb-2">
              <span className="font-bold text-lg text-purple">{item.price.finalPrice} ر.س</span>
              <div className='flex md:flex-row flex-col-reverse items-end md:items-center'>

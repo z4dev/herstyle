@@ -111,12 +111,6 @@ export default function ProductPage({ params }: { params: { package: string } })
   }
 
 
-  console.log("package =",Package.price.finalPrice , Package.price.originalPrice , Package.price.finalPrice / Package.price.originalPrice ) 
-
-
-
-
-
   return (
     <div className="container mx-auto px-4 lg:px-24 py-8">
       <div className="flex items-center justify-between mb-4">
