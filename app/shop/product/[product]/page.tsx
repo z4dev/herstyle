@@ -42,7 +42,7 @@ export default function ProductPage({ params }: { params: { product: string } })
     onError: () => {
       toast({
         title: "خطأ",
-        description:"يرجى تسجيل الدخول لإضافة إلى السلة",
+        description:"لا يمكنت أضافه المنتج لانك لست مسجل دخول",
         variant: "destructive",
       });
     },

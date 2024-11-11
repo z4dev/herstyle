@@ -27,6 +27,7 @@ const addToCartMutation = async (productId: string) => {
     `cart/add-package/${productId}`,
     { quantity: 1 }
   );
+  console.log(productId,response);
   return response.data;
 };
 
@@ -52,7 +53,7 @@ export default function ProductPage({ params }: { params: { package: string } })
     onError: () => {
       toast({
         title: "خطأ",
-        description: "يرجى تسجيل الدخول لإضافة إلى السلة",
+        description: "لا يمكنت أضافه المنتج لانك لست مسجل دخول",
         variant: "destructive",
       });
     },
