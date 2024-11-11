@@ -52,7 +52,7 @@ const Product: React.FC<ProductProps> = ({ id, image, title, rating, reviewCount
     onError: () => {
       toast({
         title: "خطأ",
-        description: "حدث خطأ أثنا ضافة المنتج لى السلة",
+        description: "لا يمكنت أضافه المنتج لانك لست مسجل دخول",
         variant: "destructive",
       });
     },
