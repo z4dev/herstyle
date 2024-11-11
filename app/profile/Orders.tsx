@@ -224,7 +224,7 @@ function Orders() {
                       </Dialog>
                     </TableCell>
                     <TableCell className="text-right">
-                      {new Date(order.createdAt).toLocaleDateString("ar-EG")}
+                      {new Date(order.createdAt).toLocaleDateString('ar-EG-u-nu-arab')}
                     </TableCell>
                     <TableCell className="text-right">
                       {order.cart.totalPrice} ريال

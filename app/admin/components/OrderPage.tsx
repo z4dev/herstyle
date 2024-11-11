@@ -122,7 +122,7 @@ function OrderPage() {
                   </span>
                 </TableCell>
                 <TableCell>{order.user?.name}</TableCell>
-                <TableCell>{new Date(order.createdAt).toLocaleDateString('ar-SA')}</TableCell>
+                <TableCell>{new Date(order.createdAt).toLocaleDateString('ar-EG-u-nu-arab')}</TableCell>
                 <TableCell>
                   <div className="flex gap-2 justify-end">
                     {order.status === "PENDING" && (
