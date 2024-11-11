@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://herstyle-taupe.vercel.app/
+
+# Sitemaps
+Sitemap: https://herstyle-taupe.vercel.app/sitemap.xml

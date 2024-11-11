@@ -53,9 +53,8 @@ function Signup({ isSignupOpen, setIsSignupOpen }: SignupProps) {
         // يمكنك إضافة المزيد من الخصائص هنا إذا لزم الأمر
       });
     },
-    onError: (data: any) => {
-      console.log('error =',data)
-      setError(data.response?.data?.message || "هذا المستخدم موجود بالفعل");
+    onError: (error: any) => {
+      setError(error.response?.data?.message || "هذا المستخدم موجود بالفعل");
 
       
     },
