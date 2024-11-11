@@ -40,9 +40,9 @@ const Product: React.FC<ProductProps> = ({ id, image, title, rating, reviewCount
     mutationFn: (productId: string) => addToCartMutation(productId),
     onSuccess: () => {
       toast({
-        title: "نجاح",
-        description: "تم إضافة العنصر إلى السلة",
-        // يمكنك إضافة المزيد من الخصائص هنا إذا لزم الأمر
+        title: "خطأ",
+        description: "لا يمكنت أضافه المنتج لانك لست مسجل دخول",
+        variant: "destructive",
       });
       
       // Invalidate and refetch cart data
