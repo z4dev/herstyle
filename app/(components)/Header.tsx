@@ -203,6 +203,7 @@ export default function Header() {
           )}
         </div>
 
+        <Link href="/">
         <svg
           width="55"
           height="55"
@@ -268,6 +269,7 @@ export default function Header() {
             fill="black"
           />
         </svg>
+        </Link>
       </header>
       {/* Navigation */}
       <nav className="w-full flex items-center bg-purple text-white text-xs lg:text-base text-center lg:px-24 p-4">

@@ -33,12 +33,14 @@ function CartItems({id,price,name,quantity,onDelete,stateOfDeleting,type,image}:
         },
     });
 
+    const arrayOfName = name.split(' ');
+
   return (
     <div className={`flex items-center space-x-4 mb-4 w-full ${stateOfDeleting ? 'opacity-50' : ''}`}>
         <p className="text-sm text-muted-foreground  mr-auto mb-auto">
             <span className="text-nowrap text-xs"> الإجمالي:{(quantity*price).toFixed(2)}ر.س</span></p>
     <div className="flex flex-col items-end text-right justify-between w-fit">
-      <h3 className="font-medium">{name}</h3>
+      <h3 className="font-medium">{arrayOfName[0]&&arrayOfName[0]} {arrayOfName[1]&&arrayOfName[1]}</h3>
       <p className="text-sm text-muted-foreground">{price.toFixed(2)} ريس</p>
       <div className="flex items-start justify-start space-x-1">
         <div className="flex mt-2">
